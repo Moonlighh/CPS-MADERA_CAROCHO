@@ -16,7 +16,7 @@ namespace MadereraCarocho.Controllers
         // GET: Compra
         public ActionResult Index()
         {
-            entUsuario user = Session["Usuario"] as entUsuario;
+            entCliente user = Session["Usuario"] as entCliente;
             List<entCompra> detCompra = logCompra.Instancia.ListarCompra();
             return View(detCompra);
         }

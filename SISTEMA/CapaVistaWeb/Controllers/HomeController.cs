@@ -46,18 +46,18 @@ namespace MadereraCarocho.Controllers
         public ActionResult VerificarAcceso(string dato, string contra)
         {
             //entUsuario ousuario = logUsuario.Instancia.ObtenerUsuarios().Where(u => u.Correo == dato && u.Pass == Encriptar.GetSHA256(contra)).FirstOrDefault();
-            entUsuario objUsuario = logUsuario.Instancia.IniciarSesion(dato, contra);
-            if (objUsuario != null)
+            entCliente objCliente = logCliente.Instancia.IniciarSesion(dato, contra);
+            if (objCliente != null)
             {
-                FormsAuthentication.SetAuthCookie(objUsuario.Correo, false); //Almacenar autenticacion dentro de una cokkie (segundo parametro es que el obj no sera persistente)
-                Session["Usuario"] = objUsuario;// Una sesión puede almacenar cualquier tipo de dato
-                if (objUsuario.Rol == entRol.Administrador)
+                FormsAuthentication.SetAuthCookie(objCliente.Correo, false); //Almacenar autenticacion dentro de una cokkie (segundo parametro es que el obj no sera persistente)
+                Session["Usuario"] = objCliente;// Una sesión puede almacenar cualquier tipo de dato
+                if (objCliente.Rol == entRol.Administrador)
                 {
                     return RedirectToAction("Admin"); 
                 }
                 else
                 {
-                    if (objUsuario.Rol == entRol.Cliente)
+                    if (objCliente.Rol == entRol.Cliente)
                     {
                         return RedirectToAction("Cliente");
                     }
@@ -66,9 +66,8 @@ namespace MadereraCarocho.Controllers
 
             return RedirectToAction("Index"); //Si es que hay otro tipo igual que te recargue la pagina
         }
-
         [HttpPost]
-        public ActionResult CrearCliente(string cNombre, string cdni, string ctelefono, string cdireccion, string cusername, string ccorreo, string cpassword, FormCollection frm)
+        public ActionResult SingUp(string cNombre, string cdni, string ctelefono, string cdireccion, string cusername, string ccorreo, string cpassword, FormCollection frmub, FormCollection frm)
         {
             try
             {
@@ -78,37 +77,29 @@ namespace MadereraCarocho.Controllers
                 c.Telefono = ctelefono;
                 c.Direccion = cdireccion;
                 c.Ubigeo = new entUbigeo();
-                c.Ubigeo.IdUbigeo = frm["cUbi"].ToString();
-                
-                int idCliente = logCliente.Instancia.CrearCliente(c);
-                if (idCliente != -1)
+                c.Ubigeo.IdUbigeo = frmub["cUbi"].ToString();
+                c.UserName = cusername;
+                c.Correo = ccorreo;
+                c.Pass = Encriptar.GetSHA256(cpassword);
+                entRoll rol = new entRoll();
+                rol.IdRoll = 2;
+                c.Roll = rol;
+                bool creado = logCliente.Instancia.CrearCliente(c);
+                if (creado)
                 {
-                    entUsuario u = new entUsuario();
-                    u.Cliente = c;
-                    u.Cliente.IdCliente = idCliente;
-                    u.UserName = cusername;
-                    u.Correo = ccorreo;
-                    u.Pass = Encriptar.GetSHA256(cpassword);
-                    entRoll rol = new entRoll();
-                    rol.Idrol = 2;//Le mando dos porque es un cliente
-                    u.Roll = rol;
-                    bool creado = logUsuario.Instancia.CrearUsuario(u);
-                    if (creado)
-                    {
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        ViewBag.Error = "No se pudo crear";
-                    }
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.Error = "No se pudo crear";
                 }
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", new { mesjExeption = ex.Message });
+                return RedirectToAction("ListarAdmin", new { mesjExeption = ex.Message });
             }
-            return RedirectToAction("Index");
-        }
+            return RedirectToAction("ListarAdmin");
+        }       
         public ActionResult CerrarSesion()
         {
             Session["Usuario"] = null;// Terminar la sesión

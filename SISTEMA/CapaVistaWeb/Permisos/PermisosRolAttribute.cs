@@ -23,8 +23,8 @@ namespace MadereraCarocho.Permisos
             //Primero validamos que exista una sesión
             if (HttpContext.Current.Session["Usuario"] != null)
             {
-                entUsuario usuario = HttpContext.Current.Session["Usuario"] as entUsuario;// Convertimos la sesion que contiene la info del usuario se convierta al tipo usuario
-                if (usuario.Rol != idRol)
+                entCliente cliente = HttpContext.Current.Session["Usuario"] as entCliente;// Convertimos la sesion que contiene la info del usuario se convierta al tipo usuario
+                if (cliente.Rol != idRol)
                 {
                     filterContext.Result = new RedirectResult("~/Home/SinPermisos");
                     //Con ~ le decimos que se rediriga a la ubicación del proyecto

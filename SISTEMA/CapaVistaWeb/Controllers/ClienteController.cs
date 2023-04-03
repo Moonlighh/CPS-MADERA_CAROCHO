@@ -38,7 +38,7 @@ namespace MadereraCarocho.Controllers
         }
 
         //[HttpGet]
-        public ActionResult ListarAdmin(string dato)
+        /*public ActionResult ListarAdmin(string dato)
         {
             List<entUsuario> lista;
             if (!String.IsNullOrEmpty(dato))
@@ -59,9 +59,9 @@ namespace MadereraCarocho.Controllers
             ViewBag.listaUbigeo = lsUbigeo;
             ViewBag.listaRoll = lsRol;
             return View(lista);
-        }
+        }*/
 
-        [HttpGet]
+        /*[HttpGet]
         public ActionResult EliminarUsuarioAdmin(int idu)
         {
             try
@@ -77,46 +77,8 @@ namespace MadereraCarocho.Controllers
                 return RedirectToAction("ListarAdmin", new { mesjExeption = ex.Message });
             }
             return RedirectToAction("ListarAdmin");
-        }
-        [HttpPost]
-        public ActionResult CrearCuenta(string cNombre, string cdni, string ctelefono, string cdireccion, string cusername, string ccorreo, string cpassword, FormCollection frmub, FormCollection frm)
-        {
-            try
-            {
-                entCliente c = new entCliente();
-                c.RazonSocial = cNombre;
-                c.Dni = cdni;
-                c.Telefono = ctelefono;
-                c.Direccion = cdireccion;
-                c.Ubigeo = new entUbigeo();
-                c.Ubigeo.IdUbigeo = frmub["cUbi"].ToString();
+        }*/
 
-
-                int idCliente = logCliente.Instancia.CrearCliente(c);
-                if (idCliente != -1)
-                {
-                    entUsuario u = new entUsuario();
-                    u.Cliente = c;
-                    u.Cliente.IdCliente = idCliente;
-                    u.UserName = cusername;
-                    u.Correo = ccorreo;
-                    u.Pass = Encriptar.GetSHA256(cpassword);
-                    entRoll rol = new entRoll();
-                    rol.Idrol = Convert.ToInt32(frm["roll"].ToString());
-                    u.Roll = rol;
-                    bool creado = logUsuario.Instancia.CrearUsuario(u);
-                    if (creado)
-                    {
-                        return RedirectToAction("ListarAdmin");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("ListarAdmin", new { mesjExeption = ex.Message });
-            }
-            return RedirectToAction("ListarAdmin");
-        }
 
         [HttpGet]
         public ActionResult EliminarCliente(int idP)
