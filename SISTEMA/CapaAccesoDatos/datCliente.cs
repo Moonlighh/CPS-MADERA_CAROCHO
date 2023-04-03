@@ -21,10 +21,10 @@ namespace CapaAccesoDatos
         }
         #region CRUD
         //Crear
-        public int CrearCliente(entCliente Cli)
+        public bool CrearCliente(entCliente Cli)
         {
             SqlCommand cmd = null;
-            int idCliente = -1;
+            bool creado = false;
 
             try
             {
@@ -36,16 +36,15 @@ namespace CapaAccesoDatos
                 cmd.Parameters.AddWithValue("@telefono", Cli.Telefono);
                 cmd.Parameters.AddWithValue("@direccion", Cli.Direccion);
                 cmd.Parameters.AddWithValue("@idUbigeo", Cli.Ubigeo.IdUbigeo);
-                SqlParameter id = new SqlParameter("@idCliente", 0);
-                id.Direction = ParameterDirection.Output;
-                cmd.Parameters.Add(id);
+                cmd.Parameters.AddWithValue("@correo", Cli.Correo);
+                cmd.Parameters.AddWithValue("@userName", Cli.UserName);
+                cmd.Parameters.AddWithValue("@pass", Cli.Pass);
+                cmd.Parameters.AddWithValue("@idRol", Cli.Roll.IdRoll);
 
                 cn.Open();
                 int i = cmd.ExecuteNonQuery();
-                if (i == 1)
-                {
-                    idCliente = Convert.ToInt32(cmd.Parameters["@IdCliente"].Value);
-                }
+                if (i >0 )
+                    creado = true;
             }
             catch (Exception e)
             {
@@ -55,7 +54,7 @@ namespace CapaAccesoDatos
             {
                 cmd.Connection.Close();
             }
-            return idCliente;
+            return creado;
         }
 
         //Leer
@@ -78,12 +77,21 @@ namespace CapaAccesoDatos
                         RazonSocial = dr["razonsocial"].ToString(),
                         Dni = dr["dni"].ToString(),
                         Telefono = dr["telefono"].ToString(),
-                        Direccion = dr["direccion"].ToString()
+                        Direccion = dr["direccion"].ToString(),
+                        Correo = dr["correo"].ToString(),
+                        UserName = dr["userName"].ToString(),
+                        Pass = dr["pass"].ToString(),
+                        Activo = Convert.ToBoolean(dr["activo"])
                     };
                     entUbigeo u = new entUbigeo
                     {
-                        IdUbigeo = dr["idUBIGEO"].ToString()
+                        Departamento = dr["departamento"].ToString(),
                     };
+                    entRoll r = new entRoll
+                    {
+                        Descripcion = dr["descripcion"].ToString()
+                    };
+                    Cli.Roll = r;
                     Cli.Ubigeo = u;
                     lista.Add(Cli);
                 }
@@ -91,7 +99,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "ERROR AL MOSTRAR UN CLIENTE", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(e.Message, "ERROR AL MOSTRAR CLIENTES", MessageBoxButtons.OK, MessageBoxIcon.Error);
        
             }
             finally
@@ -162,6 +170,48 @@ namespace CapaAccesoDatos
         #endregion CRUD
 
         #region OTROS
+        public entCliente IniciarSesion(string campo, string contra)
+        {
+            SqlCommand cmd = null;
+            entCliente c = null;
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spIniciarSesion", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@dato", campo);
+                cmd.Parameters.AddWithValue("@contra", encrypt.GetSHA256(contra));
+                cn.Open();
+                using (SqlDataReader dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        c = new entCliente
+                        {
+                            IdCliente = Convert.ToInt16(dr["idCliente"]),
+                            UserName = dr["userName"].ToString(),
+                            Correo = dr["correo"].ToString(),
+                            Rol = (entRol)dr["idRol"],//Convertir (castearlo) a objeto de tipo entRol
+                            Activo = Convert.ToBoolean(dr["activo"]),                       
+                            RazonSocial = dr["razonSocial"].ToString(),
+                            Dni = dr["dni"].ToString(),
+                            Telefono = dr["telefono"].ToString(),
+                            Direccion = dr["direccion"].ToString(),         
+
+                        };
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally { 
+                cmd.Connection.Close(); 
+            }
+            return c;
+        }
+
         public List<entCliente> BuscarCliente(string busqueda)
         {
             List<entCliente> lista = new List<entCliente>();
@@ -183,6 +233,10 @@ namespace CapaAccesoDatos
                         Dni = dr["dni"].ToString(),
                         Telefono = dr["telefono"].ToString(),
                         Direccion = dr["direccion"].ToString(),
+                        Correo = dr["correo"].ToString(),
+                        UserName = dr["userName"].ToString(),
+                        Pass = dr["pass"].ToString(),
+                        Activo = Convert.ToBoolean(dr["activo"])
                     };
                     entUbigeo u = new entUbigeo
                     {
