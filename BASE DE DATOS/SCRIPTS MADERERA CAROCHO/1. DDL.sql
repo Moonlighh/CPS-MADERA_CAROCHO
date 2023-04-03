@@ -46,7 +46,7 @@ CREATE TABLE PRODUCTO(
 )
 GO
 
-CREATE TABLE PROOVEDOR_PRODUCTO
+CREATE TABLE PROVEEDOR_PRODUCTO
 (
   idProvedoor_producto int primary key identity,
   idProveedor int not null,
