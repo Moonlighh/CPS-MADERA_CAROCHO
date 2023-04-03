@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CapaLogica
 {
@@ -16,7 +17,7 @@ namespace CapaLogica
             get { return _instancia; }
         }
         #region CRUD
-        public int CrearCliente(entCliente c)
+        public bool CrearCliente(entCliente c)
         {
             return datCliente.Instacia.CrearCliente(c);
         }
@@ -41,6 +42,42 @@ namespace CapaLogica
         public entCliente BuscarIdCliente(int idCliente)
         {
             return datCliente.Instacia.BuscarIdCliente(idCliente);
+        }
+
+        public entCliente IniciarSesion(string dato, string contra)
+        {
+            entCliente u = null;
+            try
+            {
+                if (DateTime.Now.Hour > 24)
+                {
+                    throw new ApplicationException("No puede ingresar a esta hora");
+                }
+                else
+                {
+                    u = datCliente.Instacia.IniciarSesion(dato, contra);
+                    if (u != null)
+                    {
+                        if (!u.Activo)
+                        {
+                            throw new ApplicationException("Usuario ha sido dado de baja");
+                        }
+
+                    }
+                    else
+                    {
+                        throw new ApplicationException("Datos invalidos");
+                    }
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+
+            }
+            return u;
         }
     }
 }

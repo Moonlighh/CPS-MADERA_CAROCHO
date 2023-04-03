@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="logAdministrador.cs" />
     <Compile Include="logCliente.cs" />
     <Compile Include="logCompra.cs" />
     <Compile Include="logDetCompra.cs" />
@@ -54,7 +53,6 @@
     <Compile Include="logTipoEmpleado.cs" />
     <Compile Include="logTipoProducto.cs" />
     <Compile Include="logUbigeo.cs" />
-    <Compile Include="logUsuario.cs" />
     <Compile Include="logVenta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
