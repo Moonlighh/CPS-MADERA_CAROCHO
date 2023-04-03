@@ -1,0 +1,125 @@
+﻿@model IEnumerable<CapaEntidad.entCliente>
+
+<!-- ======= Header admin======= -->
+<header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <div class="logo">
+            <h1><a href="/Home/Admin">My<span>Biz</span></a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html"><img src="~/Content/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link scrollto " href="/Home/Admin">Inicio</a></li>
+                <li><a class="nav-link scrollto" href="/Home/admin#about">Sobre</a></li>
+                <li><a class="nav-link scrollto" href="/Home/admin#services">Servicios</a></li>
+                <li><a class="nav-link scrollto " href="/Home/admin#portfolio">Portafolio</a></li>
+                <li><a class="nav-link scrollto" href="/Home/admin#team">Equipo</a></li>
+                <li class="dropdown">
+                    <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                        <li><a href="#">Administradores</a></li>
+                        <li><a href="/Producto/Listar">Productos</a></li>
+                        <li><a href="/Cliente/Listar">Clientes</a></li>
+                        <li><a href="/Proveedor/Listar">Proveedores</a></li>
+                        <li><a href="/Empleado/Listar">Empleados</a></li>
+                        <li><a href="/Home/CerrarSesion">Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+                <li><a class="nav-link scrollto" href="/Home/admin#contact">Contacto</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+    </div>
+</header><!-- End Header -->
+<!-- ======= Contenido ======= -->
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+    <br><h2 style="text-align: center">LISTADO DE CLIENTES</h2>
+    <hr>
+    <!-- Ordenar -->
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" th:href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
+    <hr>
+    <!-- Buscar -->
+    <form class="d-flex mb-4" role="search" action="/Cliente/Listar" method="POST" id="bCliente">
+        <input class="form-control me-2" type="search" placeholder="Buscar" name="dato" aria-label="Search">
+        <button onclick="return Buscar('bCliente')" class="btn btn-outline-success" type="submit">Buscar</button>
+    </form>
+    @*<h2>@ViewBag.Mensaje</h2>
+        <h2>@ViewBag.Lista</h2>*@
+    <!-- Listar -->
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdCliente)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RazonSocial)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dni)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Telefono)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Direccion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ubigeo.IdUbigeo)
+                </th>
+                <th>
+                    Eliminar
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdCliente)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RazonSocial)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Dni)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telefono)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Direccion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ubigeo.IdUbigeo)
+                    </td>
+                    @*<td>
+                            <button class="btn btn-warning" type="button">
+                                <i class="bi bi-pencil-square"></i>
+                                @Html.ActionLink("Edit", "EditarProducto", new { idprod = item.IdCliente })
+                            </button>
+                        </td>*@
+                    <td>
+                        <a onclick="return Eliminar(this)" href="/Cliente/EliminarCliente?idP=@item.IdCliente" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        <tbody>
+    </table>
+</div>
+<br>
+<br>
+<br>
+<br>
+

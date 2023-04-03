@@ -1,0 +1,213 @@
+﻿@model IEnumerable<CapaEntidad.entEmpleado>
+
+@{
+    ViewBag.Title = "Listar";
+}
+
+<!-- ======= Header admin======= -->
+<header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <div class="logo">
+            <h1><a href="/Home/Admin">My<span>Biz</span></a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html"><img src="~/Content/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link scrollto " href="/Home/Admin">Inicio</a></li>
+                <li><a class="nav-link scrollto" href="/Home/admin#about">Sobre</a></li>
+                <li><a class="nav-link scrollto" href="/Home/admin#services">Servicios</a></li>
+                <li><a class="nav-link scrollto " href="/Home/admin#portfolio">Portafolio</a></li>
+                <li><a class="nav-link scrollto" href="/Home/admin#team">Equipo</a></li>
+                <li class="dropdown">
+                    <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                        <li><a href="/Cliente/ListarAdmin">Administradores</a></li>
+                        <li><a href="/Producto/Listar">Productos</a></li>
+                        <li><a href="/Cliente/Listar">Clientes</a></li>
+                        <li><a href="/Proveedor/Listar">Proveedores</a></li>
+                        <li><a href="/Empleado/Listar">Empleados</a></li>
+                        <li><a href="/Compra/Index">Ver compras</a></li>
+                        <li><a href="/Home/CerrarSesion">Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+                <li><a class="nav-link scrollto" href="/Home/admin#contact">Contacto</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+    </div>
+</header><!-- End Header -->
+<!-- ======= Contenido ======= -->
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+    <br><h2 style="text-align: center">LISTADO DE EMPLEADOS</h2>
+    <!-- Agregar producto -->
+
+    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModInsertarEmpleado"><i class="bi bi-plus-square"></i> Agregar Empleado</button>
+    <hr>
+    <!-- Ordenar -->
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" th:href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
+    <hr>
+    <!-- Buscar -->
+    <form class="d-flex mb-4" role="search" action="/Empleado/Listar" method="POST" id="bEmpleado">
+        <input class="form-control me-2" type="search" placeholder="Buscar" name="busqueda" aria-label="Search">
+        <button onclick="return Buscar('bEmpleado')" class="btn btn-outline-success" type="submit">Buscar</button>
+    </form>
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nombres)
+                </th>
+                <th>
+                    DNI
+                </th>
+                <th>
+                    TELEFONO
+                </th>
+                <th>
+                    DIRECCION
+                </th>
+                <th>
+                    SALARIO
+                </th>
+                <th>
+                    DESCRIPCION
+                </th>
+                <th>
+                    TIPO EMPLEADO
+                </th>
+                <th>
+                    UBIGEO
+                </th>
+                <th>EDITAR</th>
+                <th>ELIMINAR</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdEmpleado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombres)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Dni)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telefono)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Direccion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Salario)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Tipo.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ubigeo.Distrito)
+                    </td>
+                    <td>
+                        <button class="btn btn-warning" type="button">
+                            @Html.ActionLink("Edit", "EditarEmpleado", new { idemp = item.IdEmpleado })
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <a onclick="return Eliminar(this)" href="/Empleado/EliminarEmpleado?idE=@item.IdEmpleado" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+                    </td>
+
+                </tr>
+            }
+        <tbody>
+    </table>
+</div>
+<!--Agregar empleado-->
+<div class="modal" tabindex="-1" id="ModInsertarEmpleado" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="/Empleado/CrearEmpleado" method="POST" id="empleado">
+                <div class="modal-header ">
+                    <h5 class="modal-title">Ingresar Empleado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <div class="form-group">
+                            Tipo de empleado:
+                            <div class="col-md-10">
+                                @Html.DropDownList("cTipo", (SelectList)ViewBag.listaTipo, "Seleccionar")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <div class="form-group">
+                            Distrito:
+                            <div class="col-md-10">
+                                @Html.DropDownList("cDistrito", (SelectList)ViewBag.listaUbigeo, "Seleccionar")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="cNombreE" id="Cnombre" placeholder="Nombre" required>
+                        <label for="floatingInput">Nombre</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="cDniE" id="Cdni" placeholder="Dni" required>
+                        <label for="floatingInput">Dni</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="cTelefonoE" id="Ctelefono" placeholder="Telefono" required>
+                        <label for="floatingInput">Telefono</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="cDireccionE" id="Cdireccion" placeholder="Direccion" required>
+                        <label for="floatingInput">Direccion</label>
+                    </div>
+                    @*<div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="cF_inicioE" id="fechaInicio" placeholder="FechaInicio" required>
+                            <label for="floatingInput">fecha inicio</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="cF_finE" id="fechaFin" placeholder="FechaFin" required>
+                            <label for="floatingInput">fecha fin</label>
+                        </div>*@
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="cSalarioE" id="Csalario" placeholder="Salario" required>
+                        <label for="floatingInput">Salario</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="cDescripcionE" id="Cdescripcion" placeholder="Descripcion" required>
+                        <label for="floatingInput">Descripcion</label>
+                    </div>
+                    @*<div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="cEstEmpleadoE" id="estEmpleado" placeholder="EstEmpleado" required>
+                            <label for="floatingInput">Estado Empleado</label>
+                        </div>*@
+                </div>
+                <div class="modal-footer">
+                    <button onclick="return Registrar('Cnombre', 'Cdni', 'Ctelefono', 'empleado')" type="submit" class="btn btn-dark">Registrar</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,200 @@
+﻿@model IEnumerable<CapaEntidad.entProveedor>
+
+@{
+    ViewBag.Title = "Listar";
+}
+<!-- ======= Header admin======= -->
+<header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <div class="logo">
+            <h1><a href="/Home/Admin">My<span>Biz</span></a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html"><img src="~/Content/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link scrollto " href="/Home/Admin">Inicio</a></li>
+                <li><a class="nav-link scrollto" href="/Home/admin#about">Sobre</a></li>
+                <li><a class="nav-link scrollto" href="/Home/admin#services">Servicios</a></li>
+                <li><a class="nav-link scrollto " href="/Home/admin#portfolio">Portafolio</a></li>
+                <li><a class="nav-link scrollto" href="/Home/admin#team">Equipo</a></li>
+                <li class="dropdown">
+                    <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                        <li><a href="/Cliente/ListarAdmin">Administradores</a></li>
+                        <li><a href="/Producto/Listar">Productos</a></li>
+                        <li><a href="/Cliente/Listar">Clientes</a></li>
+                        <li><a href="/Proveedor/Listar">Proveedores</a></li>
+                        <li><a href="/Empleado/Listar">Empleados</a></li>
+                        <li><a href="/Compra/Index">Ver compras</a></li>
+
+                        <li><a href="/Home/CerrarSesion">Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+                <li><a class="nav-link scrollto" href="/Home/admin#contact">Contacto</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+    </div>
+</header><!-- End Header -->
+<!-- ======= Contenido ======= -->
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+    <br><h2 style="text-align: center">LISTADO DE PROVEDDORES</h2>
+    <!-- Agregar producto -->
+
+    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModInsertarProveedor"><i class="bi bi-plus-square"></i> Agregar Proveedor</button>
+    <hr>
+    <!-- Ordenar -->
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" th:href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
+    <hr>
+    <!-- Buscar -->
+    <form class="d-flex mb-4" role="search" action="Listar" method="POST" id="Bproveedor">
+        <input class="form-control me-2" type="search" placeholder="Buscar" name="dato" aria-label="Search">
+        <button onclick="return Buscar('Bproveedor')" class="btn btn-outline-success" type="submit">Buscar</button>
+    </form>
+
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+
+                <th>
+                    ID
+                </th>
+                <th>
+                    NOMBRE
+                </th>
+                <th>
+                    RUC
+                </th>
+                <th>
+                    CORREO
+                </th>
+                <th>
+                    TELEFONO
+                </th>
+
+                <th>
+                    DEPARTAMENTO
+                </th>
+                <th>
+                    PRIVICIA
+                </th>
+                <th>
+                    DISTRITO
+                </th>
+                <th>
+                    ESTADO
+                </th>
+                <th>
+                    EDITAR
+                </th>
+                <th>
+                    ELIMINAR
+                </th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdProveedor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RazonSocial)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Dni)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Correo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telefono)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ubigeo.Departamento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ubigeo.Provincia)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ubigeo.Distrito)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EstProveedor)
+                    </td>
+                    <td>
+                        <button class="btn btn-warning" type="button">
+                            @Html.ActionLink("Edit", "EditarProveedor", new { idprov = item.IdProveedor })
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <a onclick="return Eliminar(this)" href="/Proveedor/EliminarProveedor?idc=@item.IdProveedor" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<br>
+<br>
+<br>
+<!--Agregar Provedor-->
+<div class="modal" tabindex="-1" id="ModInsertarProveedor" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="/Proveedor/CrearProveedor" method="POST" id="proveedor">
+                <div class="modal-header ">
+                    <h5 class="modal-title">Ingresar Proveedor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <div class="form-group">
+                            ubigeo:
+                            <div class="col-md-10">
+                                @Html.DropDownList("Ubi", (SelectList)ViewBag.listaUbigeo, "Seleccionar")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="uNombre" id="uNombre" placeholder="Nombre" required>
+                        <label for="floatingInput">Nombre</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="uRuc" id="uRuc" placeholder="RUC" required>
+                        <label for="floatingInput">RUC</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="uCorreo" id="uCorreo" placeholder="Corrreo" required>
+                        <label for="floatingInput">Correo</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="uTelefono" placeholder="Telefono" required>
+                        <label for="floatingInput">Telefono</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="uDescripcion" id="uDescripcion" placeholder="uDescripcion" required>
+                        <label for="floatingInput">Descripcion</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="return Registrar('uNombre', 'uRuc', 'uDescripcion', 'proveedor')" type="submit" class="btn btn-dark">Registrar</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

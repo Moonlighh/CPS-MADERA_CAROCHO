@@ -1,0 +1,111 @@
+﻿@model CapaEntidad.entProducto
+<!-- ======= Header admin======= -->
+<header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <div class="logo">
+            <h1><a href="/Home/Admin">My<span>Biz</span></a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html"><img src="~/Content/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link scrollto " href="/Home/Admin">Inicio</a></li>
+                <li><a class="nav-link scrollto" href="/Home/admin#about">Sobre</a></li>
+                <li><a class="nav-link scrollto" href="/Home/admin#services">Servicios</a></li>
+                <li><a class="nav-link scrollto " href="/Home/admin#portfolio">Portafolio</a></li>
+                <li><a class="nav-link scrollto" href="/Home/admin#team">Equipo</a></li>
+                <li class="dropdown">
+                    <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                        <li><a href="/Cliente/ListarAdmin">Administradores</a></li>
+                        <li><a href="/Producto/Listar">Productos</a></li>
+                        <li><a href="/Cliente/Listar">Clientes</a></li>
+                        <li><a href="/Proveedor/Listar">Proveedores</a></li>
+                        <li><a href="/Empleado/Listar">Empleados</a></li>
+                        <li><a href="/Compra/Index">Ver compras</a></li>
+                        <li><a href="/Home/CerrarSesion">Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+                <li><a class="nav-link scrollto" href="/Home/admin#contact">Contacto</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+    </div>
+</header><!-- End Header -->
+<!-- ======= Contenido ======= -->
+<br>
+<br>
+<br>
+<br>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <hr>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Tipo de madera</label>
+            <div class="col-md-10">
+                @Html.DropDownList("cTipoU", (SelectList)ViewBag.listaTipo, new { @class = "formcontrol", required = "required" })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">IdProducto</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IdProducto, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IdProducto, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Nombre</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Longitud</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Longitud, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Longitud, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Precio de compra</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PrecioCompra, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PrecioCompra, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Precio de venta</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PrecioVenta, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PrecioVenta, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <br>
+        <button type="button" class="btn btn-warning">
+            @Html.ActionLink("Regresar", "Listar")
+        </button>
+
+        <button type="submit" class="btn btn-info">
+            Confirmar
+        </button>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+}

@@ -1,0 +1,615 @@
+﻿<!-- ======= Header admin======= -->
+<header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <div class="logo">
+            <h1><a href="/Home/Empleado">My<span>Biz</span></a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html"><img src="~/Content/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link scrollto " href="#hero">Inicio</a></li>
+                <li><a class="nav-link scrollto" href="#about">Sobre</a></li>
+                <li><a class="nav-link scrollto" href="#services">Servicios</a></li>
+                <li><a class="nav-link scrollto " href="#portfolio">Portafolio</a></li>
+                <li><a class="nav-link scrollto" href="#team">Equipo</a></li>
+                <li class="dropdown">
+                    <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>                    
+                        <li><a href="/Producto/Listar">Productos</a></li>
+                        <li><a href="/Cliente/Listar">Clientes</a></li>
+                        <li><a href="/Proveedor/Listar">Proveedores</a></li>
+                        <li><a href="/Empleado/Listar">Empleados</a></li>
+                        <li><a href="/Home/CerrarSesion">Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+                <li><a class="nav-link scrollto" href="#contact">Contacto</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+    </div>
+</header><!-- End Header -->
+<!-- ======= Contenido ======= -->
+<!-- ======= Hero Section ======= -->
+<section id="hero">
+    <div class="hero-container">
+        <div id="heroCarousel" data-bs-interval="5000" class="carousel slide carousel-fade" data-bs-ride="carousel">
+
+            <ol class="carousel-indicators" id="hero-carousel-indicators"></ol>
+
+            <div class="carousel-inner" role="listbox">
+
+                <!-- Slide 1 -->
+                <div class="carousel-item active" style="background-image: url(/Content/assets/img/slide/Deslizar-1.jpg);">
+                    <div class="carousel-container">
+                        <div class="carousel-content">
+                            <h2 class="animate__animated animate__fadeInDown">Bienvenido a <span>Maderera Carocho</span></h2>
+                            <p class="animate__animated animate__fadeInUp">Nuestros precios son los mejores de todo Huanchaquito.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="carousel-item" style="background-image: url(/Content/assets/img/slide/Deslizar-2.jpg);">
+                    <div class="carousel-container">
+                        <div class="carousel-content">
+                            <h2 class="animate__animated animate__fadeInDown">MADERERA CAROCHO</h2>
+                            <p class="animate__animated animate__fadeInUp">Nuestros clientes mas infelices son nuestra mayor fuente de aprendizaje.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon ri-arrow-left-line" aria-hidden="true"></span>
+            </a>
+
+            <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon ri-arrow-right-line" aria-hidden="true"></span>
+            </a>
+
+        </div>
+    </div>
+</section><!-- End Hero -->
+
+<main id="main">
+
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+        <div class="container">
+
+            <div class="row content">
+                <div class="col-lg-6">
+                    <h2>Eum ipsam laborum deleniti velitena</h2>
+                    <h3>Voluptatem dignissimos provident quasi corporis voluptates sit assum perenda sruen jonee trave</h3>
+                </div>
+                <div class="col-lg-6 pt-4 pt-lg-0">
+                    <p>
+                        Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                        culpa qui officia deserunt mollit anim id est laborum
+                    </p>
+                    <ul>
+                        <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequa</li>
+                        <li><i class="ri-check-double-line"></i> Duis aute irure dolor in reprehenderit in voluptate velit</li>
+                        <li><i class="ri-check-double-line"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in</li>
+                    </ul>
+                    <p class="fst-italic">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section><!-- End About Section -->
+    <!-- ======= About List Section ======= -->
+    <section id="about-list" class="about-list">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-6 order-2 order-lg-1">
+                    <div class="icon-box mt-5 mt-lg-0">
+                        <i class="bx bx-receipt"></i>
+                        <h4>Est labore ad</h4>
+                        <p>Consequuntur sunt aut quasi enim aliquam quae harum pariatur laboris nisi ut aliquip</p>
+                    </div>
+                    <div class="icon-box mt-5">
+                        <i class="bx bx-cube-alt"></i>
+                        <h4>Harum esse qui</h4>
+                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt</p>
+                    </div>
+                    <div class="icon-box mt-5">
+                        <i class="bx bx-images"></i>
+                        <h4>Aut occaecati</h4>
+                        <p>Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut maiores omnis facere</p>
+                    </div>
+                    <div class="icon-box mt-5">
+                        <i class="bx bx-shield"></i>
+                        <h4>Beatae veritatis</h4>
+                        <p>Expedita veritatis consequuntur nihil tempore laudantium vitae denat pacta</p>
+                    </div>
+                </div>
+                <div class="image col-lg-6 order-1 order-lg-2" style='background-image: url("/Content/assets/img/about-list-img.jpg");'></div>
+            </div>
+
+        </div>
+    </section><!-- End About List Section -->
+    <!-- ======= Counts Section ======= -->
+    <section id="counts" class="counts">
+        <div class="container position-relative">
+
+            <div class="text-center title">
+                <h3>Lo que hemos logrado hasta ahora</h3>
+                <p>Actualmente estamos entre las mejores distribuidores de madera en el Distrito de Huanchaquito.</p>
+            </div>
+
+            <div class="row counters">
+
+                <div class="col-lg-3 col-6 text-center">
+                    <span data-purecounter-start="0" data-purecounter-end="1345" data-purecounter-duration="1" class="purecounter"></span>
+                    <p>Clientes</p>
+                </div>
+
+                <div class="col-lg-3 col-6 text-center">
+                    <span data-purecounter-start="0" data-purecounter-end="35" data-purecounter-duration="1" class="purecounter"></span>
+                    <p>Proyectos</p>
+                </div>
+
+                <div class="col-lg-3 col-6 text-center">
+                    <span data-purecounter-start="0" data-purecounter-end="1463" data-purecounter-duration="1" class="purecounter"></span>
+                    <p>Horas empleadas</p>
+                </div>
+
+                <div class="col-lg-3 col-6 text-center">
+                    <span data-purecounter-start="0" data-purecounter-end="15" data-purecounter-duration="1" class="purecounter"></span>
+                    <p>Trabajadores</p>
+                </div>
+
+            </div>
+
+        </div>
+    </section><!-- End Counts Section -->
+    <!-- ======= Services Section ======= -->
+    <section id="services" class="services section-bg">
+        <div class="container">
+
+            <div class="section-title">
+                <span>Servicios</span>
+                <h2>Servicios</h2>
+                <p>Brindamos el mejor servicio de atención al cliente</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="icon-box">
+                        <i class="bi bi-briefcase"></i>
+                        <h4><a href="#">Lorem Ipsum</a></h4>
+                        <p>Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mt-4 mt-md-0">
+                    <div class="icon-box">
+                        <i class="bi bi-card-checklist"></i>
+                        <h4><a href="#">Dolor Sitema</a></h4>
+                        <p>Minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat tarad limino ata</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mt-4 mt-md-0">
+                    <div class="icon-box">
+                        <i class="bi bi-bar-chart"></i>
+                        <h4><a href="#">Sed ut perspiciatis</a></h4>
+                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mt-4 mt-md-0">
+                    <div class="icon-box">
+                        <i class="bi bi-binoculars"></i>
+                        <h4><a href="#">Nemo Enim</a></h4>
+                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mt-4 mt-md-0">
+                    <div class="icon-box">
+                        <i class="bi bi-brightness-high"></i>
+                        <h4><a href="#">Magni Dolore</a></h4>
+                        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque</p>
+                    </div>
+                </div>
+                <div class="col-md-6 mt-4 mt-md-0">
+                    <div class="icon-box">
+                        <i class="bi bi-calendar4-week"></i>
+                        <h4><a href="#">Eiusmod Tempor</a></h4>
+                        <p>Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section><!-- End Services Section -->
+    <!-- ======= Portfolio Section ======= -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+
+            <div class="section-title">
+                <span>Portafolio</span>
+                <h2>Portafolio</h2>
+                <p>Sit sint consectetur velit quisquam cupiditate impedit suscipit alias</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul id="portfolio-flters">
+                        <li data-filter="*" class="filter-active">All</li>
+                        <li data-filter=".filter-app">App</li>
+                        <li data-filter=".filter-card">Card</li>
+                        <li data-filter=".filter-web">Web</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row portfolio-container">
+
+                <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+                    <div class="portfolio-wrap">
+                        <img src="~/Content/assets/img/portfolio/portfolio-1.jpg" class="img-fluid" alt="">
+                        <div class="portfolio-info">
+                            <h4>App 1</h4>
+                            <p>App</p>
+                            <div class="portfolio-links">
+                                <a href="~/Content/assets/img/portfolio/portfolio-1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="ri-add-fill"></i></a>
+                                <a href="portfolio-details.html" title="More Details"><i class="ri-links-fill"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+                    <div class="portfolio-wrap">
+                        <img src="~/Content/assets/img/portfolio/portfolio-2.jpg" class="img-fluid" alt="">
+                        <div class="portfolio-info">
+                            <h4>Web 3</h4>
+                            <p>Web</p>
+                            <div class="portfolio-links">
+                                <a href="~/Content/assets/img/portfolio/portfolio-2.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 3"><i class="ri-add-fill"></i></a>
+                                <a href="portfolio-details.html" title="More Details"><i class="ri-links-fill"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+                    <div class="portfolio-wrap">
+                        <img src="~/Content/assets/img/portfolio/portfolio-3.jpg" class="img-fluid" alt="">
+                        <div class="portfolio-info">
+                            <h4>App 2</h4>
+                            <p>App</p>
+                            <div class="portfolio-links">
+                                <a href="~/Content/assets/img/portfolio/portfolio-3.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 2"><i class="ri-add-fill"></i></a>
+                                <a href="portfolio-details.html" title="More Details"><i class="ri-links-fill"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 portfolio-item filter-card">
+                    <div class="portfolio-wrap">
+                        <img src="~/Content/assets/img/portfolio/portfolio-4.jpg" class="img-fluid" alt="">
+                        <div class="portfolio-info">
+                            <h4>Card 2</h4>
+                            <p>Card</p>
+                            <div class="portfolio-links">
+                                <a href="~/Content/assets/img/portfolio/portfolio-4.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Card 2"><i class="ri-add-fill"></i></a>
+                                <a href="portfolio-details.html" title="More Details"><i class="ri-links-fill"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+                    <div class="portfolio-wrap">
+                        <img src="~/Content/assets/img/portfolio/portfolio-5.jpg" class="img-fluid" alt="">
+                        <div class="portfolio-info">
+                            <h4>Web 2</h4>
+                            <p>Web</p>
+                            <div class="portfolio-links">
+                                <a href="~/Content/assets/img/portfolio/portfolio-5.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 2"><i class="ri-add-fill"></i></a>
+                                <a href="portfolio-details.html" title="More Details"><i class="ri-links-fill"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+                    <div class="portfolio-wrap">
+                        <img src="~/Content/assets/img/portfolio/portfolio-6.jpg" class="img-fluid" alt="">
+                        <div class="portfolio-info">
+                            <h4>App 3</h4>
+                            <p>App</p>
+                            <div class="portfolio-links">
+                                <a href="~/Content/assets/img/portfolio/portfolio-6.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 3"><i class="ri-add-fill"></i></a>
+                                <a href="portfolio-details.html" title="More Details"><i class="ri-links-fill"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 portfolio-item filter-card">
+                    <div class="portfolio-wrap">
+                        <img src="~/Content/assets/img/portfolio/portfolio-7.jpg" class="img-fluid" alt="">
+                        <div class="portfolio-info">
+                            <h4>Card 1</h4>
+                            <p>Card</p>
+                            <div class="portfolio-links">
+                                <a href="~/Content/assets/img/portfolio/portfolio-7.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Card 1"><i class="ri-add-fill"></i></a>
+                                <a href="portfolio-details.html" title="More Details"><i class="ri-links-fill"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 portfolio-item filter-card">
+                    <div class="portfolio-wrap">
+                        <img src="~/Content/assets/img/portfolio/portfolio-8.jpg" class="img-fluid" alt="">
+                        <div class="portfolio-info">
+                            <h4>Card 3</h4>
+                            <p>Card</p>
+                            <div class="portfolio-links">
+                                <a href="~/Content/assets/img/portfolio/portfolio-8.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Card 3"><i class="ri-add-fill"></i></a>
+                                <a href="portfolio-details.html" title="More Details"><i class="ri-links-fill"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+                    <div class="portfolio-wrap">
+                        <img src="~/Content/assets/img/portfolio/portfolio-9.jpg" class="img-fluid" alt="">
+                        <div class="portfolio-info">
+                            <h4>Web 3</h4>
+                            <p>Web</p>
+                            <div class="portfolio-links">
+                                <a href="~/Content/assets/img/portfolio/portfolio-9.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 3"><i class="ri-add-fill"></i></a>
+                                <a href="portfolio-details.html" title="More Details"><i class="ri-links-fill"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section><!-- End Portfolio Section -->
+    <!-- ======= Team Section ======= -->
+    <section id="team" class="team">
+        <div class="container">
+
+            <div class="section-title">
+                <span>Equipo</span>
+                <h2>Equipo</h2>
+                <p>La fuerza del equipo viene de cada miembro. La fuerza de cada miembro es el equipo.</p>
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-6">
+                    <div class="member d-flex align-items-start">
+                        <div class="pic"><img src="~/Content/assets/img/team/team1.jpg" class="img-fluid" alt=""></div>
+                        <div class="member-info">
+                            <h4>Walter White</h4>
+                            <span>Director Ejecutivo</span>
+                            <p>Hay una fuerza motriz más poderosa que el vapor, la electricidad y la energía atómica: la voluntad.</p>
+                            <div class="social">
+                                <a href=""><i class="ri-twitter-fill"></i></a>
+                                <a href=""><i class="ri-facebook-fill"></i></a>
+                                <a href=""><i class="ri-instagram-fill"></i></a>
+                                <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mt-4 mt-lg-0">
+                    <div class="member d-flex align-items-start">
+                        <div class="pic"><img src="~/Content/assets/img/team/team2.jpg" class="img-fluid" alt=""></div>
+                        <div class="member-info">
+                            <h4>Alan Daniel Solorzano</h4>
+                            <span>Gerente de Producto</span>
+                            <p>La mejor forma de predecir el futuro es crearlo.</p>
+                            <div class="social">
+                                <a href=""><i class="ri-twitter-fill"></i></a>
+                                <a href=""><i class="ri-facebook-fill"></i></a>
+                                <a href=""><i class="ri-instagram-fill"></i></a>
+                                <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mt-4">
+                    <div class="member d-flex align-items-start">
+                        <div class="pic"><img src="~/Content/assets/img/team/team3.jpg" class="img-fluid" alt=""></div>
+                        <div class="member-info">
+                            <h4>Cesar Ruben</h4>
+                            <span>Director de Tecnología</span>
+                            <p>Continúa a pesar de que todos esperen que abandones. No dejes que se oxide el hierro que hay en ti.</p>
+                            <div class="social">
+                                <a href=""><i class="ri-twitter-fill"></i></a>
+                                <a href=""><i class="ri-facebook-fill"></i></a>
+                                <a href=""><i class="ri-instagram-fill"></i></a>
+                                <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mt-4">
+                    <div class="member d-flex align-items-start">
+                        <div class="pic"><img src="~/Content/assets/img/team/team4.jpg" class="img-fluid" alt=""></div>
+                        <div class="member-info">
+                            <h4>Elvis Wilfredo Paz</h4>
+                            <span>Contador</span>
+                            <p>Sólo existen dos días en el año en que no se puede hacer nada. Uno se llama ayer y otro mañana. Por lo tanto hoy es el dia ideal para amar, crecer, hacer y principalmente vivir.</p>
+                            <div class="social">
+                                <a href=""><i class="ri-twitter-fill"></i></a>
+                                <a href=""><i class="ri-facebook-fill"></i></a>
+                                <a href=""><i class="ri-instagram-fill"></i></a>
+                                <a href=""> <i class="ri-linkedin-box-fill"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section><!-- End Team Section -->
+    <!-- ======= Testimonials Section ======= -->
+    <section id="testimonials" class="testimonials">
+        <div class="container position-relative">
+
+            <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+                <div class="swiper-wrapper">
+
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="~/Content/assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                            <h3>Saul Goodman</h3>
+                            <h4>Ceo &amp; Founder</h4>
+                            <p>
+                                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                El único modo de hacer un gran trabajo es amar lo que haces.
+                                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div><!-- End testimonial item -->
+
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="~/Content/assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
+                            <h3>Sara Wilsson</h3>
+                            <h4>Designer</h4>
+                            <p>
+                                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                Ejecuta tus conocimientos con la maestría del que sigue aprendiendo
+                                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div><!-- End testimonial item -->
+
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="~/Content/assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                            <h3>Jena Karlis</h3>
+                            <h4>Store Owner</h4>
+                            <p>
+                                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                Todo el mundo te dice lo que es mejor para ti. No quieren que busques respuestas sino que creas las suyas. Deja de coleccionar información del exterior y empieza a buscarla por ti mismo en tu interior.
+                                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div><!-- End testimonial item -->
+
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="~/Content/assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
+                            <h3>Matt Brandon</h3>
+                            <h4>Freelancer</h4>
+                            <p>
+                                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                Siembras una acción cosechas un hábito. Siembras un hábito, cosechas un carácter. Siembras un carácter, cosechas un destino.
+                                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                            </p>
+                        </div>>
+                    </div><!-- End testimonial item -->
+
+                    <div class="swiper-slide">
+                        <div class="testimonial-item">
+                            <img src="~/Content/assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
+                            <h3>John Larson</h3>
+                            <h4>Entrepreneur</h4>
+                            <p>
+                                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                                Pon tu corazón, mente y alma, incluso en los actos más pequeños. Ese es el secreto del éxito.
+                                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                            </p>
+                        </div>
+                    </div><!-- End testimonial item -->
+
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+
+        </div>
+    </section><!-- End Testimonials Section -->
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-title">
+                <span>Contacto</span>
+                <h2>Contacto</h2>
+                <p>Estamos Ubicados en el Ovalo de Huanchaquito</p>
+            </div>
+        </div>
+
+        <div class="map">
+            <iframe style="border:0; width: 100%; height: 350px;" src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d2348.770567527!2d-79.09847187411074!3d-8.086640346226611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sMZA.%201-A%20LOTE.%203%20A.H.%20HUANCHAQUITO%20ALTO!5e0!3m2!1ses-419!2spe!4v1669303021382!5m2!1ses-419!2spe" frameborder="0" allowfullscreen></iframe>
+        </div>
+
+        <div class="container">
+
+            <div class="info-wrap mt-5">
+                <div class="row">
+                    <div class="col-lg-4 info">
+                        <i class="ri-map-pin-line"></i>
+                        <h4>Localización:</h4>
+                        <p>MZA. 1-A LOTE. 3<br>Huanchaquito Alto</p>
+                    </div>
+
+                    <div class="col-lg-4 info mt-4 mt-lg-0">
+                        <i class="ri-mail-line"></i>
+                        <h4>Email:</h4>
+                        <p>info@madereracarocho.com<br>miguelcerna@example.com</p>
+                    </div>
+
+                    <div class="col-lg-4 info mt-4 mt-lg-0">
+                        <i class="ri-phone-line"></i>
+                        <h4>Call:</h4>
+                        <p>+51 941042325<br>+51 956535390</p>
+                    </div>
+                </div>
+            </div>
+
+            <form action="~/Content/forms/contact.php" method="post" role="form" class="php-email-form">
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="col-md-6 form-group mt-3 mt-md-0">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                    </div>
+                </div>
+                <div class="form-group mt-3">
+                    <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+                </div>
+                <div class="form-group mt-3">
+                    <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+                </div>
+                <div class="my-3">
+                    <div class="loading">Loading</div>
+                    <div class="error-message"></div>
+                    <div class="sent-message">Tu mensaje fue enviado. Gracias!</div>
+                </div>
+                <div class="text-center"><button type="submit">Enviar Mensaje</button></div>
+            </form>
+
+        </div>
+    </section><!-- End Contact Section -->
+
+</main><!-- End #main -->

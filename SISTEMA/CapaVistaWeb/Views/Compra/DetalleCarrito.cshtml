@@ -1,0 +1,177 @@
+﻿@model IEnumerable<CapaEntidad.entDetCompra>
+
+<header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <div class="logo">
+            <h1><a href="/Home/Admin">Maderera<span>Carocho</span></a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html"><img src="~/Content/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link scrollto " href="#hero">Inicio</a></li>
+                <li><a class="nav-link scrollto" href="#about">Sobre</a></li>
+                <li><a class="nav-link scrollto" href="#services">Servicios</a></li>
+                <li><a class="nav-link scrollto " href="#portfolio">Portafolio</a></li>
+                <li><a class="nav-link scrollto" href="#team">Equipo</a></li>
+                <li class="dropdown">
+                    <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                        <li><a href="/Cliente/ListarAdmin">Administradores</a></li>
+                        <li><a href="/Producto/Listar">Productos</a></li>
+                        <li><a href="/Cliente/Listar">Clientes</a></li>
+                        <li><a href="/Proveedor/Listar">Proveedores</a></li>
+                        <li><a href="/Empleado/Listar">Empleados</a></li>
+                        <li><a href="/Compra/Listar">Comprar</a></li>
+                        <li><a href="/Home/CerrarSesion">Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+                <li><a class="nav-link scrollto" href="/Home/admin#contact">Contacto</a></li>
+                <li><a class="nav-link scrollto" href="/Compra/Index"><i class="bi bi-cart4"></i>Carrito de compra</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+    </div>
+</header><!-- End Header -->
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+    <br>
+    <br>
+    <br><h2 style="text-align: center">AGREGAR AL CARRITO</h2>
+    <!-- Agregar producto -->
+    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#ModInsertarDetalle">Agregar al carrito <i class="bi bi-dropbox"></i></button>
+    <hr>
+    <!-- Ordenar -->
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" th:href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
+    <hr>
+
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    NOMBRE
+                </th>
+                <th>
+                    METRAJE
+                </th>
+                <th>
+                    PRECIO
+                </th>
+                <th>
+                    TIPO
+                </th>
+                <th>
+                    SUBTOTAL
+                </th>
+                <th>ELIMINAR</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producto.IdProducto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producto.Longitud)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producto.PrecioCompra)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producto.Tipo.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Subtotal)
+                    </td>
+                    <td>
+                        <a onclick="return Eliminar(this)" href="/Compra/EliminarDetalle?ids=@item.Producto.IdProducto" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+
+    </table>
+    <br>
+    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Modcomprar">Confirmar compra <i class="bi bi-dropbox"></i></button>
+</div>
+<!--Elegir Producto-->
+<div class="modal" tabindex="-1" id="ModInsertarDetalle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="/Compra/AgregarDetCarrito" method="POST" id="det">
+                <div class="modal-header ">
+                    <h5 class="modal-title">Ingresar Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">                 
+                    <div class="form-floating mb-3">
+                        <div class="form-group mb-3" id="prod">
+                            Producto:
+                            <div class="col-md-10">
+                                @Html.DropDownList("Prd", (SelectList)ViewBag.ListaProducto, "Seleccionar")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="pvCantidad" id="cantidad" placeholder="Cantidad" required>
+                        <label for="floatingInput">Cantidad</label>
+                    </div>
+                    <imput type="hidden" value="vacio" name ="vacio" id="vacio"></imput>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="return Registrar('prod', 'cantidad', 'vacio', 'det')" type="submit" class="btn btn-dark">Registrar</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Agregar compra-->
+<div class="modal" tabindex="-1" id="Modcomprar" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="/Compra/ConfirmarCompra" method="POST" >
+                <div class="modal-header ">
+                    <h5 class="modal-title">Ingresar Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <div class="form-group mb-3" id="provee">
+                            Proveedor
+                            <div class="col-md-10">
+                                @Html.DropDownList("Prov", (SelectList)ViewBag.ListaProveedor, "Seleccionar")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark">Registrar</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+
