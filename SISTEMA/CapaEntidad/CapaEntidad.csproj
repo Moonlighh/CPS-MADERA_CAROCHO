@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="entAdministrador.cs" />
     <Compile Include="entCarrito.cs" />
     <Compile Include="entCliente.cs" />
     <Compile Include="entCompra.cs" />
@@ -56,7 +55,6 @@
     <Compile Include="entTipoEmpleado.cs" />
     <Compile Include="entTipoProducto.cs" />
     <Compile Include="entUbigeo.cs" />
-    <Compile Include="entUsuario.cs" />
     <Compile Include="entVenta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

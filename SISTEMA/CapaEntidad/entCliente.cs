@@ -14,6 +14,13 @@ namespace CapaEntidad
         private string telefono;
         private string direccion;
         private entUbigeo ubigeo;
+        private DateTime fechaCreacion;
+        private string correo;
+        private string userName;
+        private string pass;
+        private entRol rol;
+        private entRoll roll;
+        private bool activo;
 
 
         #region Get and Set
@@ -49,6 +56,14 @@ namespace CapaEntidad
             get { return ubigeo; }
             set { ubigeo = value; }
         }
+
+        public DateTime FechaCreacion { get => fechaCreacion; set => fechaCreacion = value; }
+        public string Correo { get => correo; set => correo = value; }
+        public string UserName { get => userName; set => userName = value; }
+        public string Pass { get => pass; set => pass = value; }
+        public entRol Rol { get => rol; set => rol = value; }
+        public bool Activo { get => activo; set => activo = value; }
+        public entRoll Roll { get => roll; set => roll = value; }
         #endregion Get and Set
     }
 }

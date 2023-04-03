@@ -33,7 +33,7 @@ namespace CapaAccesoDatos
                 {
                     entRoll rol = new entRoll
                     {
-                        IdRoll = Convert.ToInt32(dr["idRol"]),
+                        Idrol = Convert.ToInt32(dr["idRol"]),
                         Descripcion = dr["descripcion"].ToString(),
                     };
 
