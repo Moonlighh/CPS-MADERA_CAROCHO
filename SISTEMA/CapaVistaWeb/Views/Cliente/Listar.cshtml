@@ -57,62 +57,80 @@
     <!-- Listar -->
     <table class="table">
         <thead class="table-dark">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.IdCliente)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.RazonSocial)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Dni)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Telefono)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Direccion)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Ubigeo.IdUbigeo)
-                </th>
-                <th>
-                    Eliminar
-                </th>
-            </tr>
+           <tr>
+              <th>
+                 ID
+              </th>
+              <th>
+                 CLIENTE
+              </th>
+              <th>
+                 DNI
+              </th>
+              <th>
+                 TELEFONO
+              </th>
+              <th>
+                 DIRECCION
+              </th>
+              <th>
+                 CORREO
+              </th>
+              <th>
+                 USERNAME
+              </th>
+              <th>
+                 DEPARTAMENTO
+              </th>
+              <th>
+                 ROL
+              </th>
+              <th>
+                 Eliminar
+              </th>
+           </tr>
         </thead>
         <tbody>
 
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IdCliente)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RazonSocial)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Dni)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Telefono)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Direccion)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Ubigeo.IdUbigeo)
-                    </td>
-                    @*<td>
-                            <button class="btn btn-warning" type="button">
-                                <i class="bi bi-pencil-square"></i>
-                                @Html.ActionLink("Edit", "EditarProducto", new { idprod = item.IdCliente })
-                            </button>
-                        </td>*@
-                    <td>
-                        <a onclick="return Eliminar(this)" href="/Cliente/EliminarCliente?idP=@item.IdCliente" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
-                    </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.IdCliente)
+                   </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.RazonSocial)
+                   </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.Dni)
+                   </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.Telefono)
+                   </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.Direccion)
+                   </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.Correo)
+                   </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.UserName)
+                   </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.Ubigeo.Departamento)
+                   </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.Roll.Descripcion)
+                   </td>
+                   @*<td>
+          <button class="btn btn-warning" type="button">
+              <i class="bi bi-pencil-square"></i>
+              @Html.ActionLink("Edit", "EditarProducto", new { idprod = item.IdCliente })
+          </button>
+      </td>*@
+                   <td>
+                      <a onclick="return Eliminar(this)" href="/Cliente/EliminarCliente?idP=@item.IdCliente" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+                   </td>
                 </tr>
             }
         <tbody>

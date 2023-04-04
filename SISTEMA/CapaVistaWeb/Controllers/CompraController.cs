@@ -42,7 +42,7 @@ namespace MadereraCarocho.Controllers
                 entProducto prod = logProducto.Instancia.BuscarProductoId(Convert.ToInt32(frm["Prd"]));
                 detCompra.Producto = prod;
                 detCompra.Cantidad = pvCantidad;
-                detCompra.Subtotal = (pvCantidad * prod.PrecioCompra);
+                detCompra.Subtotal = (pvCantidad * prod.PrecioVenta);//es pre compra observacion
                 logDetCompra.Instancia.AgregarProductoCarrito(detCompra);
                 return RedirectToAction("DetalleCarrito");
             }

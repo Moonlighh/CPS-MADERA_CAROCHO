@@ -52,7 +52,7 @@
     <hr>
     <!-- Ordenar -->
     <a onclick="return Ordenar(this)" aria-current="page"  class="btn btn-primary btn-lg" id="ASC" href="Ordenar?dato=1"><i class="bi bi-sort-up"></i></a>
-    <a onclick="return Ordenar(this)" aria-current="page"  class="btn btn-secondary btn-lg" id="DESC" @*href="Ordenar?dato=0"*@><i class="bi bi-sort-down"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page"  class="btn btn-secondary btn-lg" id="DESC" href="Ordenar?dato=0"><i class="bi bi-sort-down"></i></a>
     <hr>
     <!-- Buscar -->
     <form class="d-flex mb-4" role="search" action="Listar" method="POST" id="Bproducto">
@@ -72,7 +72,7 @@
                     METRAJE
                 </th>
                 <th>
-                    PRE.COMPRA
+                    DIAMETRO
                 </th>
                 <th>
                     PRE.VENTA
@@ -101,7 +101,7 @@
                         @Html.DisplayFor(modelItem => item.Longitud)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.PrecioCompra)
+                        @Html.DisplayFor(modelItem => item.Diametro)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.PrecioVenta)
@@ -157,8 +157,8 @@
                         <label for="floatingInput">Longitud</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cPreCompraP" id="preCompra" placeholder="Precio de Compra" required>
-                        <label for="floatingInput">Precio de Compra</label>
+                        <input type="text" class="form-control" name="cDiametro" id="diametro" placeholder="Diametro" required>
+                        <label for="floatingInput">Diametro</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="cPreVentaP" placeholder="Precio de Venta" required>
@@ -166,7 +166,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="return Registrar('nombre', 'longitud', 'preCompra', 'producto')" type="submit" class="btn btn-dark">Registrar</button>
+                    <button onclick="return Registrar('nombre', 'longitud', 'diametro', 'producto')" type="submit" class="btn btn-dark">Registrar</button>
                     <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </form>

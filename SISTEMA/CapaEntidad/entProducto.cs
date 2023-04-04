@@ -11,7 +11,7 @@ namespace CapaEntidad
         private int idProducto;
         private string nombre;
         private double longitud;
-        private double precioCompra;
+        private double diametro;
         private double precioVenta;
         private entTipoProducto tipo;
         private int stock;
@@ -32,10 +32,10 @@ namespace CapaEntidad
             get { return longitud; }
             set { longitud = value; }
         }
-        public double PrecioCompra
+        public double Diametro
         {
-            get { return precioCompra; }
-            set { precioCompra = value; }
+            get { return diametro; }
+            set { diametro = value; }
         }
         public double PrecioVenta
         {

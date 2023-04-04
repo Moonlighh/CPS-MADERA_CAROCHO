@@ -62,17 +62,19 @@ namespace MadereraCarocho.Controllers
 
         [PermisosRol(entRol.Administrador)]
         [HttpPost]
-        public ActionResult CrearProducto(string cNombreP, string cLongitudP, string cPreCompraP, string cPreVentaP, FormCollection frm)
+        public ActionResult CrearProducto(string cNombreP, string cLongitudP, string cDiametro, string cPreVentaP, FormCollection frm)
         {
             try
             {
                 entProducto p = new entProducto();
                 p.Nombre = cNombreP;
                 p.Longitud = Double.Parse(cLongitudP);
-                p.PrecioCompra = Double.Parse(cPreCompraP);
+                p.Diametro = Double.Parse(cDiametro);
                 p.PrecioVenta = Double.Parse(cPreVentaP);
+                p.Stock = 0;
                 p.Tipo = new entTipoProducto();
                 p.Tipo.IdTipo_producto = Convert.ToInt32(frm["cTipo"]);
+
                 bool inserta = logProducto.Instancia.CrearProducto(p);
                 if (inserta)
                 {
