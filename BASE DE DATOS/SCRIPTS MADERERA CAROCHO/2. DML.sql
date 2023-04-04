@@ -1847,17 +1847,17 @@ INSERT INTO PROVEEDOR VALUES
 	('Carmen SAC', '71359112', 'carmen@crm.pe', '943423492',  'Proveedor de SUPER ', 1, '010109'),
 	('keyla SAC ', '72759138', 'keyla@ky.pe', '943423493',  'Proveedor de MANDALLON', 1, '010109'),
 	('Antonio SAC', '78359114', 'antonio@ant.pe', '943423594',  'Proveedor de MANDANA', 1, '010109'),
-	('Luis SAC' , '79359119', 'luis@ls.pe', '943423491',  'Proveedor de MANDANILLA', 1, '010109'),
-	('Angel SAC' , '79359120', 'angel@an.pe', '943423497',  'Proveedor de VARA', 1, '010109'),
-	('Deniss SAC' , '79359121', 'deniss@dss.pe', '943423499',  'Proveedor de VARA PAQUETE', 1, '010109'),
-	('Nixi SAC' , '79359122', 'nixi@nx.pe', '943423497',  'Proveedor de CHACLA', 1, '010109'),
-	('Michael SAC' , '79359123', 'michael@mc.pe', '943423697',  'Proveedor de POSTES', 1, '010109'),
-	('Macarena SAC' , '79359124', 'macarena@mac.pe', '943323497',  'Proveedor de PARANTE', 1, '010109'),
-	('Jazmin SAC' , '79359125', 'jazmin@jz.pe', '943423495',  'Proveedor de PARANTE(2X1)', 1, '010109'),
-	('Rambo SAC' , '79359126', 'rambo@rmb.pe', '943422497',  'Proveedor de PARADOR', 1, '010109'),
-	('SAC SAC' , '79359127', 'sac@sac.pe', '943423497',  'Proveedor de PARADOR(2X1)', 1, '010109'),
-	('jack SAC' , '79359128', 'jack@jk.pe', '943423497',  'Proveedor de PARANTILLO', 1, '010109'),
-	('orlando SAC' , '79359129', 'orlando@or.pe', '943423497',  'Proveedor de PELO', 1, '010109');
+	('Luis SAC' , '79359119', 'luis@ls.pe', '943423495',  'Proveedor de MANDANILLA', 1, '010109'),
+	('Angel SAC' , '79359120', 'angel@an.pe', '943423496',  'Proveedor de VARA', 1, '010109'),
+	('Deniss SAC' , '79359121', 'deniss@dss.pe', '943423497',  'Proveedor de VARA PAQUETE', 1, '010109'),
+	('Nixi SAC' , '79359122', 'nixi@nx.pe', '943423498',  'Proveedor de CHACLA', 1, '010109'),
+	('Michael SAC' , '79359123', 'michael@mc.pe', '943423699',  'Proveedor de POSTES', 1, '010109'),
+	('Macarena SAC' , '79359124', 'macarena@mac.pe', '943523497',  'Proveedor de PARANTE', 1, '010109'),
+	('Jazmin SAC' , '79359125', 'jazmin@jz.pe', '943426495',  'Proveedor de PARANTE(2X1)', 1, '010109'),
+	('Rambo SAC' , '79359126', 'rambo@rmb.pe', '943428497',  'Proveedor de PARADOR', 1, '010109'),
+	('SAC SAC' , '79359127', 'sac@sac.pe', '944423497',  'Proveedor de PARADOR(2X1)', 1, '010109'),
+	('jack SAC' , '79359128', 'jack@jk.pe', '945423497',  'Proveedor de PARANTILLO', 1, '010109'),
+	('orlando SAC' , '79359129', 'orlando@or.pe', '943623497',  'Proveedor de PELO', 1, '010109');
 GO
 
 --INSERT TIPO PRODUCTO
@@ -2033,7 +2033,7 @@ GO
 --INSERT CLIENTE 256
 INSERT INTO CLIENTE(razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,pass,idRol) VALUES ('cesar', '74359211', '945613221','Mz20Lote34-Av. Ricardo Palma', '010109','cesar@gmail.com','cesar#255','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1);
 INSERT INTO CLIENTE(razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,pass,idRol) VALUES	('omar', '70790019', '933423291', 'santiago mariños 1618', '010109','omar@gmail.com','omar#345','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1);
-INSERT INTO CLIENTE(razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,pass,idRol) VALUES	('ximena', '58791234', '999067966', 'MZA. 1-A LOTE. 3', '120102','ximena@gmailcom','ximena#1','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',2);
+INSERT INTO CLIENTE(razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,pass,idRol) VALUES	('ximena', '58791234', '999067966', 'MZA. 1-A LOTE. 3', '120102','ximena@gmailcom','ximena#167','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',2);
 INSERT INTO CLIENTE(razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,pass,idRol) VALUES	('daniel', '74399141','913423491','Mz20Lote34-Av.5556',  '010109','daniel@gmail.com','daniel#222','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',2);
 GO
 
