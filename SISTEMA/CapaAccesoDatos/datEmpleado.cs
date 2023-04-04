@@ -141,14 +141,14 @@ namespace CapaAccesoDatos
         }
 
         //Eliminar - Deshabilitar
-        public bool EliminarEmpleado(int id)
+        public bool DeshabilitarEmpleado(int id)
         {
             SqlCommand cmd = null;
             bool eliminado = false;
             try
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spEliminarEmpleado", cn);
+                cmd = new SqlCommand("spDeshabilitarEmpleado", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@idEmpleado", id);
                 cn.Open();

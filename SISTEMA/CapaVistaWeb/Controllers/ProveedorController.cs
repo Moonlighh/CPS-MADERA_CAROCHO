@@ -98,11 +98,11 @@ namespace MadereraCarocho.Controllers
         }
 
         [HttpGet]
-        public ActionResult EliminarProveedor(int idc)
+        public ActionResult DeshabilitarProveedor(int idc)
         {
             try
             {
-                bool elimina = logProveedor.Instancia.EliminarProveedor(idc);
+                bool elimina = logProveedor.Instancia.DeshabilitarProveedor(idc);
                 if (elimina)
                 {
                     return RedirectToAction("Listar");

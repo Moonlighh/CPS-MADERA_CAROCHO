@@ -30,9 +30,9 @@ namespace CapaLogica
         {
             return datProveedor.Instancia.ActualizarProveedor(pro);
         }
-        public bool EliminarProveedor(int id)
+        public bool DeshabilitarProveedor(int id)
         {
-            return datProveedor.Instancia.EliminarProveedor(id);
+            return datProveedor.Instancia.DeshabilitarProveedor(id);
         }
         #endregion CRUD
 

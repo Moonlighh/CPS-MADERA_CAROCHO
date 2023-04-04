@@ -129,7 +129,7 @@ namespace CapaAccesoDatos
             return actualizado;
         }
         //Eliminar
-        public bool EliminarProveedor(int idProveedor)
+        public bool DeshabilitarProveedor(int idProveedor)
         {
             SqlCommand cmd = null;
             bool eliminado = false;

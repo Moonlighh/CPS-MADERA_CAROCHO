@@ -29,9 +29,9 @@ namespace CapaLogica
         {
             return datEmpleado.Instancia.ActualizarEmpleado(pro);
         }
-        public bool EliminarEmpleado(int id)
+        public bool DeshabilitarEmpleado(int id)
         {
-            return datEmpleado.Instancia.EliminarEmpleado(id);
+            return datEmpleado.Instancia.DeshabilitarEmpleado(id);
         }
         #endregion CRUD
 

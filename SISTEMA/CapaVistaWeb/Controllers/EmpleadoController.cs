@@ -112,14 +112,12 @@ namespace MadereraCarocho.Controllers
             }
         }
 
-
-
         [HttpGet]
-        public ActionResult EliminarEmpleado(int idE)
+        public ActionResult DeshabilitarEmpleado(int idE)
         {
             try
             {
-                bool elimina = logEmpleado.Instancia.EliminarEmpleado(idE);
+                bool elimina = logEmpleado.Instancia.DeshabilitarEmpleado(idE);
                 if (elimina)
                 {
                     return RedirectToAction("Listar");
