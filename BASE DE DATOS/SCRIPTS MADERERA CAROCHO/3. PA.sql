@@ -25,12 +25,13 @@ CREATE OR ALTER PROCEDURE spCrearCliente(
     @idUbigeo VARCHAR(6),
 	@correo varchar(40),
 	@userName varchar(20),
-	@pass varchar(200)
+	@pass varchar(200),
+	@idRol int
 
 )
 AS
 BEGIN
-    INSERT INTO CLIENTE (razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,pass) values (@razonSocial, @dni, @telefono, @direccion, @idUbigeo, @correo, @userName, @pass);
+    INSERT INTO CLIENTE (razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,pass, idRol) values (@razonSocial, @dni, @telefono, @direccion, @idUbigeo, @correo, @userName, @pass, @idRol);
 END
 GO
 
