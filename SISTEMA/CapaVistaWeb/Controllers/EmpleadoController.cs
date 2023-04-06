@@ -89,8 +89,7 @@ namespace MadereraCarocho.Controllers
         public ActionResult EditarEmpleado(entEmpleado e, FormCollection frm)
         {
             e.Tipo = new entTipoEmpleado();
-            e.Tipo.IdTipo_Empleado = Convert.ToInt32(frm["cTipo"]);
-            e.Tipo.Nombre = frm["cTipoE"];
+            e.Tipo.IdTipo_Empleado = Convert.ToInt32(frm["cTipoE"]);
             e.Ubigeo = new entUbigeo();
             e.Ubigeo.IdUbigeo = frm["cDistrito"];
             e.Ubigeo.Distrito = frm["cDistritoE"];

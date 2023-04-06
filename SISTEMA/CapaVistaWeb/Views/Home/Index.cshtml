@@ -97,7 +97,7 @@
                         <label for="floatingInput">Usuario o Correo</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control" name="contra" id="contr" placeholder="Password" required>
+                        <input type="password" class="form-control" name="contra" id="contr" value="123" placeholder="Password">
                         <label for="floatingInput">Password</label>
                     </div>
                 </div>
@@ -657,45 +657,49 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-floating mb-3">
-                        <div class="form-group">
-                            Provincia:
-                            <div class="col-md-10">
-                                @Html.DropDownList("cUbi", (SelectList)ViewBag.listUbigeo, "Seleccionar")
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cNombre" id="cnombre" placeholder="Nombre" required>
-                        <label for="floatingInput">Nombre</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cdni" id="cdni" placeholder="Dni" required>
-                        <label for="floatingInput">DNI</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="ctelefono" placeholder="Telefono" required>
-                        <label for="floatingInput">Telefono</label>
-                    </div>
+                   <div class="form-floating mb-3">
+                      <div class="form-group">
+                         Provincia:
+                         <div class="col-md-10">
+                            @Html.DropDownList("cUbi", (SelectList)ViewBag.listUbigeo, "Seleccionar")
+                         </div>
+                      </div>
+                   </div>
+                   <div class="form-floating mb-3">
+                      <input type="text" class="form-control" name="cNombre" id="cnombre" placeholder="Nombre" required>
+                      <label for="floatingInput">Nombre</label>
+                   </div>
+                   <div class="form-floating mb-3">
+                      <input type="text" class="form-control" name="cdni" id="cdni" placeholder="Dni" required>
+                      <label for="floatingInput">DNI</label>
+                   </div>
+                   <div class="form-floating mb-3">
+                      <input type="text" class="form-control" name="ctelefono" placeholder="Telefono" required>
+                      <label for="floatingInput">Telefono</label>
+                   </div>
 
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cdireccion" id="cdireccion" placeholder="direccion" required>
-                        <label for="floatingInput">direccion</label>
-                    </div>
+                   <div class="form-floating mb-3">
+                      <input type="text" class="form-control" name="cdireccion" id="cdireccion" placeholder="direccion" required>
+                      <label for="floatingInput">direccion</label>
+                   </div>
 
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cusername" id="cusername" placeholder="Username" required>
-                        <label for="floatingInput">Username</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="ccorreo" id="ccorreo" placeholder="Correo" required>
-                        <label for="floatingInput">Correo</label>
-                    </div>
+                   <div class="form-floating mb-3">
+                      <input type="text" class="form-control" name="cusername" id="cusername" placeholder="Username" required>
+                      <label for="floatingInput">Username</label>
+                   </div>
+                   <div class="form-floating mb-3">
+                      <input type="text" class="form-control" name="ccorreo" id="ccorreo" placeholder="Correo" required>
+                      <label for="floatingInput">Correo</label>
+                   </div>
 
-                    <div class="form-floating mb-3">
-                        <input type="password" class="form-control" name="cpassword" id="cpassword" placeholder="Password" required>
-                        <label for="floatingInput">Password</label>
-                    </div>
+                   <div class="form-floating mb-3">
+                      <input type="password" class="form-control" name="cpassword" id="cpassword" placeholder="Password" required>
+                      <label for="floatingInput">Password</label>
+                   </div>
+                   <div class="form-floating mb-3">
+                      <input type="password" class="form-control" name="cpassconfirm" id="cpassconfirm" placeholder="Password" required>
+                      <label for="floatingInput">Confirmar Password</label>
+                   </div>
                 </div>
                 <div class="modal-footer">
                     <button onclick="return Registrar('cusername', 'ccorreo', 'cpassword', 'cliente')" type="submit" class="btn btn-dark">Registrar</button>

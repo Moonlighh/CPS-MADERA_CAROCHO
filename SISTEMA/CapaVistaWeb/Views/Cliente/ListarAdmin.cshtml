@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CapaEntidad.entUsuario>
+﻿@model IEnumerable<CapaEntidad.entCliente>
 
 <!-- ======= Header admin======= -->
 <header id="header" class="fixed-top d-flex align-items-center">
@@ -43,163 +43,164 @@
 <br>
 <br>
 <div class="container">
-    <h2 style="text-align: center">ADMINISTRADORES</h2>
-    <!-- Agregar producto -->
+   <h2 style="text-align: center">ADMINISTRADORES</h2>
+   <!-- Agregar producto -->
 
-    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModInsertarCuenta"><i class="bi bi-plus-square"></i> Agregar Cuenta</button>
-    <hr>
-    <!-- Ordenar -->
-    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" th:href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
-    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
-    <hr>
-    <!-- Buscar -->
-    <form class="d-flex mb-4" role="search" action="ListarAdmin" method="POST" id="Badmin">
-        <input class="form-control me-2" type="search" placeholder="Buscar" name="dato" aria-label="Search">
-        <button onclick="return Buscar('Badmin')" class="btn btn-outline-success" type="submit">Buscar</button>
-    </form>
+   <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModInsertarCuenta"><i class="bi bi-plus-square"></i> Agregar Cuenta</button>
+   <hr>
+   <!-- Ordenar -->
+   <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" th:href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
+   <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
+   <hr>
+   <!-- Buscar -->
+   <form class="d-flex mb-4" role="search" action="ListarAdmin" method="POST" id="Badmin">
+      <input class="form-control me-2" type="search" placeholder="Buscar" name="dato" aria-label="Search">
+      <button onclick="return Buscar('Badmin')" class="btn btn-outline-success" type="submit">Buscar</button>
+   </form>
 
-    <table class="table">
-        <tr>
+   <div class="table-responsive">
+      <table class="table">
+         <tr>
             <th>
-                ID
+               ID
             </th>
             <th>
-                NOMBRE
+               NOMBRE
             </th>
             <th>
-                DNI
+               DNI
             </th>
             <th>
-                TELEFONO
+               TELEFONO
             </th>
             <th>
-                DIRECCION
+               DIRECCION
             </th>
             <th>
-                USER
+               USER
             </th>
             <th>
-                CORREO
+               CORREO
             </th>
             <th>
-                DESC
+               DESC
             </th>
             <th>
-                ACTIVO
+               ACTIVO
             </th>
             <th></th>
-        </tr>
+         </tr>
 
-        @foreach (var item in Model)
-        {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cliente.IdCliente)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cliente.RazonSocial)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cliente.Dni)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cliente.Telefono)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cliente.Direccion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Correo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Roll.Descripcion)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Activo)
-        </td>
-        <td>
-            <a onclick="return Eliminar(this)" href="/Cliente/EliminarUsuarioAdmin?idu=@item.Cliente.IdCliente" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
-        </td>
-    </tr>
-        }
+         @foreach (var item in Model)
+         {
+            <tr>
+               <td>
+                  @Html.DisplayFor(modelItem => item.IdCliente)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.RazonSocial)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.Dni)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.Telefono)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.Direccion)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.UserName)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.Correo)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.Roll.Descripcion)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.Activo)
+               </td>
+               <td>
+                  <a onclick="return Eliminar(this)" href="/Cliente/EliminarUsuarioAdmin?idu=@item.IdCliente" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+               </td>
+            </tr>
+         }
 
-    </table>
-
-</div>
-<div class="modal" tabindex="-1" id="ModInsertarCuenta" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+      </table>
+      </div>
+   </div>
+   <div class="modal" tabindex="-1" id="ModInsertarCuenta" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+         <div class="modal-content">
             <form action="/Cliente/CrearCuenta" method="POST" id="admin">
-                <div class="modal-header ">
-                    <h5 class="modal-title">Ingresar Datos</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                   
-                    <div class="form-floating mb-3">
-                        <div class="form-group">
-                            Ubigeo:
-                            <div class="col-md-10">
-                                @Html.DropDownList("cUbi", (SelectList)ViewBag.listaUbigeo)
-                            </div>
+               <div class="modal-header ">
+                  <h5 class="modal-title">Ingresar Datos</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">
+
+                  <div class="form-floating mb-3">
+                     <div class="form-group">
+                        Ubigeo:
+                        <div class="col-md-10">
+                           @Html.DropDownList("cUbi", (SelectList)ViewBag.listaUbigeo)
                         </div>
-                    </div>
+                     </div>
+                  </div>
 
-                     <div class="form-floating mb-3">
-                        <div class="form-group">
-                            Rol:
-                            <div class="col-md-10">
-                                @Html.DropDownList("roll", (SelectList)ViewBag.listaRoll)
-                            </div>
+                  <div class="form-floating mb-3">
+                     <div class="form-group">
+                        Rol:
+                        <div class="col-md-10">
+                           @Html.DropDownList("roll", (SelectList)ViewBag.listaRoll)
                         </div>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cNombre" id="cnombre" placeholder="Nombre" required>
-                        <label for="floatingInput">Nombre</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cdni" id="cdni" placeholder="Dni" required>
-                        <label for="floatingInput">DNI</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="ctelefono" placeholder="Telefono" required>
-                        <label for="floatingInput">Telefono</label>
-                    </div>
+                     </div>
+                  </div>
+                  <div class="form-floating mb-3">
+                     <input type="text" class="form-control" name="cNombre" id="cnombre" placeholder="Nombre" required>
+                     <label for="floatingInput">Nombre</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                     <input type="text" class="form-control" name="cdni" id="cdni" placeholder="Dni" required>
+                     <label for="floatingInput">DNI</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                     <input type="text" class="form-control" name="ctelefono" placeholder="Telefono" required>
+                     <label for="floatingInput">Telefono</label>
+                  </div>
 
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cdireccion" id="cdireccion" placeholder="direccion" required>
-                        <label for="floatingInput">direccion</label>
-                    </div>
+                  <div class="form-floating mb-3">
+                     <input type="text" class="form-control" name="cdireccion" id="cdireccion" placeholder="direccion" required>
+                     <label for="floatingInput">direccion</label>
+                  </div>
 
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cusername" id="cusername" placeholder="Usuario" required>
-                        <label for="floatingInput">Usuario</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="ccorreo" id="ccorreo" placeholder="Correo" required>
-                        <label for="floatingInput">Correo</label>
-                    </div>
+                  <div class="form-floating mb-3">
+                     <input type="text" class="form-control" name="cusername" id="cusername" placeholder="Usuario" required>
+                     <label for="floatingInput">Usuario</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                     <input type="text" class="form-control" name="ccorreo" id="ccorreo" placeholder="Correo" required>
+                     <label for="floatingInput">Correo</label>
+                  </div>
 
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cpassword" id="cpassword" placeholder="Password" required>
-                        <label for="floatingInput">Password</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button onclick="return Registrar('cusername', 'ccorreo', 'cpassword', 'admin')" type="submit" class="btn btn-dark">Registrar</button>
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
-                </div>
+                  <div class="form-floating mb-3">
+                     <input type="password" class="form-control" name="cpassword" id="cpassword" placeholder="Password" required>
+                     <label for="floatingInput">Password</label>
+                  </div>
+               </div>
+               <div class="modal-footer">
+                  <button onclick="return Registrar('cusername', 'ccorreo', 'cpassword', 'admin')" type="submit" class="btn btn-dark">Registrar</button>
+                  <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+               </div>
             </form>
-        </div>
-    </div>
-</div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+         </div>
+      </div>
+   </div>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
 

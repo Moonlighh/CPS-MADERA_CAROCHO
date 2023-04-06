@@ -33,6 +33,7 @@ CREATE TABLE TIPO_PRODUCTO(
 	nombre varchar(30) not null,
 )
 GO
+
 CREATE TABLE PRODUCTO(
 	idProducto int primary key identity,
 	nombre varchar(40) not null,
@@ -48,7 +49,7 @@ GO
 
 CREATE TABLE PROVEEDOR_PRODUCTO
 (
-  idProvedoor_producto int primary key identity,
+  idProvedoor_Producto int primary key identity,
   idProveedor int not null,
   idProducto int not null,
   precioCompra float not null,
@@ -58,7 +59,6 @@ CREATE TABLE PROVEEDOR_PRODUCTO
   constraint fk_proveedor_producto_proveedor foreign key (idProveedor) references PROVEEDOR (idProveedor)
 )
 GO
-
 
 CREATE TABLE ROL(
 	idRol int primary key identity,
@@ -91,7 +91,6 @@ CREATE TABLE EMPLEADO(
     constraint fk_EMPLEADO_UBIGEO foreign key (idUbigeo) references Ubigeo (idUbigeo),
 )
 GO
---insert empleado (nombres,dni, telefono, direccion, salario, descripcion, idTipo_Empleado, idUbigeo) values ('asda', '74359113', '987654321', 'dasdas', 1200, 'des', 1, '010101');
 
 CREATE TABLE CLIENTE(
 	idCliente int primary key identity,
@@ -160,7 +159,6 @@ CREATE TABLE DETALLE_COMPRA(
 GO
 
 --------------------------------------------RESTRICCIONES---------------------------------------------
-
 --CLIENTE
 ALTER TABLE CLIENTE ADD CONSTRAINT UQ_CLIENTE_dni UNIQUE(dni);
 ALTER TABLE CLIENTE ADD	CONSTRAINT CHK_CLIENTE_telefono CHECK(telefono LIKE '9[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]' or telefono = '' or telefono LIKE '0[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')

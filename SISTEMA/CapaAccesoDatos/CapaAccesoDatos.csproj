@@ -51,12 +51,12 @@
     <Compile Include="datGrafEst.cs" />
     <Compile Include="datProducto.cs" />
     <Compile Include="datProveedor.cs" />
+    <Compile Include="datProveedorProducto.cs" />
     <Compile Include="datRoll.cs" />
     <Compile Include="datTipoEmpleado.cs" />
     <Compile Include="datTipoProducto.cs" />
     <Compile Include="datUbigeo.cs" />
     <Compile Include="datVenta.cs" />
-    <Compile Include="encrypt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

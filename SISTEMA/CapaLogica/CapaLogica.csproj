@@ -49,6 +49,8 @@
     <Compile Include="logEmpleado.cs" />
     <Compile Include="logProducto.cs" />
     <Compile Include="logProveedor.cs" />
+    <Compile Include="logProveedorProducto.cs" />
+    <Compile Include="logRecursos.cs" />
     <Compile Include="logRoll.cs" />
     <Compile Include="logTipoEmpleado.cs" />
     <Compile Include="logTipoProducto.cs" />

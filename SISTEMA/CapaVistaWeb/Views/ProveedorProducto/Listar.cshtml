@@ -1,0 +1,108 @@
+﻿@model IEnumerable<CapaEntidad.entProveedorProducto>
+
+@{
+   ViewBag.Title = "Listar";
+}
+
+<!-- ======= Header admin======= -->
+<header id="header" class="fixed-top d-flex align-items-center">
+   <div class="container d-flex align-items-center justify-content-between">
+
+      <div class="logo">
+         <h1><a href="/Home/Admin">My<span>Biz</span></a></h1>
+         <!-- Uncomment below if you prefer to use an image logo -->
+         <!-- <a href="index.html"><img src="~/Content/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav id="navbar" class="navbar">
+         <ul>
+            <li><a class="nav-link scrollto " href="/Home/Admin">Inicio</a></li>
+            <li><a class="nav-link scrollto" href="/Home/admin#about">Sobre</a></li>
+            <li><a class="nav-link scrollto" href="/Home/admin#services">Servicios</a></li>
+            <li><a class="nav-link scrollto " href="/Home/admin#portfolio">Portafolio</a></li>
+            <li><a class="nav-link scrollto" href="/Home/admin#team">Equipo</a></li>
+            <li class="dropdown">
+               <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
+               <ul>
+                  <li><a href="/Cliente/ListarAdmin">Administradores</a></li>
+                  <li><a href="/Producto/Listar">Productos</a></li>
+                  <li><a href="/Cliente/Listar">Clientes</a></li>
+                  <li><a href="/Proveedor/Listar">Proveedores</a></li>
+                  <li><a href="/Empleado/Listar">Empleados</a></li>
+                  <li><a href="/Compra/Index">Ver compras</a></li>
+                  <li><a href="/Home/CerrarSesion">Cerrar Sesión</a></li>
+               </ul>
+            </li>
+            <li><a class="nav-link scrollto" href="/Home/admin#contact">Contacto</a></li>
+         </ul>
+         <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+   </div>
+</header><!-- End Header -->
+<!-- ======= Contenido ======= -->
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+   <br><h2 style="text-align: center">LISTADO DE PROVEEDORES CON SUS PRODUCTOS</h2>
+   <!-- Agregar producto -->
+
+   <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModInsertarProducto"><i class="bi bi-plus-square"></i> Agregar Producto</button>
+   <hr>
+   <!-- Ordenar -->
+   <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-primary btn-lg" id="ASC" href="Ordenar?dato=1"><i class="bi bi-sort-up"></i></a>
+   <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-secondary btn-lg" id="DESC" href="Ordenar?dato=0"><i class="bi bi-sort-down"></i></a>
+   <hr>
+   <!-- Buscar -->
+   <form class="d-flex mb-4" role="search" action="Listar" method="POST" id="Bproducto">
+      <input class="form-control me-2" type="search" placeholder="Buscar" name="dato" aria-label="Search">
+      <button onclick="return Buscar('Bproducto')" class="btn btn-outline-success" type="submit">Buscar</button>
+   </form>
+   <table class="table">
+      <thead class="table-dark">
+         <tr>
+            <th>
+               ID
+            </th>
+            <th>
+               PROVEEDOR
+            </th>
+            <th>
+               MADERA
+            </th>
+            <th>
+               PRECIO
+            </th>
+            <th>EDITAR</th>
+            <th>ELIMINAR</th>
+         </tr>
+      </thead>
+      <tbody>
+         @foreach (var item in Model)
+         {
+            <tr>
+               <td>
+                  @Html.DisplayFor(modelItem => item.IdProveedorProducto)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.Producto.Nombre)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.PrecioCompra)
+               </td>
+               <td>
+                  @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+               </td>
+            </tr>
+         }
+      <tbody>
+   </table>
+</div>
+<br>
+<br>
+<br>

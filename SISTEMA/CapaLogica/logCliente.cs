@@ -19,29 +19,34 @@ namespace CapaLogica
         #region CRUD
         public bool CrearCliente(entCliente c)
         {
-            return datCliente.Instacia.CrearCliente(c);
+            if (string.IsNullOrEmpty(c.UserName) || string.IsNullOrEmpty(c.Correo))
+            {
+                return false;
+            }
+            c.Pass = logRecursos.GetSHA256(c.Pass);
+            return datCliente.Instancia.CrearCliente(c);
         }
         public List<entCliente> ListarCliente()
         {
-            return datCliente.Instacia.ListarCliente();
+            return datCliente.Instancia.ListarCliente();
         }
         public bool ActualizarCliente(entCliente c)
         {
-            return datCliente.Instacia.ActualizarCliente(c);
+            return datCliente.Instancia.ActualizarCliente(c);
         }
         public bool EliminarCliente(int id)
         {
-            return datCliente.Instacia.EliminarCliente(id);
+            return datCliente.Instancia.EliminarCliente(id);
         }
         #endregion CRUD
 
         public List<entCliente> BuscarCliente(string dato)
         {
-            return datCliente.Instacia.BuscarCliente(dato);
+            return datCliente.Instancia.BuscarCliente(dato);
         }
         public entCliente BuscarIdCliente(int idCliente)
         {
-            return datCliente.Instacia.BuscarIdCliente(idCliente);
+            return datCliente.Instancia.BuscarIdCliente(idCliente);
         }
 
         public entCliente IniciarSesion(string dato, string contra)
@@ -55,7 +60,8 @@ namespace CapaLogica
                 }
                 else
                 {
-                    u = datCliente.Instacia.IniciarSesion(dato, contra);
+                    contra = logRecursos.GetSHA256(contra);
+                    u = datCliente.Instancia.IniciarSesion(dato, contra);
                     if (u != null)
                     {
                         if (!u.Activo)
@@ -78,6 +84,14 @@ namespace CapaLogica
 
             }
             return u;
+        }
+        public List<entCliente> BuscarUsuarioAdmin(string dato)
+        {
+            return datCliente.Instancia.BuscarUsuarioAdmin(dato);
+        }
+        public List<entCliente> ListarUsuarioAdmin()
+        {
+            return datCliente.Instancia.ListarUsuarioAdmin();
         }
     }
 }

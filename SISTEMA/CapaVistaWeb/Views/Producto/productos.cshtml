@@ -47,7 +47,7 @@
 
     <hr>
     <!-- Ordenar -->
-    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" th:href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
     <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
     <hr>
     <!-- Buscar -->
@@ -57,50 +57,56 @@
     </form>
     <table class="table">
         <thead class="table-dark">
-            <tr>
-                <th>
-                    ID
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Nombre)
-                </th>
-                <th>
-                    METRAJE
-                </th>
-                <th>
-                    PRECIO
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Stock)
-                </th>
-                <th>
-                    TIPO
-                </th>
+           <tr>
+              <th>
+                 ID
+              </th>
+              <th>
+                 @Html.DisplayNameFor(model => model.Nombre)
+              </th>
+              <th>
+                 METRAJE
+              </th>
+              <th>
+                 DIAMETRO
+              </th>
+              <th>
+                 PRECIO
+              </th>
+              <th>
+                 @Html.DisplayNameFor(model => model.Stock)
+              </th>
+              <th>
+                 TIPO
+              </th>
 
-            </tr>
+           </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IdProducto)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Nombre)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Longitud)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PrecioCompra)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Stock)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Tipo.Nombre)
-                    </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.IdProducto)
+                   </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.Nombre)
+                   </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.Longitud)
+                   </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.Diametro)
+                   </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.PrecioVenta)
+                   </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.Stock)
+                   </td>
+                   <td>
+                      @Html.DisplayFor(modelItem => item.Tipo.Nombre)
+                   </td>
 
                 </tr>
             }

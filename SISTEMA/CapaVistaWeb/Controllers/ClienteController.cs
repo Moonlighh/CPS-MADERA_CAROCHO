@@ -1,7 +1,6 @@
 ﻿using CapaEntidad;
 using CapaLogica;
 using MadereraCarocho.Permisos;
-using MadereraCarocho.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,20 +36,20 @@ namespace MadereraCarocho.Controllers
             return View(lista);
         }
 
-        //[HttpGet]
-        /*public ActionResult ListarAdmin(string dato)
+        [HttpGet]
+        public ActionResult ListarAdmin(string dato)
         {
-            List<entUsuario> lista;
+            List<entCliente> lista;
             if (!String.IsNullOrEmpty(dato))
             {
-                lista = logUsuario.Instancia.BuscarUsuarioAdmin(dato);
+                lista = logCliente.Instancia.BuscarUsuarioAdmin(dato);
             }
             else
             {
-                lista = logUsuario.Instancia.ListarUsuarioAdmin();
+                lista = logCliente.Instancia.ListarUsuarioAdmin();
             }
             List<entRoll> listaRol = logRoll.Instancia.ListarRol();
-            var lsRol = new SelectList(listaRol, "idRol", "descripcion");
+            var lsRol = new SelectList(listaRol, "idRoll", "descripcion");
 
             List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
             var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
@@ -59,7 +58,7 @@ namespace MadereraCarocho.Controllers
             ViewBag.listaUbigeo = lsUbigeo;
             ViewBag.listaRoll = lsRol;
             return View(lista);
-        }*/
+        }
 
         /*[HttpGet]
         public ActionResult EliminarUsuarioAdmin(int idu)

@@ -13,11 +13,11 @@ namespace CapaAccesoDatos
 {
     public class datCliente
     {
-        private static readonly datCliente _instacia = new datCliente();
+        private static readonly datCliente _instancia = new datCliente();
 
-        public static datCliente Instacia
+        public static datCliente Instancia
         {
-            get { return _instacia; }
+            get { return _instancia; }
         }
         #region CRUD
         //Crear
@@ -180,7 +180,7 @@ namespace CapaAccesoDatos
                 cmd = new SqlCommand("spIniciarSesion", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@dato", campo);
-                cmd.Parameters.AddWithValue("@contra", encrypt.GetSHA256(contra));
+                cmd.Parameters.AddWithValue("@contra", contra);
                 cn.Open();
                 using (SqlDataReader dr = cmd.ExecuteReader())
                 {
@@ -282,6 +282,94 @@ namespace CapaAccesoDatos
             { throw e; }
             finally { cmd.Connection.Close(); }
             return c;
+        }
+
+        public List<entCliente> BuscarUsuarioAdmin(string dato)
+        {
+            SqlCommand cmd = null;
+            List<entCliente> lista = new List<entCliente>();
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spBuscarClienteAdmin", cn);
+                cmd.Parameters.AddWithValue("@Campo", dato);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    entRoll rol = new entRoll()
+                    {
+                        Descripcion = dr["descripcion"].ToString(),
+                    };
+                    entCliente cli = new entCliente
+                    {
+                        IdCliente = Convert.ToInt32(dr["idCliente"]),
+                        RazonSocial = dr["razonsocial"].ToString(),
+                        Dni = dr["dni"].ToString(),
+                        Telefono = dr["telefono"].ToString(),
+                        Direccion = dr["direccion"].ToString(),
+                        UserName = dr["userName"].ToString(),
+                        Correo = dr["correo"].ToString(),
+                        Activo = Convert.ToBoolean(dr["activo"]),
+                        Roll = rol
+                    };
+                    lista.Add(cli);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "ERROR AL buscaar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+            return lista;
+        }
+        public List<entCliente> ListarUsuarioAdmin()
+        {
+            SqlCommand cmd = null;
+            List<entCliente> lista = new List<entCliente>();
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spListarClienteAdmin", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    entRoll rol = new entRoll()
+                    {
+                        Descripcion = dr["descripcion"].ToString(),
+                    };
+                    entCliente cli = new entCliente
+                    {
+                        IdCliente = Convert.ToInt32(dr["idCliente"]),
+                        RazonSocial = dr["razonsocial"].ToString(),
+                        Dni = dr["dni"].ToString(),
+                        Telefono = dr["telefono"].ToString(),
+                        Direccion = dr["direccion"].ToString(),
+                        UserName = dr["userName"].ToString(),
+                        Correo = dr["correo"].ToString(),
+                        Activo = Convert.ToBoolean(dr["activo"]),
+                        Roll = rol
+                    };
+                    lista.Add(cli);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "ERROR AL MOSTRAR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+            return lista;
         }
     }
     #endregion OTROS

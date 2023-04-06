@@ -111,7 +111,7 @@ namespace CapaAccesoDatos
                 cmd.Parameters.AddWithValue("@idproducto", Prod.IdProducto);
                 cmd.Parameters.AddWithValue("@nombre", Prod.Nombre);
                 cmd.Parameters.AddWithValue("@longitud", Prod.Longitud);
-                cmd.Parameters.AddWithValue("@diamaetro", Prod.Diametro);
+                cmd.Parameters.AddWithValue("@diametro", Prod.Diametro);
                 cmd.Parameters.AddWithValue("@precioVenta", Prod.PrecioVenta);
                 cmd.Parameters.AddWithValue("@idTipo_producto", Prod.Tipo.IdTipo_producto);
                 cn.Open();
@@ -235,9 +235,6 @@ namespace CapaAccesoDatos
             }
             return lista;
         }
-
-
-
         public entProducto BuscarProductoId(int idprod)
         {
             SqlCommand cmd = null;

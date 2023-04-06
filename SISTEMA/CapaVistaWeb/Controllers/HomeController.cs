@@ -6,7 +6,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Text;
-using MadereraCarocho.Utilidades;
 using System.Web.Security;//FormsAutenticathion
 using MadereraCarocho.Permisos;//Para los permisos
 
@@ -33,6 +32,8 @@ namespace MadereraCarocho.Controllers
         {
             if (Session["Usuario"] != null)
             {
+                entCliente cliente = Session["Usuario"] as entCliente;
+                ViewBag.Usuario = cliente.RazonSocial;
                 return View();
             }
             return RedirectToAction("Index");
@@ -67,31 +68,34 @@ namespace MadereraCarocho.Controllers
             return RedirectToAction("Index"); //Si es que hay otro tipo igual que te recargue la pagina
         }
         [HttpPost]
-        public ActionResult SingUp(string cNombre, string cdni, string ctelefono, string cdireccion, string cusername, string ccorreo, string cpassword, FormCollection frmub, FormCollection frm)
+        public ActionResult SingUp(string cNombre, string cdni, string ctelefono, string cdireccion, string cusername, string ccorreo, string cpassword, string cpassconfirm, FormCollection frmub, FormCollection frm)
         {
             try
             {
-                entCliente c = new entCliente();
-                c.RazonSocial = cNombre;
-                c.Dni = cdni;
-                c.Telefono = ctelefono;
-                c.Direccion = cdireccion;
-                c.Ubigeo = new entUbigeo();
-                c.Ubigeo.IdUbigeo = frmub["cUbi"].ToString();
-                c.UserName = cusername;
-                c.Correo = ccorreo;
-                c.Pass = Encriptar.GetSHA256(cpassword);
-                entRoll rol = new entRoll();
-                rol.IdRoll = 2;
-                c.Roll = rol;
-                bool creado = logCliente.Instancia.CrearCliente(c);
-                if (creado)
+                if (cpassword == cpassconfirm)
                 {
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ViewBag.Error = "No se pudo crear";
+                    entCliente c = new entCliente();
+                    c.RazonSocial = cNombre;
+                    c.Dni = cdni;
+                    c.Telefono = ctelefono;
+                    c.Direccion = cdireccion;
+                    c.Ubigeo = new entUbigeo();
+                    c.Ubigeo.IdUbigeo = frmub["cUbi"].ToString();
+                    c.UserName = cusername;
+                    c.Correo = ccorreo;
+                    c.Pass = cpassword;
+                    entRoll rol = new entRoll();
+                    rol.IdRoll = 2;
+                    c.Roll = rol;
+                    bool creado = logCliente.Instancia.CrearCliente(c);
+                    if (creado)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ViewBag.Error = "No se pudo crear";
+                    } 
                 }
             }
             catch (Exception ex)

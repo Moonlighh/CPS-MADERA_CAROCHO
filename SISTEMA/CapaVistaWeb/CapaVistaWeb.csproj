@@ -126,13 +126,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductoController.cs" />
     <Compile Include="Controllers\ProveedorController.cs" />
+    <Compile Include="Controllers\ProveedorProductoController.cs" />
     <Compile Include="Controllers\VentaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Permisos\PermisosRolAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilidades\Encriptar.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\assets\css\style.css" />
@@ -309,6 +309,7 @@
     <Content Include="Views\Compra\Index.cshtml" />
     <Content Include="Views\Compra\DetalleCarrito.cshtml" />
     <Content Include="Views\Empleado\EditarEmpleado.cshtml" />
+    <Content Include="Views\ProveedorProducto\Listar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
