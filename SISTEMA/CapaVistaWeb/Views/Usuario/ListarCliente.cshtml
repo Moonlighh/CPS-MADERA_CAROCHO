@@ -1,8 +1,4 @@
-﻿@model IEnumerable<CapaEntidad.entProveedorProducto>
-
-@{
-   ViewBag.Title = "Listar";
-}
+﻿@model IEnumerable<CapaEntidad.entUsuario>
 
 <!-- ======= Header admin======= -->
 <header id="header" class="fixed-top d-flex align-items-center">
@@ -47,20 +43,20 @@
 <br>
 <br>
 <div class="container">
-   <br><h2 style="text-align: center">LISTADO DE PROVEEDORES CON SUS PRODUCTOS</h2>
-   <!-- Agregar producto -->
-
-   <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModInsertarProducto"><i class="bi bi-plus-square"></i> Agregar Producto</button>
+   <br><h2 style="text-align: center">LISTADO DE CLIENTES</h2>
    <hr>
    <!-- Ordenar -->
-   <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-primary btn-lg" id="ASC" href="Ordenar?dato=1"><i class="bi bi-sort-up"></i></a>
-   <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-secondary btn-lg" id="DESC" href="Ordenar?dato=0"><i class="bi bi-sort-down"></i></a>
+   <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" th:href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
+   <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
    <hr>
    <!-- Buscar -->
-   <form class="d-flex mb-4" role="search" action="Listar" method="POST" id="Bproducto">
+   <form class="d-flex mb-4" role="search" action="/Usuario/ListarCliente" method="POST" id="bCliente">
       <input class="form-control me-2" type="search" placeholder="Buscar" name="dato" aria-label="Search">
-      <button onclick="return Buscar('Bproducto')" class="btn btn-outline-success" type="submit">Buscar</button>
+      <button onclick="return Buscar('bCliente')" class="btn btn-outline-success" type="submit">Buscar</button>
    </form>
+   @*<h2>@ViewBag.Mensaje</h2>
+      <h2>@ViewBag.Lista</h2>*@
+   <!-- Listar -->
    <table class="table">
       <thead class="table-dark">
          <tr>
@@ -68,42 +64,81 @@
                ID
             </th>
             <th>
-               PROVEEDOR
+               CLIENTE
             </th>
             <th>
-               MADERA
+               DNI
             </th>
             <th>
-               PRECIO
+               TELEFONO
             </th>
-            <th>EDITAR</th>
-            <th>ELIMINAR</th>
+            <th>
+               DIRECCION
+            </th>
+            <th>
+               CORREO
+            </th>
+            <th>
+               USERNAME
+            </th>
+            <th>
+               DEPARTAMENTO
+            </th>
+            <th>
+               ROL
+            </th>
+            <th>
+               Eliminar
+            </th>
          </tr>
       </thead>
       <tbody>
+
          @foreach (var item in Model)
          {
             <tr>
                <td>
-                  @Html.DisplayFor(modelItem => item.IdProveedorProducto)
+                  @Html.DisplayFor(modelItem => item.IdUsuario)
                </td>
                <td>
-                  @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+                  @Html.DisplayFor(modelItem => item.RazonSocial)
                </td>
                <td>
-                  @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                  @Html.DisplayFor(modelItem => item.Dni)
                </td>
                <td>
-                  @Html.DisplayFor(modelItem => item.PrecioCompra)
+                  @Html.DisplayFor(modelItem => item.Telefono)
                </td>
                <td>
-                  @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ })
+                  @Html.DisplayFor(modelItem => item.Direccion)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.Correo)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.UserName)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.Ubigeo.Departamento)
+               </td>
+               <td>
+                  @Html.DisplayFor(modelItem => item.Roll.Descripcion)
+               </td>
+               @*<td>
+                      <button class="btn btn-warning" type="button">
+                          <i class="bi bi-pencil-square"></i>
+                          @Html.ActionLink("Edit", "EditarProducto", new { idprod = item.IdUsuario })
+                      </button>
+                  </td>*@
+               <td>
+                  <a onclick="return Eliminar(this)" href="/Usuario/EliminarCliente?idP=@item.IdUsuario" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
                </td>
             </tr>
          }
       <tbody>
    </table>
 </div>
+<br>
 <br>
 <br>
 <br>

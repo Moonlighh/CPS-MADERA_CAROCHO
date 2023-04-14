@@ -22,7 +22,7 @@
                     <ul>
                        <li><a href="#">Administradores</a></li>
                        <li><a href="/Producto/Listar">Productos</a></li>
-                       <li><a href="/Usuario/Listar">Clientes</a></li>
+                       <li><a href="/Usuario/ListarCliente">Clientes</a></li>
                        <li><a href="/Proveedor/Listar">Proveedores</a></li>
                        <li><a href="/ProveedorProducto/Listar">Proveedores - Productos</a></li>
                        <li><a href="/Empleado/Listar">Empleados</a></li>
@@ -50,7 +50,7 @@
     <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
     <hr>
     <!-- Buscar -->
-    <form class="d-flex mb-4" role="search" action="/Usuario/Listar" method="POST" id="bCliente">
+    <form class="d-flex mb-4" role="search" action="/Usuario/ListarCliente" method="POST" id="bCliente">
         <input class="form-control me-2" type="search" placeholder="Buscar" name="dato" aria-label="Search">
         <button onclick="return Buscar('bCliente')" class="btn btn-outline-success" type="submit">Buscar</button>
     </form>

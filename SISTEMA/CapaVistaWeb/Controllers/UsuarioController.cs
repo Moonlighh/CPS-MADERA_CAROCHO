@@ -16,7 +16,7 @@ namespace MadereraCarocho.Controllers
     {
         private string mensaje;
         // GET: Cliente
-        public ActionResult Listar(string dato)//listar y buscar en el mismo
+        public ActionResult ListarCliente(string dato)//listar y buscar en el mismo
         {
             List<entUsuario> lista;
             if (!String.IsNullOrEmpty(dato))

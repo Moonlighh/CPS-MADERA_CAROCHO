@@ -310,6 +310,7 @@
     <Content Include="Views\Compra\DetalleCarrito.cshtml" />
     <Content Include="Views\Empleado\EditarEmpleado.cshtml" />
     <Content Include="Views\ProveedorProducto\Listar.cshtml" />
+    <Content Include="Views\Usuario\ListarCliente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

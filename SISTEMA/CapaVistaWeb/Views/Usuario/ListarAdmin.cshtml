@@ -22,7 +22,7 @@
                     <ul>
                        <li><a href="/Usuario/ListarAdmin">Administradores</a></li>
                        <li><a href="/Producto/Listar">Productos</a></li>
-                       <li><a href="/Usuario/Listar">Clientes</a></li>
+                       <li><a href="/Usuario/ListarCliente">Clientes</a></li>
                        <li><a href="/Proveedor/Listar">Proveedores</a></li>
                        <li><a href="/ProveedorProducto/Listar">Proveedores - Productos</a></li>
                        <li><a href="/Empleado/Listar">Empleados</a></li>
@@ -124,7 +124,7 @@
                   @Html.DisplayFor(modelItem => item.Activo)
                </td>
                <td>
-                  <a onclick="return Eliminar(this)" href="/Cliente/EliminarUsuarioAdmin?idu=@item.IdUsuario" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+                  <a onclick="return Eliminar(this)" href="/Usuario/EliminarUsuarioAdmin?idu=@item.IdUsuario" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
                </td>
             </tr>
          }
@@ -135,7 +135,7 @@
    <div class="modal" tabindex="-1" id="ModInsertarCuenta" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
          <div class="modal-content">
-            <form action="/Cliente/CrearCuenta" method="POST" id="admin">
+            <form action="/Usuario/CrearCuenta" method="POST" id="admin">
                <div class="modal-header ">
                   <h5 class="modal-title">Ingresar Datos</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
