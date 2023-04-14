@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CapaEntidad
 {
-    public class entCliente
+    public class entUsuario
     {
-        private int idCliente;
+        private int idUsuario;
         private string razonSocial;
         private string dni;
         private string telefono;
@@ -24,10 +24,10 @@ namespace CapaEntidad
 
 
         #region Get and Set
-        public int IdCliente
+        public int IdUsuario
         {
-            get { return idCliente; }
-            set { idCliente = value; }
+            get { return idUsuario; }
+            set { idUsuario = value; }
         }
 
         public string RazonSocial

@@ -12,20 +12,20 @@ namespace MadereraCarocho.Controllers
 {
     [PermisosRol(entRol.Administrador)]// No puede acceder si es que no es administrador
     [Authorize]// No puede si es que no esta autorizado
-    public class ClienteController : Controller
+    public class UsuarioController : Controller
     {
         private string mensaje;
         // GET: Cliente
         public ActionResult Listar(string dato)//listar y buscar en el mismo
         {
-            List<entCliente> lista;
+            List<entUsuario> lista;
             if (!String.IsNullOrEmpty(dato))
             {
-                lista = logCliente.Instancia.BuscarCliente(dato); 
+                lista = logUsuario.Instancia.BuscarCliente(dato); 
             }
             else
             {
-                lista = logCliente.Instancia.ListarCliente();
+                lista = logUsuario.Instancia.ListarCliente();
             }
             List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
             var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
@@ -39,14 +39,14 @@ namespace MadereraCarocho.Controllers
         [HttpGet]
         public ActionResult ListarAdmin(string dato)
         {
-            List<entCliente> lista;
+            List<entUsuario> lista;
             if (!String.IsNullOrEmpty(dato))
             {
-                lista = logCliente.Instancia.BuscarUsuarioAdmin(dato);
+                lista = logUsuario.Instancia.BuscarUsuarioAdmin(dato);
             }
             else
             {
-                lista = logCliente.Instancia.ListarUsuarioAdmin();
+                lista = logUsuario.Instancia.ListarUsuarioAdmin();
             }
             List<entRoll> listaRol = logRoll.Instancia.ListarRol();
             var lsRol = new SelectList(listaRol, "idRoll", "descripcion");
@@ -84,7 +84,7 @@ namespace MadereraCarocho.Controllers
         {
             try
             {
-                bool elimina = logCliente.Instancia.EliminarCliente(idP);
+                bool elimina = logUsuario.Instancia.EliminarCliente(idP);
                 if (elimina)
                 {
                     mensaje = "Cliente eliminado correctamente";

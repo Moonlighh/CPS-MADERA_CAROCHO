@@ -16,8 +16,8 @@ namespace MadereraCarocho.Controllers
         [PermisosRol(entRol.Cliente)]
         public ActionResult Listar()
         {
-            entCliente usu = Session["Usuario"] as entCliente;
-            List<entVenta> lista = logVenta.Instancia.ListarVenta(usu.IdCliente);
+            entUsuario usu = Session["Usuario"] as entUsuario;
+            List<entVenta> lista = logVenta.Instancia.ListarVenta(usu.IdUsuario);
             ViewBag.lista = lista;
             return View(lista);
         }
@@ -35,10 +35,10 @@ namespace MadereraCarocho.Controllers
                     total += detalle[i].SubTotal;
                 }
 
-                entCliente usu = Session["Usuario"] as entCliente;
+                entUsuario usu = Session["Usuario"] as entUsuario;
 
-                entCliente cliente = new entCliente();
-                cliente.IdCliente = usu.IdCliente;
+                entUsuario cliente = new entUsuario();
+                cliente.IdUsuario = usu.IdUsuario;
 
                 entVenta venta = new entVenta();
                 venta.Cliente = cliente;

@@ -120,7 +120,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\ClienteController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\CompraController.cs" />
     <Compile Include="Controllers\EmpleadoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -298,12 +298,12 @@
     <Content Include="Views\Producto\EditarProducto.cshtml" />
     <Content Include="Views\Producto\productos.cshtml" />
     <Content Include="Views\Proveedor\Listar.cshtml" />
-    <Content Include="Views\Cliente\Listar.cshtml" />
+    <Content Include="Views\Usuario\Listar.cshtml" />
     <Content Include="Views\Empleado\Listar.cshtml" />
     <Content Include="Views\Home\SinPermisos.cshtml" />
     <Content Include="Views\Proveedor\EditarProveedor.cshtml" />
     <Content Include="Views\Home\Empleado.cshtml" />
-    <Content Include="Views\Cliente\ListarAdmin.cshtml" />
+    <Content Include="Views\Usuario\ListarAdmin.cshtml" />
     <Content Include="Views\Venta\Detalle.cshtml" />
     <Content Include="Views\Venta\Listar.cshtml" />
     <Content Include="Views\Compra\Index.cshtml" />

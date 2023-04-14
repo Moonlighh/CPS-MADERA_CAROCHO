@@ -92,8 +92,8 @@ CREATE TABLE EMPLEADO(
 )
 GO
 
-CREATE TABLE CLIENTE(
-	idCliente int primary key identity,
+CREATE TABLE USUARIO(
+	idUsuario int primary key identity,
 	razonSocial varchar(40) not null,
 	dni varchar(8) not null,
 	telefono varchar(9),
@@ -106,8 +106,8 @@ CREATE TABLE CLIENTE(
 	idRol int,
 	activo bit default 1,
 
-	constraint fk_Cliente_Ubigeo foreign key (idUbigeo) references Ubigeo (idUbigeo),
-	constraint fk_usuario_rol foreign key(idRol) references Rol (idRol)
+	constraint fk_Usuario_Ubigeo foreign key (idUbigeo) references Ubigeo (idUbigeo),
+	constraint fk_Usuario_rol foreign key(idRol) references Rol (idRol)
 )
 GO
 
@@ -116,9 +116,9 @@ CREATE TABLE VENTA(
 	fecha datetime default getdate(),
 	total float not null,
 	estado bit default 1,--Pagado -En espera
-	idCliente int not null
+	idUsuario int not null
 
-	constraint fk_Venta_Cliente foreign key (idCliente) references CLIENTE (idCliente)
+	constraint fk_Venta_Cliente foreign key (idUsuario) references USUARIO (idUsuario)
 )
 GO
 
@@ -159,14 +159,14 @@ CREATE TABLE DETALLE_COMPRA(
 GO
 
 --------------------------------------------RESTRICCIONES---------------------------------------------
---CLIENTE
-ALTER TABLE CLIENTE ADD CONSTRAINT UQ_CLIENTE_dni UNIQUE(dni);
-ALTER TABLE CLIENTE ADD	CONSTRAINT CHK_CLIENTE_telefono CHECK(telefono LIKE '9[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]' or telefono = '' or telefono LIKE '0[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
-ALTER TABLE CLIENTE ADD	CONSTRAINT CHK_CLIENTE_dni CHECK(dni LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
-ALTER TABLE CLIENTE ADD CONSTRAINT uq_Cliente_userName UNIQUE(userName);
-ALTER TABLE CLIENTE ADD CONSTRAINT uq_Cliente_correo UNIQUE(correo);
+--USUARIO
+ALTER TABLE USUARIO ADD CONSTRAINT UQ_USUARIO_dni UNIQUE(dni);
+ALTER TABLE USUARIO ADD	CONSTRAINT CHK_USUARIO_telefono CHECK(telefono LIKE '9[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]' or telefono = '' or telefono LIKE '0[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
+ALTER TABLE USUARIO ADD	CONSTRAINT CHK_USUARIO_dni CHECK(dni LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
+ALTER TABLE USUARIO ADD CONSTRAINT uq_USUARIO_userName UNIQUE(userName);
+ALTER TABLE USUARIO ADD CONSTRAINT uq_USUARIO_correo UNIQUE(correo);
 --PROVEEDOR
-ALTER TABLE PROVEEDOR ADD CONSTRAINT  UQ_PROVEEDOR_dni UNIQUE(dni);
+ALTER TABLE PROVEEDOR ADD CONSTRAINT UQ_PROVEEDOR_dni UNIQUE(dni);
 ALTER TABLE PROVEEDOR ADD CONSTRAINT CHK_PROVEEDOR_telefono CHECK(telefono LIKE '9[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]' or telefono = '' or telefono LIKE '0[0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
 ALTER TABLE PROVEEDOR ADD CONSTRAINT CHK_PROVEEDOR_dni CHECK(dni LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
 ALTER TABLE PROVEEDOR ADD CONSTRAINT CHK_estProveedor CHECK(estProveedor LIKE '[0-2]') 

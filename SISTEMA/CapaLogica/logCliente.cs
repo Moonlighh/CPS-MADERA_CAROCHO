@@ -9,49 +9,49 @@ using System.Windows.Forms;
 
 namespace CapaLogica
 {
-    public class logCliente
+    public class logUsuario
     {
-        private static readonly logCliente _instancia = new logCliente();
-        public static logCliente Instancia
+        private static readonly logUsuario _instancia = new logUsuario();
+        public static logUsuario Instancia
         {
             get { return _instancia; }
         }
         #region CRUD
-        public bool CrearCliente(entCliente c)
+        public bool CrearCliente(entUsuario c)
         {
             if (string.IsNullOrEmpty(c.UserName) || string.IsNullOrEmpty(c.Correo))
             {
                 return false;
             }
             c.Pass = logRecursos.GetSHA256(c.Pass);
-            return datCliente.Instancia.CrearCliente(c);
+            return datUsuario.Instancia.CrearCliente(c);
         }
-        public List<entCliente> ListarCliente()
+        public List<entUsuario> ListarCliente()
         {
-            return datCliente.Instancia.ListarCliente();
+            return datUsuario.Instancia.ListarCliente();
         }
-        public bool ActualizarCliente(entCliente c)
+        public bool ActualizarCliente(entUsuario c)
         {
-            return datCliente.Instancia.ActualizarCliente(c);
+            return datUsuario.Instancia.ActualizarCliente(c);
         }
         public bool EliminarCliente(int id)
         {
-            return datCliente.Instancia.EliminarCliente(id);
+            return datUsuario.Instancia.EliminarCliente(id);
         }
         #endregion CRUD
 
-        public List<entCliente> BuscarCliente(string dato)
+        public List<entUsuario> BuscarCliente(string dato)
         {
-            return datCliente.Instancia.BuscarCliente(dato);
+            return datUsuario.Instancia.BuscarCliente(dato);
         }
-        public entCliente BuscarIdCliente(int idCliente)
+        public entUsuario BuscarIdCliente(int idUsuario)
         {
-            return datCliente.Instancia.BuscarIdCliente(idCliente);
+            return datUsuario.Instancia.BuscarIdCliente(idUsuario);
         }
 
-        public entCliente IniciarSesion(string dato, string contra)
+        public entUsuario IniciarSesion(string dato, string contra)
         {
-            entCliente u = null;
+            entUsuario u = null;
             try
             {
                 if (DateTime.Now.Hour > 24)
@@ -61,7 +61,7 @@ namespace CapaLogica
                 else
                 {
                     contra = logRecursos.GetSHA256(contra);
-                    u = datCliente.Instancia.IniciarSesion(dato, contra);
+                    u = datUsuario.Instancia.IniciarSesion(dato, contra);
                     if (u != null)
                     {
                         if (!u.Activo)
@@ -85,13 +85,13 @@ namespace CapaLogica
             }
             return u;
         }
-        public List<entCliente> BuscarUsuarioAdmin(string dato)
+        public List<entUsuario> BuscarUsuarioAdmin(string dato)
         {
-            return datCliente.Instancia.BuscarUsuarioAdmin(dato);
+            return datUsuario.Instancia.BuscarUsuarioAdmin(dato);
         }
-        public List<entCliente> ListarUsuarioAdmin()
+        public List<entUsuario> ListarUsuarioAdmin()
         {
-            return datCliente.Instancia.ListarUsuarioAdmin();
+            return datUsuario.Instancia.ListarUsuarioAdmin();
         }
     }
 }

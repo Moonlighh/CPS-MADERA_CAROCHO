@@ -8,7 +8,7 @@ CREATE OR ALTER PROCEDURE spIniciarSesion(@dato varchar(40), @contra varchar(200
 AS
 BEGIN
 	SELECT *FROM 
-	CLIENTE c inner join Rol r ON r.idRol = c.idRol
+	USUARIO c inner join Rol r ON r.idRol = c.idRol
 	WHERE (userName = @dato or correo = @dato) and pass = @contra
 END
 GO
@@ -60,8 +60,8 @@ GO
 --)
 --AS
 --BEGIN
---SELECT c.idCliente,c.razonSocial, c.dni,c.telefono,c.direccion,u.userName,u.correo,r.descripcion,u.activo FROM cliente c inner join usuario u
---	ON c.idCliente=u.idCliente inner join
+--SELECT c.idUsuario,c.razonSocial, c.dni,c.telefono,c.direccion,u.userName,u.correo,r.descripcion,u.activo FROM cliente c inner join usuario u
+--	ON c.idUsuario=u.idUsuario inner join
 --	rol r ON r.idRol=u.idRol WHERE (u.idRol=1 or u.idRol=3 )and c.razonSocial like '%'+@Campo+'%';
 --END
 --GO
@@ -72,8 +72,8 @@ GO
 --)
 --AS
 --BEGIN
---   delete FROM usuario WHERE idCliente=@usuario; 
---   delete FROM cliente WHERE idCliente=@usuario;
+--   delete FROM usuario WHERE idUsuario=@usuario; 
+--   delete FROM cliente WHERE idUsuario=@usuario;
 --END
 --GO
 
@@ -420,8 +420,8 @@ else
 END
 GO
 
---------------------------------------CLIENTE
-CREATE OR ALTER PROCEDURE spCrearCliente(
+--------------------------------------USUARIO
+CREATE OR ALTER PROCEDURE spCrearUsuario(
     @razonSocial varchar(40),
     @dni varchar(8),
     @telefono varchar(9),
@@ -434,15 +434,15 @@ CREATE OR ALTER PROCEDURE spCrearCliente(
 )
 AS
 BEGIN
-    INSERT INTO CLIENTE (razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,pass, idRol) values (@razonSocial, @dni, @telefono, @direccion, @idUbigeo, @correo, @userName, @pass, @idRol);
+    INSERT INTO USUARIO (razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,pass, idRol) values (@razonSocial, @dni, @telefono, @direccion, @idUbigeo, @correo, @userName, @pass, @idRol);
 END
 GO
 
 CREATE OR ALTER PROCEDURE spListarCliente
 AS
 BEGIN
-	SELECT c.idCliente,c.razonSocial, c.dni,c.telefono,c.direccion, c.correo, c.userName, c.pass, c.activo, u.departamento, r.descripcion FROM 
-	Cliente c inner join UBIGEO u ON c.idUbigeo= u.idUbigeo inner join
+	SELECT c.idUsuario,c.razonSocial, c.dni,c.telefono,c.direccion, c.correo, c.userName, c.pass, c.activo, u.departamento, r.descripcion FROM 
+	Usuario c inner join UBIGEO u ON c.idUbigeo= u.idUbigeo inner join
 	Rol r ON r.idRol = c.idRol WHERE c.idRol = 2
 END
 GO
@@ -450,13 +450,13 @@ GO
 CREATE OR ALTER PROCEDURE spListarClienteAdmin
 AS
 BEGIN
-	SELECT c.idCliente,c.razonSocial, c.dni,c.telefono,c.direccion,c.userName,c.correo,r.descripcion,c.activo FROM 
-	Cliente c inner join Rol r ON r.idRol = c.idRol WHERE c.idRol=1
+	SELECT c.idUsuario,c.razonSocial, c.dni,c.telefono,c.direccion,c.userName,c.correo,r.descripcion,c.activo FROM 
+	Usuario c inner join Rol r ON r.idRol = c.idRol WHERE c.idRol=1
 END
 GO
 
 --CREATE OR ALTER PROCEDURE spActualizarCliente(
---	@idCliente int,
+--	@idUsuario int,
 --	@razonSocial varchar(40),
 --	@dni varchar(8),
 --	@telefono varchar(9),
@@ -465,17 +465,17 @@ GO
 --)
 --AS
 --BEGIN
---	update CLIENTE set razonSocial = @razonSocial, dni = @dni,
---	 telefono = @telefono, direccion = @direccion, idUbigeo = @idUbigeo WHERE idCliente = @idCliente;
+--	update USUARIO set razonSocial = @razonSocial, dni = @dni,
+--	 telefono = @telefono, direccion = @direccion, idUbigeo = @idUbigeo WHERE idUsuario = @idUsuario;
 --END
 --GO
 
-CREATE OR ALTER PROCEDURE spEliminarCliente(
-	@idCliente int
+CREATE OR ALTER PROCEDURE spEliminarUsuario(
+	@idUsuario int
 )
 AS
 BEGIN
-	delete CLIENTE WHERE idCliente = @idCliente;
+	delete USUARIO WHERE idUsuario = @idUsuario;
 END
 GO
 
@@ -484,7 +484,7 @@ CREATE OR ALTER PROCEDURE spBuscarCliente(
 )
 AS
 BEGIN
-	Select *FROM Cliente WHERE razonSocial like @Campo+'%'
+	Select *FROM Usuario WHERE razonSocial like @Campo+'%'
 	or dni like @Campo+'%'
 	
 END
@@ -495,7 +495,7 @@ CREATE OR ALTER PROCEDURE spBuscarIdCliente(
 )
 AS
 BEGIN
-	Select *FROM Cliente WHERE idCliente = @IdCliente;	
+	Select *FROM Usuario WHERE idUsuario = @IdCliente;	
 END
 GO
 
@@ -503,12 +503,12 @@ GO
 CREATE OR ALTER PROCEDURE spCrearVenta(
 	@idventa int out,
 	@total float,
-	@idCliente int
+	@idUsuario int
 )
 AS
 BEGIN TRY
 	BEGIN TRANSACTION
-	INSERT INTO VENTA (total,idCliente)values (@total,@idCliente);
+	INSERT INTO VENTA (total,idUsuario)values (@total,@idUsuario);
 	Set @idventa=@@identity;
 	COMMIT TRANSACTION
 END TRY
@@ -524,8 +524,8 @@ CREATE OR ALTER PROCEDURE spListarVenta
 )
 AS
 BEGIN
-	 SELECT  v.idVenta,v.fecha,v.total,v.estado,c.idCliente,c.razonSocial FROM Venta v inner join cliente c
-	 ON v.idCliente=c.idCliente WHERE v.idCliente=@id;	
+	 SELECT  v.idVenta,v.fecha,v.total,v.estado,c.idUsuario,c.razonSocial FROM Venta v inner join USUARIO c
+	 ON v.idUsuario=c.idUsuario WHERE v.idUsuario=@id;	
 END
 GO
 
@@ -672,12 +672,12 @@ GO
 --)
 --AS
 --BEGIN
---	Select det.idventa as CODIGO, cli.razonSocial as CLIENTE , v.fecha as FECHA, pro.nombre as DESCRIPCIÓN, 
+--	Select det.idventa as CODIGO, cli.razonSocial as USUARIO , v.fecha as FECHA, pro.nombre as DESCRIPCIÓN, 
 --	concat (pro.longitud, ' ','MTS') as LONGITUD, det.cantidad as CANTIDAD, 
 --	det.subTotal as SUBTOTAL FROM DETALLE_VENTA det
 	
 --	inner join VENTA v ON det.idVenta = v.idVenta
---	inner join CLIENTE cli ON v.idCliente = cli.idCliente
+--	inner join USUARIO cli ON v.idUsuario = cli.idUsuario
 --	inner join PRODUCTO pro ON det.idProducto = pro.idProducto
 --	WHERE v.idVenta = @idVenta;
 --END
@@ -708,7 +708,7 @@ GO
 --	set @cantCompras = (SELECT count(idCompra) as CantidadCompras FROM COMPRA);
 --	set @cantProveedor = (SELECT count(idProveedor) as CantidadProveedores FROM PROVEEDOR
 --	WHERE estProveedor = 0);
---	set @cantCliente = (SELECT count(idCliente) as CantidadClientes FROM CLIENTE);
+--	set @cantCliente = (SELECT count(idUsuario) as CantidadClientes FROM USUARIO);
 
 --END
 --GO

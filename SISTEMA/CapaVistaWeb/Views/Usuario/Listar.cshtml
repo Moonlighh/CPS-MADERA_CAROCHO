@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CapaEntidad.entCliente>
+﻿@model IEnumerable<CapaEntidad.entUsuario>
 
 <!-- ======= Header admin======= -->
 <header id="header" class="fixed-top d-flex align-items-center">
@@ -20,12 +20,14 @@
                 <li class="dropdown">
                     <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
                     <ul>
-                        <li><a href="#">Administradores</a></li>
-                        <li><a href="/Producto/Listar">Productos</a></li>
-                        <li><a href="/Cliente/Listar">Clientes</a></li>
-                        <li><a href="/Proveedor/Listar">Proveedores</a></li>
-                        <li><a href="/Empleado/Listar">Empleados</a></li>
-                        <li><a href="/Home/CerrarSesion">Cerrar Sesión</a></li>
+                       <li><a href="#">Administradores</a></li>
+                       <li><a href="/Producto/Listar">Productos</a></li>
+                       <li><a href="/Usuario/Listar">Clientes</a></li>
+                       <li><a href="/Proveedor/Listar">Proveedores</a></li>
+                       <li><a href="/ProveedorProducto/Listar">Proveedores - Productos</a></li>
+                       <li><a href="/Empleado/Listar">Empleados</a></li>
+                       <li><a href="/Compra/Index">Ver compras</a></li>
+                       <li><a href="/Home/CerrarSesion">Cerrar Sesión</a></li>
                     </ul>
                 </li>
                 <li><a class="nav-link scrollto" href="/Home/admin#contact">Contacto</a></li>
@@ -48,7 +50,7 @@
     <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
     <hr>
     <!-- Buscar -->
-    <form class="d-flex mb-4" role="search" action="/Cliente/Listar" method="POST" id="bCliente">
+    <form class="d-flex mb-4" role="search" action="/Usuario/Listar" method="POST" id="bCliente">
         <input class="form-control me-2" type="search" placeholder="Buscar" name="dato" aria-label="Search">
         <button onclick="return Buscar('bCliente')" class="btn btn-outline-success" type="submit">Buscar</button>
     </form>
@@ -96,7 +98,7 @@
             {
                 <tr>
                    <td>
-                      @Html.DisplayFor(modelItem => item.IdCliente)
+                      @Html.DisplayFor(modelItem => item.IdUsuario)
                    </td>
                    <td>
                       @Html.DisplayFor(modelItem => item.RazonSocial)
@@ -125,11 +127,11 @@
                    @*<td>
           <button class="btn btn-warning" type="button">
               <i class="bi bi-pencil-square"></i>
-              @Html.ActionLink("Edit", "EditarProducto", new { idprod = item.IdCliente })
+              @Html.ActionLink("Edit", "EditarProducto", new { idprod = item.IdUsuario })
           </button>
       </td>*@
                    <td>
-                      <a onclick="return Eliminar(this)" href="/Cliente/EliminarCliente?idP=@item.IdCliente" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+                      <a onclick="return Eliminar(this)" href="/Usuario/EliminarCliente?idP=@item.IdUsuario" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
                    </td>
                 </tr>
             }

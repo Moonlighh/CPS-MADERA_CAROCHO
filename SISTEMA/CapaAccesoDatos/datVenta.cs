@@ -28,7 +28,7 @@ namespace CapaAccesoDatos
                 cmd = new SqlCommand("spCrearVenta", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@total", venta.Total);
-                cmd.Parameters.AddWithValue("@idCliente", venta.Cliente.IdCliente);
+                cmd.Parameters.AddWithValue("@idUsuario", venta.Cliente.IdUsuario);
                 SqlParameter id = new SqlParameter("@idventa", 0);
                 id.Direction = ParameterDirection.Output;
                 cmd.Parameters.Add(id);
@@ -69,8 +69,8 @@ namespace CapaAccesoDatos
                     ven.Fecha = Convert.ToDateTime(dr["fecha"]);
                     ven.Total = Convert.ToDouble(dr["total"]);
                     ven.Estado = Convert.ToBoolean(dr["estado"]);
-                    entCliente cli = new entCliente();
-                    cli.IdCliente = Convert.ToInt16(dr["idCliente"]);
+                    entUsuario cli = new entUsuario();
+                    cli.IdUsuario = Convert.ToInt16(dr["idUsuario"]);
                     cli.RazonSocial = dr["razonSocial"].ToString();
                     ven.Cliente = cli;
                     lista.Add(ven);

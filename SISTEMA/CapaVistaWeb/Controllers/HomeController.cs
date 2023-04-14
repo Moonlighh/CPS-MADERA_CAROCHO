@@ -32,7 +32,7 @@ namespace MadereraCarocho.Controllers
         {
             if (Session["Usuario"] != null)
             {
-                entCliente cliente = Session["Usuario"] as entCliente;
+                entUsuario cliente = Session["Usuario"] as entUsuario;
                 ViewBag.Usuario = cliente.RazonSocial;
                 return View();
             }
@@ -47,7 +47,7 @@ namespace MadereraCarocho.Controllers
         public ActionResult VerificarAcceso(string dato, string contra)
         {
             //entUsuario ousuario = logUsuario.Instancia.ObtenerUsuarios().Where(u => u.Correo == dato && u.Pass == Encriptar.GetSHA256(contra)).FirstOrDefault();
-            entCliente objCliente = logCliente.Instancia.IniciarSesion(dato, contra);
+            entUsuario objCliente = logUsuario.Instancia.IniciarSesion(dato, contra);
             if (objCliente != null)
             {
                 FormsAuthentication.SetAuthCookie(objCliente.Correo, false); //Almacenar autenticacion dentro de una cokkie (segundo parametro es que el obj no sera persistente)
@@ -74,7 +74,7 @@ namespace MadereraCarocho.Controllers
             {
                 if (cpassword == cpassconfirm)
                 {
-                    entCliente c = new entCliente();
+                    entUsuario c = new entUsuario();
                     c.RazonSocial = cNombre;
                     c.Dni = cdni;
                     c.Telefono = ctelefono;
@@ -87,7 +87,7 @@ namespace MadereraCarocho.Controllers
                     entRoll rol = new entRoll();
                     rol.IdRoll = 2;
                     c.Roll = rol;
-                    bool creado = logCliente.Instancia.CrearCliente(c);
+                    bool creado = logUsuario.Instancia.CrearCliente(c);
                     if (creado)
                     {
                         return RedirectToAction("Index");

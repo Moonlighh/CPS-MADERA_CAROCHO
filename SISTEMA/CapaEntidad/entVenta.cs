@@ -12,7 +12,7 @@ namespace CapaEntidad
         private DateTime fecha;
         private double total;
         private bool estado;
-        private entCliente cliente;
+        private entUsuario cliente;
 
         #region Get and Set
         public int IdVenta
@@ -35,7 +35,7 @@ namespace CapaEntidad
             get { return estado; }
             set { estado = value; }
         }
-        public entCliente Cliente
+        public entUsuario Cliente
         {
             get { return cliente; }
             set { cliente = value; }
