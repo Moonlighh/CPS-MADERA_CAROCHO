@@ -22,7 +22,7 @@ namespace CapaAccesoDatos
             SqlConnection cn = new SqlConnection();
             try
             {
-                cn.ConnectionString = "Data Source =; Initial Catalog = BD_PRUEBAS_MADERERA; Integrated Security = true";
+                cn.ConnectionString = "Data Source =DESKTOP-9DKG6QA\\REYESANTICONA; Initial Catalog = BD_PRUEBAS_MADERERA; Integrated Security = true";
                 cn.Open();
                 cn.Close();
             }

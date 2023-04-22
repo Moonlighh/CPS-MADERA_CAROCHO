@@ -249,7 +249,6 @@ namespace CapaAccesoDatos
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-
                     Prod.IdProducto = Convert.ToInt32(dr["idproducto"]);
                     Prod.Nombre = dr["nombre"].ToString();
                     Prod.Longitud = Convert.ToDouble(dr["longitud"]);

@@ -14,9 +14,11 @@ namespace CapaEntidad
         private int cantidad;
 	    private double subTotal;
 
-
         #region Get and Set
-        public int IdDetventa { get => idDetventa; set => idDetventa = value; }
+        public int IdDetventa { 
+            get => idDetventa; 
+            set => idDetventa = value; 
+        }
         public entVenta Venta
         {
             get { return venta; }
@@ -37,10 +39,8 @@ namespace CapaEntidad
         {
             get { return subTotal; }
             set { subTotal = value; }
-        }
-
-        
-        #endregion Get and Set
+        }    
+        #endregion
 
     }
 }

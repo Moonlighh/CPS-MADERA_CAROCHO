@@ -42,6 +42,9 @@ namespace CapaAccesoDatos
                     {
                         IdProducto = Convert.ToInt32(dr["idProducto"]),
                         Nombre = dr["madera"].ToString(),
+                        Longitud = Convert.ToInt32(dr["longitud"]),
+                        Diametro = Convert.ToInt32(dr["diametro"]),
+                        Stock = Convert.ToInt32(dr["stock"])
                     };
                     entProveedorProducto obj = new entProveedorProducto
                     {

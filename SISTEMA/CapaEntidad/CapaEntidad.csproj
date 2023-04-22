@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="entProveedorProducto.cs" />
-    <Compile Include="entCarrito.cs" />
     <Compile Include="entUsuario.cs" />
     <Compile Include="entCompra.cs" />
     <Compile Include="entDetCompra.cs" />

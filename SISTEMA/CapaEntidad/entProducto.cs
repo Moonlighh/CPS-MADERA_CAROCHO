@@ -52,6 +52,6 @@ namespace CapaEntidad
             get { return stock; }
             set { stock = value; }
         }
-        #endregion Get and Set
+        #endregion
     }
 }

@@ -17,6 +17,7 @@ namespace CapaLogica
             get { return _instancia; }
         }
 
+        #region CRUD
         public int CrearCompra(entCompra comp)
         {
             return datCompra.Instancia.CrearCompra(comp);
@@ -29,6 +30,9 @@ namespace CapaLogica
         {
             return datCompra.Instancia.EliminarCompra(comp);
         }
+        #endregion
+
+        #region Otros
         public int DevolverID(string tipo)
         {
             return datCompra.Instancia.GenerarID(tipo);
@@ -37,5 +41,6 @@ namespace CapaLogica
         {
             return datCompra.Instancia.BuscarCompra(busqueda);
         }
+        #endregion
     }
 }

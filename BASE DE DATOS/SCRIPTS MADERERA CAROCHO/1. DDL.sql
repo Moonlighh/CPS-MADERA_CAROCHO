@@ -115,7 +115,7 @@ CREATE TABLE VENTA(
 	idVenta int primary key identity,
 	fecha datetime default getdate(),
 	total float not null,
-	estado bit default 1,--Pagado -En espera
+	estado bit default 1,-- 0 En espera 1 Pagado
 	idUsuario int not null
 
 	constraint fk_Venta_Cliente foreign key (idUsuario) references USUARIO (idUsuario)
@@ -139,9 +139,12 @@ CREATE TABLE COMPRA(
 	idCompra int primary key identity,
 	fecha date default getdate(),
 	total float not null,
-	idProveedor int not null
+	estado bit,-- 0 En espera 1 Pagado
+	idProveedor int not null,
+	idUsuario int not null
 
-	constraint fk_Compra_Proveedor foreign key (idProveedor) references PROVEEDOR (idProveedor)
+	constraint fk_Compra_Proveedor foreign key (idProveedor) references PROVEEDOR (idProveedor),
+	constraint fk_Compra_Usuario foreign key (idUsuario) references USUARIO (idUsuario)
 )
 GO
 

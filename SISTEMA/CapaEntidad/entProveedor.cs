@@ -17,8 +17,6 @@ namespace CapaEntidad
         private  bool estProveedor;
         private entUbigeo ubigeo;
 
-       
-
         #region Get and Set
         public int IdProveedor
         {
@@ -64,6 +62,6 @@ namespace CapaEntidad
             get {return  ubigeo; }
             set { ubigeo = value; }
         }
-        #endregion Get and Set
+        #endregion
     }
 }

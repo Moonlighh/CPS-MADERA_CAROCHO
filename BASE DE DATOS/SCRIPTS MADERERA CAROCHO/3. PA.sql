@@ -189,8 +189,8 @@ GO
 CREATE OR ALTER PROCEDURE spListarProveedorProducto
 AS
 BEGIN
-	Select p.idProvedoor_Producto as id, pro.razonSocial as proveedor, prod.nombre as madera, 
-	p.precioCompra as precio, pro.idProveedor, prod.idProducto from PROVEEDOR_PRODUCTO p
+	Select p.idProvedoor_Producto as id, pro.razonSocial as proveedor, prod.nombre as madera, prod.longitud, prod.diametro,
+	prod.stock, p.precioCompra as precio, pro.idProveedor, prod.idProducto from PROVEEDOR_PRODUCTO p
 	inner join PROVEEDOR pro on p.idProveedor = pro.idProveedor
 	inner join PRODUCTO prod on p.idProducto = prod.idProducto
 	WHERE pro.estProveedor = 1;
@@ -360,11 +360,11 @@ END
 GO
 
 CREATE OR ALTER PROCEDURE spBuscarProductoid(
-@prmintidProducto int
+	@prmintidProducto int
 )
 AS
 BEGIN
-SELECT p.idProducto, p.nombre, p.longitud, p.precioVenta, p.stock, t.idTipo_Producto, t.nombre as tipo FROM PRODUCTO p
+SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.nombre as tipo FROM PRODUCTO p
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto WHERE p.idProducto=@prmintidProducto;
 END
 GO
@@ -584,8 +584,9 @@ GO
 CREATE OR ALTER PROCEDURE spListarCompra
 AS
 BEGIN
-	Select c.idCompra, c.fecha, c.total, c.idProveedor, p.razonSocial FROM COMPRA c 
+	Select c.idCompra, c.fecha, c.estado, c.total, c.idProveedor, p.razonSocial as proveedor, u.idUsuario, u.razonSocial as comprador FROM COMPRA c 
 	inner join PROVEEDOR p ON p.idProveedor = c.idProveedor
+	inner join USUARIO u ON u.idUsuario = c.idUsuario
 END
 GO
 
@@ -621,20 +622,20 @@ GO
 --GO
 
 --------------------------------------DETALLE_COMPRA
---CREATE OR ALTER PROCEDURE spCrearDetCompra(
---	@idCompra int,
---	@idProducto int,
---	@cantidad int,
---	@subTotal float
+CREATE OR ALTER PROCEDURE spCrearDetCompra(
+	@idCompra int,
+	@idProducto int,
+	@cantidad int,
+	@subTotal float
 	
---)
---AS
---BEGIN
---	INSERT INTO DETALLE_COMPRA values (@idCompra, @idProducto, @cantidad,@subTotal)
---	update Producto set stock += @cantidad 
---	WHERE idProducto = @idProducto 
---END
---GO
+)
+AS
+BEGIN
+	INSERT INTO DETALLE_COMPRA values (@idCompra, @idProducto, @cantidad,@subTotal)
+	update Producto set stock += @cantidad 
+	WHERE idProducto = @idProducto 
+END
+GO
 
 --/*CREATE OR ALTER PROCEDURE spMostrarReporteCompra(
 --	@idCompra int	

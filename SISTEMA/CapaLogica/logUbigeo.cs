@@ -16,6 +16,7 @@ namespace CapaLogica
             get { return _instancia; }
         }
 
+        #region CRUD
         public bool CrearUbigeo(entUbigeo u)
         {
             return datUbigeo.Instancia.CrearUbigeo(u);
@@ -32,6 +33,9 @@ namespace CapaLogica
         {
             return datUbigeo.Instancia.EliminarUbigeo(id);
         }
+        #endregion
+
+        #region Otros
         public List<entUbigeo> ListarDistrito()
         {
             return datUbigeo.Instancia.ListarDistrito();
@@ -40,6 +44,7 @@ namespace CapaLogica
         {
             return datUbigeo.Instancia.BuscarUbigeo(busqueda);
         }
+        #endregion
 
     }
 }

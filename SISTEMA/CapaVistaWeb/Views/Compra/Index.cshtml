@@ -36,7 +36,7 @@
                  </ul>
               </li>
               <li><a class="nav-link scrollto" href="/Home/admin#contact">Contacto</a></li>
-              <li><a class="nav-link scrollto" href="/Compra/Index"><i class="bi bi-cart4"></i>Carrito de compra</a></li>
+              <li><a class="nav-link scrollto" href="/Compra/DetalleCarrito"><i class="bi bi-cart4"></i>Carrito de compra</a></li>
            </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->
@@ -59,10 +59,22 @@
                 @Html.DisplayNameFor(model => model.Fecha)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Proveedor.RazonSocial)
+                @Html.DisplayNameFor(model => model.Estado)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Proveedor.IdProveedor)
+            </th>
+            <th>
+                Proveedor
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Usuario.IdUsuario)
+            </th>
+            <th>
+                Comprador
             </th>
         </tr>
 
@@ -76,13 +88,24 @@
                     @Html.DisplayFor(modelItem => item.Fecha)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+                    @Html.DisplayFor(modelItem => item.Estado)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Total)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.DisplayFor(modelItem => item.Proveedor.IdProveedor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Usuario.IdUsuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Usuario.RazonSocial)
+                </td>
+                <td>
                     @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                     @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
                 </td>

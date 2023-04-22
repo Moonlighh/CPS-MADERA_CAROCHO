@@ -16,6 +16,8 @@ namespace CapaLogica
         {
             get { return _instancia; }
         }
+
+        #region CR
         public bool CrearDetCompra(entDetCompra comp)
         {
             return datDetCompra.Instancia.CrearDetCompra(comp);
@@ -24,10 +26,12 @@ namespace CapaLogica
         {
             return datDetCompra.Instancia.MostrarReporteCompra(idCompra);
         }
+        #endregion
+
         #region Carrito de Compras
         public void AgregarProductoCarrito(entDetCompra det)
         {
-            datDetCompra.Instancia.AgregarProductoCarrito(det);
+           datDetCompra.Instancia.AgregarProductoCarrito(det);
         }
         public List<entDetCompra> MostrarDetCarrito()
         {

@@ -57,24 +57,12 @@
     <table class="table">
         <thead class="table-dark">
             <tr>
-                <th>
-                    ID
-                </th>
-                <th>
-                    NOMBRE
-                </th>
-                <th>
-                    METRAJE
-                </th>
-                <th>
-                    PRECIO
-                </th>
-                <th>
-                    TIPO
-                </th>
-                <th>
-                    SUBTOTAL
-                </th>
+                <th>ID</th>
+                <th>NOMBRE</th>
+                <th>LONGITUD</th>
+                <th>DIAMETRO</th>
+                <th>TIPO</th>
+                <th>SUBTOTAL</th>
                 <th>ELIMINAR</th>
             </tr>
         </thead>
@@ -92,7 +80,7 @@
                         @Html.DisplayFor(modelItem => item.Producto.Longitud)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Producto.PrecioCompra)
+                        @Html.DisplayFor(modelItem => item.Producto.Diametro)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Producto.Tipo.Nombre)

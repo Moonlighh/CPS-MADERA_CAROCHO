@@ -41,8 +41,10 @@ namespace CapaEntidad
             get { return subTotal; }
             set { subTotal = value; }
         }
-
-        public entCompra Compra { get => compra; set => compra = value; }
-        #endregion Get and Set
+        public entCompra Compra { 
+            get => compra; 
+            set => compra = value; 
+        }
+        #endregion
     }
 }

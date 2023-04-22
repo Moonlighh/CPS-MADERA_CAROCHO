@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace CapaEntidad
         private entTipoEmpleado tipo;
         private entUbigeo ubigeo;
 
+        #region Get and Set
         public int IdEmpleado { get => idEmpleado; set => idEmpleado = value; }
         public string Nombres { get => nombres; set => nombres = value; }
         public string Dni { get => dni; set => dni = value; }
@@ -33,5 +35,6 @@ namespace CapaEntidad
         public bool EstEmpleado { get => estEmpleado; set => estEmpleado = value; }
         public entTipoEmpleado Tipo { get => tipo; set => tipo = value; }
         public entUbigeo Ubigeo { get => ubigeo; set => ubigeo = value; }
+        #endregion
     }
 }

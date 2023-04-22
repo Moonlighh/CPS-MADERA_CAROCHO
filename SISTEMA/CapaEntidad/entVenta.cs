@@ -40,7 +40,7 @@ namespace CapaEntidad
             get { return cliente; }
             set { cliente = value; }
         }
-        #endregion Get and Set
+        #endregion
 
     }
 }

@@ -14,6 +14,7 @@ namespace CapaAccesoDatos
     public class datDetCompra
     {
         List<entDetCompra> detCompra = new List<entDetCompra>();//Sirve para guardar temporalmente productos al carrito
+        
         private static readonly datDetCompra _instancia = new datDetCompra();
         public static datDetCompra Instancia
         {
@@ -53,7 +54,7 @@ namespace CapaAccesoDatos
             return creado;
         }
 
-        #region CarritoCompra
+        #region Carrito de Compra
         public void AgregarProductoCarrito(entDetCompra det)
         {
             detCompra.Add(det);
@@ -61,14 +62,7 @@ namespace CapaAccesoDatos
 
         public List<entDetCompra> MostrarDetCarrito()
         {
-            var lista = new List<entDetCompra>();
-            for (int i = 0; i < detCompra.Count(); i++)
-            {
-                entDetCompra dv = new entDetCompra();
-                dv = detCompra[i];//Obs
-                lista.Add(dv);
-            }
-            return lista;
+            return detCompra;
         }
 
         public bool EliminarDetCarrito(int id)
@@ -83,7 +77,7 @@ namespace CapaAccesoDatos
                         detCompra.RemoveAt(i);
                     }
                 }
-                eliminado= true;
+                eliminado = true;
             }
             catch (Exception)
             {

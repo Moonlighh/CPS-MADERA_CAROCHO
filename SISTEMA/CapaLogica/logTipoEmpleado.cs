@@ -15,6 +15,7 @@ namespace CapaLogica
         {
             get { return _instancia; }
         }
+
         #region CRUD
         public bool CrearTipoEmpleado(entTipoEmpleado tip)
         {

@@ -13,9 +13,11 @@ namespace CapaEntidad
         private entProducto producto;
         private double precioCompra;
 
+        #region Get and Set
         public int IdProveedorProducto { get => idProveedorProducto; set => idProveedorProducto = value; }
         public entProveedor Proveedor { get => proveedor; set => proveedor = value; }
         public entProducto Producto { get => producto; set => producto = value; }
         public double PrecioCompra { get => precioCompra; set => precioCompra = value; }
+        #endregion
     }
 }

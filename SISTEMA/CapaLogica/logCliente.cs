@@ -16,6 +16,7 @@ namespace CapaLogica
         {
             get { return _instancia; }
         }
+
         #region CRUD
         public bool CrearCliente(entUsuario c)
         {
@@ -38,8 +39,9 @@ namespace CapaLogica
         {
             return datUsuario.Instancia.EliminarCliente(id);
         }
-        #endregion CRUD
+        #endregion
 
+        #region Otros
         public List<entUsuario> BuscarCliente(string dato)
         {
             return datUsuario.Instancia.BuscarCliente(dato);
@@ -93,5 +95,6 @@ namespace CapaLogica
         {
             return datUsuario.Instancia.ListarUsuarioAdmin();
         }
+        #endregion
     }
 }

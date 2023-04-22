@@ -35,7 +35,6 @@ namespace CapaLogica
             return datProveedor.Instancia.DeshabilitarProveedor(id);
         }
         #endregion CRUD
-
         public List<entProveedor> BuscarProveedor(string busqueda)
         {
             return datProveedor.Instancia.BuscarProveedor(busqueda);

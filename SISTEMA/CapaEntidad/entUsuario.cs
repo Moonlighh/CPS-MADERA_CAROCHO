@@ -22,14 +22,12 @@ namespace CapaEntidad
         private entRoll roll;
         private bool activo;
 
-
         #region Get and Set
         public int IdUsuario
         {
             get { return idUsuario; }
             set { idUsuario = value; }
         }
-
         public string RazonSocial
         {
             get { return razonSocial; }
@@ -56,7 +54,6 @@ namespace CapaEntidad
             get { return ubigeo; }
             set { ubigeo = value; }
         }
-
         public DateTime FechaCreacion { get => fechaCreacion; set => fechaCreacion = value; }
         public string Correo { get => correo; set => correo = value; }
         public string UserName { get => userName; set => userName = value; }
@@ -64,6 +61,6 @@ namespace CapaEntidad
         public entRol Rol { get => rol; set => rol = value; }
         public bool Activo { get => activo; set => activo = value; }
         public entRoll Roll { get => roll; set => roll = value; }
-        #endregion Get and Set
+        #endregion
     }
 }

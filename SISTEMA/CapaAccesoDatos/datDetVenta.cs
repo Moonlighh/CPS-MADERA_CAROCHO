@@ -51,12 +51,13 @@ namespace CapaAccesoDatos
             return creado;
         }
 
-        public bool Llenardetventa(entDetVenta Det)
+        #region Carrito de compra
+        public bool Llenardetventa(entDetVenta det)
         {
             bool creado = false;
             try
             {
-                detalle.Add(Det);
+                detalle.Add(det);
                 creado = true;
             }
             catch (Exception e)
@@ -100,7 +101,7 @@ namespace CapaAccesoDatos
             return eliminado;
 
         }
-
+        #endregion
         public List<entReporteVenta> MostrarReporteVenta(int idVenta)
         {
 

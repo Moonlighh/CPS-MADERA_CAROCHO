@@ -2,6 +2,7 @@
 using CapaLogica;
 using MadereraCarocho.Permisos;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -12,16 +13,17 @@ namespace MadereraCarocho.Controllers
     [Authorize]
     [PermisosRol(entRol.Administrador)]
     public class CompraController : Controller
-    {
-        // GET: Compra
+    {   
         public ActionResult Index()
         {
-            entUsuario user = Session["Usuario"] as entUsuario;
-            List<entCompra> detCompra = logCompra.Instancia.ListarCompra();
-            return View(detCompra);
+            //Lista todas las compras realizadas
+            List<entCompra> lista = logCompra.Instancia.ListarCompra();
+            ViewBag.lista = lista;
+            return View(lista);
         }
         public ActionResult DetalleCarrito()
         {
+            //Lista los productos agregados al carrito
             List<entDetCompra> detCompra = logDetCompra.Instancia.MostrarDetCarrito();
             List<entProducto> listProducto = logProducto.Instancia.ListarProducto();
             List<entProveedor> listProveedor = logProveedor.Instancia.ListarProveedor();
@@ -30,20 +32,23 @@ namespace MadereraCarocho.Controllers
             ViewBag.ListaProducto = lsproducto;
             ViewBag.ListaProveedor = lsproveedor;
             ViewBag.Lista=detCompra;
+
             return View(detCompra);
         }
         [HttpPost]
         public ActionResult AgregarDetCarrito(int pvCantidad, FormCollection frm)
-        {
-            
+        {           
             try
             {
+                //Agrega productos al carrito y finalmente manda a listarlos
                 entDetCompra detCompra = new entDetCompra();
                 entProducto prod = logProducto.Instancia.BuscarProductoId(Convert.ToInt32(frm["Prd"]));
+                entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.Producto.IdProducto == prod.IdProducto).FirstOrDefault();
                 detCompra.Producto = prod;
                 detCompra.Cantidad = pvCantidad;
-                detCompra.Subtotal = (pvCantidad * prod.PrecioVenta);//es pre compra observacion
+                detCompra.Subtotal = (pvCantidad * detalle.PrecioCompra);
                 logDetCompra.Instancia.AgregarProductoCarrito(detCompra);
+
                 return RedirectToAction("DetalleCarrito");
             }
             catch
@@ -55,6 +60,7 @@ namespace MadereraCarocho.Controllers
         {
             try
             {
+                //Elimina un producto
                 logDetCompra.Instancia.EliminarDetCarrito(ids);
                 return RedirectToAction("DetalleCarrito");
             }
@@ -85,6 +91,8 @@ namespace MadereraCarocho.Controllers
                 entCompra compra = new entCompra
                 {
                     Proveedor = proveedor,
+                    Usuario = Session["Usuario"] as entUsuario,
+                    Estado = true,
                     Total = total
                 };
                 //Obtenemos el id de la compra creada

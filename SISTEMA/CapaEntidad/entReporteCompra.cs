@@ -17,6 +17,7 @@ namespace CapaEntidad
         string precUnitario;
         double subTotal;
 
+        #region Get and Set
         public int Codigo { get => codigo; set => codigo = value; }
         public string Proveedor { get => proveedor; set => proveedor = value; }
         public DateTime Fecha { get => fecha; set => fecha = value; }
@@ -25,5 +26,6 @@ namespace CapaEntidad
         public string Cantidad { get => cantidad; set => cantidad = value; }
         public string PrecUnitario { get => precUnitario; set => precUnitario = value; }
         public double SubTotal { get => subTotal; set => subTotal = value; }
+        #endregion
     }
 }

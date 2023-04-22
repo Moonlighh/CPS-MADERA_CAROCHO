@@ -16,6 +16,7 @@ namespace CapaLogica
         {
             get { return _instancia; }
         }
+
         #region CRUD
         public bool CrearEmpleado(entEmpleado pro)
         {

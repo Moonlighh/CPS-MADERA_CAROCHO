@@ -32,14 +32,16 @@ namespace CapaAccesoDatos
                     CommandType = CommandType.StoredProcedure
                 };
                 cmd.Parameters.AddWithValue("@total", comp.Total);
+                cmd.Parameters.AddWithValue("@estado", comp.Estado);
                 cmd.Parameters.AddWithValue("@idProveedor", comp.Proveedor.IdProveedor);
+                cmd.Parameters.AddWithValue("@idUsuario", comp.Usuario.IdUsuario);
                 SqlParameter id = new SqlParameter("@id", 0);
                 id.Direction = ParameterDirection.Output;
                 cmd.Parameters.Add(id);
 
                 cn.Open();
                 int i = cmd.ExecuteNonQuery();
-                if (i == 1)
+                if (i >= 1)
                 {
                     idCompra = Convert.ToInt32(cmd.Parameters["@id"].Value);
                 }
@@ -73,19 +75,23 @@ namespace CapaAccesoDatos
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    entCompra objCompra = new entCompra
-                    {
-                        IdCompra = Convert.ToInt32(dr["idCompra"]),
-                        Fecha = Convert.ToDateTime(dr["fecha"]),
-                        Total = Convert.ToDouble(dr["total"])
-                    };
                     entProveedor pro = new entProveedor
                     {
                         IdProveedor = Convert.ToInt32(dr["idProveedor"]),
-                        RazonSocial = dr["razonSocial"].ToString()
-
+                        RazonSocial = dr["proveedor"].ToString()
                     };
+                    entUsuario user = new entUsuario()
+                    {
+                        IdUsuario = Convert.ToInt32(dr["idUsuario"]),
+                        RazonSocial = dr["comprador"].ToString()
+                    };
+                    entCompra objCompra = new entCompra();
+                    objCompra.IdCompra = Convert.ToInt32(dr["idCompra"]);
+                    objCompra.Fecha = Convert.ToDateTime(dr["fecha"]);
+                    objCompra.Total = Convert.ToDouble(dr["total"]);
+                    objCompra.Estado = Convert.ToBoolean(dr["estado"]);
                     objCompra.Proveedor = pro;
+                    objCompra.Usuario = user;
 
                     lista.Add(objCompra);
                 }
