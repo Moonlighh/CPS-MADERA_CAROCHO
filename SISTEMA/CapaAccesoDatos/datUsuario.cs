@@ -73,13 +73,14 @@ namespace CapaAccesoDatos
                 {
                     entUsuario Cli = new entUsuario
                     {
-                        RazonSocial = dr["razonsocial"].ToString(),
+                        IdUsuario = Convert.ToInt32(dr["idUsuario"]),
+                        RazonSocial = dr["razonSocial"].ToString(),
                         Dni = dr["dni"].ToString(),
                         Telefono = dr["telefono"].ToString(),
                         Direccion = dr["direccion"].ToString(),
                         Correo = dr["correo"].ToString(),
                         Activo = Convert.ToBoolean(dr["activo"]),
-                        FechaCreacion =  Convert.ToDateTime(dr["FECHA DE CREACION"])
+                        FechaCreacion =  Convert.ToDateTime(dr["fecCreacion"]),
                     };
                     entUbigeo u = new entUbigeo
                     {
@@ -318,18 +319,19 @@ namespace CapaAccesoDatos
                 {
                     entUsuario Cli = new entUsuario
                     {
+                        IdUsuario = Convert.ToInt16(dr["idUsuario"]),
                         RazonSocial = dr["razonsocial"].ToString(),
                         Dni = dr["dni"].ToString(),
                         Telefono = dr["telefono"].ToString(),
                         Direccion = dr["direccion"].ToString(),
                         Correo = dr["correo"].ToString(),
                         Activo = Convert.ToBoolean(dr["activo"]),
-                        FechaCreacion = Convert.ToDateTime(dr["FECHA DE CREACION"])
+                        FechaCreacion = Convert.ToDateTime(dr["fecCreacion"])
                     };
                     entUbigeo u = new entUbigeo
                     {
                         Distrito = dr["distrito"].ToString(),
-                    };
+                    };                                                                                                                          
                     entRoll r = new entRoll
                     {
                         Descripcion = dr["descripcion"].ToString()

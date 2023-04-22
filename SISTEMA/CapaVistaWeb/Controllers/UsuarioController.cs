@@ -104,7 +104,7 @@ namespace MadereraCarocho.Controllers
                     bool creado = logUsuario.Instancia.CrearCliente(c);
                     if (creado)
                     {
-                        return RedirectToAction("Index");
+                        return RedirectToAction("ListarUsuarios");
                     }
                     else
                     {
@@ -114,9 +114,9 @@ namespace MadereraCarocho.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("ListarAdmin", new { mesjExeption = ex.Message });
+                return RedirectToAction("ListarUsuarios", new { mesjExeption = ex.Message });
             }
-            return RedirectToAction("ListarAdmin");
+            return RedirectToAction("ListarUsuarios");
         }
         [HttpGet]
         public ActionResult DeshabilitarUsuario(int idu)

@@ -29,7 +29,7 @@ namespace CapaLogica
         }
         public List<entUsuario> ListarUsuarios()
         {
-            return datUsuario.Instancia.ListarClientes();
+            return datUsuario.Instancia.ListarUsuarios();
         }
         public List<entUsuario> ListarClientes()
         {

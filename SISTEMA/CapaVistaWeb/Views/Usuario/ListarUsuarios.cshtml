@@ -56,7 +56,7 @@
     <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
     <hr>
     <!-- Buscar -->
-    <form class="d-flex mb-4" role="search" action="ListarAdmin" method="POST" id="Badmin">
+    <form class="d-flex mb-4" role="search" action="ListarUsuarios" method="POST" id="Badmin">
         <input class="form-control me-2" type="search" placeholder="Buscar" name="dato" aria-label="Search">
         <button onclick="return Buscar('Badmin')" class="btn btn-outline-success" type="submit">Buscar</button>
     </form>
@@ -66,10 +66,7 @@
             <thead class="table-dark">
                 <tr>
                     <th>
-                        ID
-                    </th>
-                    <th>
-                        NOMBRE
+                        USUARIO
                     </th>
                     <th>
                         DNI
@@ -81,18 +78,23 @@
                         DIRECCION
                     </th>
                     <th>
-                        USER
-                    </th>
-                    <th>
                         CORREO
                     </th>
                     <th>
-                        DESC
+                        DISTRITO
+                    </th>
+                    <th>
+                        CREACION
                     </th>
                     <th>
                         ACTIVO
                     </th>
-                    <th></th>
+                    <th>
+                        DESCRIPCION
+                    </th>
+                    <th>
+                        DESHABILITAR
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -100,9 +102,6 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IdUsuario)
-                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.RazonSocial)
                         </td>
@@ -116,19 +115,22 @@
                             @Html.DisplayFor(modelItem => item.Direccion)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.UserName)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.Correo)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Roll.Descripcion)
+                            @Html.DisplayFor(modelItem => item.Ubigeo.Distrito)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FechaCreacion)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Activo)
                         </td>
                         <td>
-                            <a onclick="return Eliminar(this)" href="/Usuario/EliminarUsuarioAdmin?idu=@item.IdUsuario" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+                            @Html.DisplayFor(modelItem => item.Roll.Descripcion)
+                        </td>
+                        <td>
+                            <a onclick="return Eliminar(this)" href="/Usuario/DeshabilitarUsuario?idu=@item.IdUsuario" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
                         </td>
                     </tr>
                 }
