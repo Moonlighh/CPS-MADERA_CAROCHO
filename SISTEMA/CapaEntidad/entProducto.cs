@@ -53,5 +53,10 @@ namespace CapaEntidad
             set { stock = value; }
         }
         #endregion
+
+        public string mostrarDatos()
+        {
+            return nombre + " " + longitud + " " + diametro;
+        }
     }
 }

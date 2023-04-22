@@ -142,14 +142,14 @@ namespace CapaAccesoDatos
 
         //Eliminar - Deshabilitar
 
-        public bool EliminarCliente(int id)
+        public bool DeshabilitarUsuario(int id)
         {
             SqlCommand cmd = null;
             bool eliminado = false;
             try
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spEliminarCliente", cn);
+                cmd = new SqlCommand("spDeshabilitarUsuario", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@idUsuario", id);
                 cn.Open();
@@ -162,7 +162,7 @@ namespace CapaAccesoDatos
             catch (Exception e)
             {
                
-                MessageBox.Show(e.Message, "Error al Eliminar Cliente procedimiento spEliminarCliente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(e.Message, "Error al deshabilitar el usuario con id "+id, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally { cmd.Connection.Close(); }
             return eliminado;

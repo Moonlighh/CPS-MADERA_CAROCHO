@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="logCliente.cs" />
+    <Compile Include="logUsuario.cs" />
     <Compile Include="logCompra.cs" />
     <Compile Include="logDetCompra.cs" />
     <Compile Include="logDetVenta.cs" />

@@ -35,9 +35,9 @@ namespace CapaLogica
         {
             return datUsuario.Instancia.ActualizarCliente(c);
         }
-        public bool EliminarCliente(int id)
+        public bool DeshabilitarUsuario(int id)
         {
-            return datUsuario.Instancia.EliminarCliente(id);
+            return datUsuario.Instancia.DeshabilitarUsuario(id);
         }
         #endregion
 

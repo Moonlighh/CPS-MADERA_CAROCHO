@@ -14,7 +14,27 @@ namespace MadereraCarocho.Controllers
     [Authorize]// No puede si es que no esta autorizado
     public class UsuarioController : Controller
     {
-        private string mensaje;
+        public ActionResult ListarUsuarios(string dato)//listar y buscar en el mismo
+        {
+            List<entUsuario> lista;
+            if (!String.IsNullOrEmpty(dato))
+            {
+                lista = logUsuario.Instancia.BuscarCliente(dato);
+            }
+            else
+            {
+                lista = logUsuario.Instancia.ListarCliente();
+            }
+            List<entRoll> listaRol = logRoll.Instancia.ListarRol();
+            var lsRol = new SelectList(listaRol, "idRoll", "descripcion");
+            List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
+            var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
+
+            ViewBag.lista = lista;
+            ViewBag.listaUbigeo = lsUbigeo;
+            ViewBag.listaRoll = lsRol;
+            return View(lista);
+        }
         // GET: Cliente
         public ActionResult ListarCliente(string dato)//listar y buscar en el mismo
         {
@@ -27,12 +47,14 @@ namespace MadereraCarocho.Controllers
             {
                 lista = logUsuario.Instancia.ListarCliente();
             }
+            List<entRoll> listaRol = logRoll.Instancia.ListarRol();
+            var lsRol = new SelectList(listaRol, "idRoll", "descripcion");
             List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
             var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
 
             ViewBag.lista = lista;
             ViewBag.listaUbigeo = lsUbigeo;
-            ViewBag.Mensaje = mensaje;
+            ViewBag.listaRoll = lsRol;
             return View(lista);
         }
 
@@ -59,13 +81,49 @@ namespace MadereraCarocho.Controllers
             ViewBag.listaRoll = lsRol;
             return View(lista);
         }
-
-        /*[HttpGet]
-        public ActionResult EliminarUsuarioAdmin(int idu)
+        [HttpPost]
+        public ActionResult CrearCuenta(string cNombre, string cdni, string ctelefono, string cdireccion, string cusername, string ccorreo, string cpassword, string cpassconfirm, FormCollection frmub, FormCollection frm)
         {
             try
             {
-                bool elimina = logUsuario.Instancia.EliminarUsuaro(idu);
+                if (cpassword == cpassconfirm)
+                {
+                    entUsuario c = new entUsuario();
+                    c.RazonSocial = cNombre;
+                    c.Dni = cdni;
+                    c.Telefono = ctelefono;
+                    c.Direccion = cdireccion;
+                    c.Ubigeo = new entUbigeo();
+                    c.Ubigeo.IdUbigeo = frmub["cUbi"].ToString();
+                    c.UserName = cusername;
+                    c.Correo = ccorreo;
+                    c.Pass = cpassword;
+                    entRoll rol = new entRoll();
+                    rol.IdRoll = 2;
+                    c.Roll = rol;
+                    bool creado = logUsuario.Instancia.CrearCliente(c);
+                    if (creado)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ViewBag.Error = "No se pudo crear";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("ListarAdmin", new { mesjExeption = ex.Message });
+            }
+            return RedirectToAction("ListarAdmin");
+        }
+        [HttpGet]
+        public ActionResult DeshabilitarUsuario(int idu)
+        {
+            try
+            {
+                bool elimina = logUsuario.Instancia.DeshabilitarUsuario(idu);
                 if (elimina)
                 {
                     return RedirectToAction("ListarAdmin");
@@ -76,27 +134,6 @@ namespace MadereraCarocho.Controllers
                 return RedirectToAction("ListarAdmin", new { mesjExeption = ex.Message });
             }
             return RedirectToAction("ListarAdmin");
-        }*/
-
-
-        [HttpGet]
-        public ActionResult EliminarCliente(int idP)
-        {
-            try
-            {
-                bool elimina = logUsuario.Instancia.EliminarCliente(idP);
-                if (elimina)
-                {
-                    mensaje = "Cliente eliminado correctamente";
-                    return RedirectToAction("Listar");
-                }
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Listar", new { mesjExeption = ex.Message });
-            }
-            return RedirectToAction("Listar");
         }
-
     }
 }

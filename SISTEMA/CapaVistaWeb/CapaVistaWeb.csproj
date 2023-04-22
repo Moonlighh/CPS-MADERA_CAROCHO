@@ -298,7 +298,6 @@
     <Content Include="Views\Producto\EditarProducto.cshtml" />
     <Content Include="Views\Producto\productos.cshtml" />
     <Content Include="Views\Proveedor\Listar.cshtml" />
-    <Content Include="Views\Usuario\Listar.cshtml" />
     <Content Include="Views\Empleado\Listar.cshtml" />
     <Content Include="Views\Home\SinPermisos.cshtml" />
     <Content Include="Views\Proveedor\EditarProveedor.cshtml" />
