@@ -27,9 +27,13 @@ namespace CapaLogica
             c.Pass = logRecursos.GetSHA256(c.Pass);
             return datUsuario.Instancia.CrearCliente(c);
         }
-        public List<entUsuario> ListarCliente()
+        public List<entUsuario> ListarUsuarios()
         {
-            return datUsuario.Instancia.ListarCliente();
+            return datUsuario.Instancia.ListarClientes();
+        }
+        public List<entUsuario> ListarClientes()
+        {
+            return datUsuario.Instancia.ListarClientes();
         }
         public bool ActualizarCliente(entUsuario c)
         {
@@ -42,10 +46,23 @@ namespace CapaLogica
         #endregion
 
         #region Otros
+        public List<entUsuario> BuscarUsuario(string dato)
+        {
+            return datUsuario.Instancia.BuscarUsuario(dato);
+        }
         public List<entUsuario> BuscarCliente(string dato)
         {
             return datUsuario.Instancia.BuscarCliente(dato);
         }
+        public List<entUsuario> BuscarAdministrador(string dato)
+        {
+            return datUsuario.Instancia.BuscarAdministrador(dato);
+        }
+
+
+
+
+
         public entUsuario BuscarIdCliente(int idUsuario)
         {
             return datUsuario.Instancia.BuscarIdCliente(idUsuario);
@@ -87,13 +104,9 @@ namespace CapaLogica
             }
             return u;
         }
-        public List<entUsuario> BuscarUsuarioAdmin(string dato)
+        public List<entUsuario> ListarAdministradores()
         {
-            return datUsuario.Instancia.BuscarUsuarioAdmin(dato);
-        }
-        public List<entUsuario> ListarUsuarioAdmin()
-        {
-            return datUsuario.Instancia.ListarUsuarioAdmin();
+            return datUsuario.Instancia.ListarAdministradores();
         }
         #endregion
     }

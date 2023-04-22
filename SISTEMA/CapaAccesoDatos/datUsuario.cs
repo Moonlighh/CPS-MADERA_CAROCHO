@@ -58,7 +58,98 @@ namespace CapaAccesoDatos
         }
 
         //Leer
-        public List<entUsuario> ListarCliente()
+        public List<entUsuario> ListarUsuarios()
+        {
+            SqlCommand cmd = null;
+            List<entUsuario> lista = new List<entUsuario>();
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spListarUsuarios", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    entUsuario Cli = new entUsuario
+                    {
+                        RazonSocial = dr["razonsocial"].ToString(),
+                        Dni = dr["dni"].ToString(),
+                        Telefono = dr["telefono"].ToString(),
+                        Direccion = dr["direccion"].ToString(),
+                        Correo = dr["correo"].ToString(),
+                        Activo = Convert.ToBoolean(dr["activo"]),
+                        FechaCreacion =  Convert.ToDateTime(dr["FECHA DE CREACION"])
+                    };
+                    entUbigeo u = new entUbigeo
+                    {
+                        Distrito = dr["distrito"].ToString(),
+                    };
+                    entRoll r = new entRoll
+                    {
+                        Descripcion = dr["descripcion"].ToString()
+                    };
+                    Cli.Roll = r;
+                    Cli.Ubigeo = u;
+                    lista.Add(Cli);
+                }
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "ERROR AL MOSTRAR CLIENTES", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+            return lista;
+        }
+        public List<entUsuario> ListarAdministradores()
+        {
+            SqlCommand cmd = null;
+            List<entUsuario> lista = new List<entUsuario>();
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spListarClienteAdmin", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    entRoll rol = new entRoll()
+                    {
+                        Descripcion = dr["descripcion"].ToString(),
+                    };
+                    entUsuario cli = new entUsuario
+                    {
+                        IdUsuario = Convert.ToInt32(dr["idUsuario"]),
+                        RazonSocial = dr["razonsocial"].ToString(),
+                        Dni = dr["dni"].ToString(),
+                        Telefono = dr["telefono"].ToString(),
+                        Direccion = dr["direccion"].ToString(),
+                        UserName = dr["userName"].ToString(),
+                        Correo = dr["correo"].ToString(),
+                        Activo = Convert.ToBoolean(dr["activo"]),
+                        Roll = rol
+                    };
+                    lista.Add(cli);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "ERROR AL MOSTRAR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+            return lista;
+        }
+        public List<entUsuario> ListarClientes()
         {
             SqlCommand cmd = null;
             List<entUsuario> lista = new List<entUsuario>();
@@ -211,7 +302,54 @@ namespace CapaAccesoDatos
             }
             return c;
         }
+        public List<entUsuario> BuscarUsuario(string campo)
+        {
+            List<entUsuario> lista = new List<entUsuario>();
+            SqlCommand cmd = null;
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spBuscarUsuario", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@campo", campo);
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    entUsuario Cli = new entUsuario
+                    {
+                        RazonSocial = dr["razonsocial"].ToString(),
+                        Dni = dr["dni"].ToString(),
+                        Telefono = dr["telefono"].ToString(),
+                        Direccion = dr["direccion"].ToString(),
+                        Correo = dr["correo"].ToString(),
+                        Activo = Convert.ToBoolean(dr["activo"]),
+                        FechaCreacion = Convert.ToDateTime(dr["FECHA DE CREACION"])
+                    };
+                    entUbigeo u = new entUbigeo
+                    {
+                        Distrito = dr["distrito"].ToString(),
+                    };
+                    entRoll r = new entRoll
+                    {
+                        Descripcion = dr["descripcion"].ToString()
+                    };
+                    Cli.Roll = r;
+                    Cli.Ubigeo = u;
+                    lista.Add(Cli);
+                }
+            }
+            catch (Exception e)
+            {
 
+                MessageBox.Show(e.Message, "No se pudo buscar al usuario", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+            return lista;
+        }
         public List<entUsuario> BuscarCliente(string busqueda)
         {
             List<entUsuario> lista = new List<entUsuario>();
@@ -284,7 +422,7 @@ namespace CapaAccesoDatos
             return c;
         }
 
-        public List<entUsuario> BuscarUsuarioAdmin(string dato)
+        public List<entUsuario> BuscarAdministrador(string dato)
         {
             SqlCommand cmd = null;
             List<entUsuario> lista = new List<entUsuario>();
@@ -320,49 +458,6 @@ namespace CapaAccesoDatos
             catch (Exception e)
             {
                 MessageBox.Show(e.Message, "ERROR AL buscaar", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            }
-            finally
-            {
-                cmd.Connection.Close();
-            }
-            return lista;
-        }
-        public List<entUsuario> ListarUsuarioAdmin()
-        {
-            SqlCommand cmd = null;
-            List<entUsuario> lista = new List<entUsuario>();
-            try
-            {
-                SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spListarClienteAdmin", cn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cn.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    entRoll rol = new entRoll()
-                    {
-                        Descripcion = dr["descripcion"].ToString(),
-                    };
-                    entUsuario cli = new entUsuario
-                    {
-                        IdUsuario = Convert.ToInt32(dr["idUsuario"]),
-                        RazonSocial = dr["razonsocial"].ToString(),
-                        Dni = dr["dni"].ToString(),
-                        Telefono = dr["telefono"].ToString(),
-                        Direccion = dr["direccion"].ToString(),
-                        UserName = dr["userName"].ToString(),
-                        Correo = dr["correo"].ToString(),
-                        Activo = Convert.ToBoolean(dr["activo"]),
-                        Roll = rol
-                    };
-                    lista.Add(cli);
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message, "ERROR AL MOSTRAR", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
             finally

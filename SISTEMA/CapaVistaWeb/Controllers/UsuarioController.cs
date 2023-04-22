@@ -19,11 +19,11 @@ namespace MadereraCarocho.Controllers
             List<entUsuario> lista;
             if (!String.IsNullOrEmpty(dato))
             {
-                lista = logUsuario.Instancia.BuscarCliente(dato);
+                lista = logUsuario.Instancia.BuscarUsuario(dato);
             }
             else
             {
-                lista = logUsuario.Instancia.ListarCliente();
+                lista = logUsuario.Instancia.ListarUsuarios();
             }
             List<entRoll> listaRol = logRoll.Instancia.ListarRol();
             var lsRol = new SelectList(listaRol, "idRoll", "descripcion");
@@ -45,7 +45,7 @@ namespace MadereraCarocho.Controllers
             }
             else
             {
-                lista = logUsuario.Instancia.ListarCliente();
+                lista = logUsuario.Instancia.ListarClientes();
             }
             List<entRoll> listaRol = logRoll.Instancia.ListarRol();
             var lsRol = new SelectList(listaRol, "idRoll", "descripcion");
@@ -64,11 +64,11 @@ namespace MadereraCarocho.Controllers
             List<entUsuario> lista;
             if (!String.IsNullOrEmpty(dato))
             {
-                lista = logUsuario.Instancia.BuscarUsuarioAdmin(dato);
+                lista = logUsuario.Instancia.BuscarAdministrador(dato);
             }
             else
             {
-                lista = logUsuario.Instancia.ListarUsuarioAdmin();
+                lista = logUsuario.Instancia.ListarAdministradores();
             }
             List<entRoll> listaRol = logRoll.Instancia.ListarRol();
             var lsRol = new SelectList(listaRol, "idRoll", "descripcion");

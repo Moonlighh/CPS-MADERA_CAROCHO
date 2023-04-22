@@ -22,8 +22,9 @@
                     <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
                     <ul>
                         <li><a href="/Usuario/ListarAdmin">Administradores</a></li>
-                        <li><a href="/Producto/Listar">Productos</a></li>
                         <li><a href="/Usuario/ListarCliente">Clientes</a></li>
+                        <li><a href="/Usuario/ListarUsuarios">Usuarios</a></li>
+                        <li><a href="/Producto/Listar">Productos</a></li>
                         <li><a href="/Proveedor/Listar">Proveedores</a></li>
                         <li><a href="/ProveedorProducto/Listar">Proveedores - Productos</a></li>
                         <li><a href="/Empleado/Listar">Empleados</a></li>
@@ -43,11 +44,10 @@
 <br>
 <br>
 <br>
+<br>
+<br>
 <div class="container">
-    <br><h2 style="text-align: center">LISTADO DE CLIENTES</h2>
-    <!-- Agregar producto -->
-    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModInsertarCuenta"><i class="bi bi-plus-square"></i> Agregar Cuenta</button>
-    <hr>
+    <h2 style="text-align: center">CLIENTES</h2>
     <!-- Ordenar -->
     <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" th:href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
     <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
@@ -140,68 +140,6 @@
             }
         <tbody>
     </table>
-</div>
-<!--Registrar Cliente-->
-<div class="modal" tabindex="-1" id="ModInsertarCliente" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <form action="/Home/CrearCuenta" method="POST" id="cliente">
-                <div class="modal-header ">
-                    <h5 class="modal-title">Ingresar Datos</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-floating mb-3">
-                        <div class="form-group">
-                            Provincia:
-                            <div class="col-md-10">
-                                @Html.DropDownList("cUbi", (SelectList)ViewBag.listUbigeo, "Seleccionar")
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cNombre" id="cnombre" placeholder="Nombre" required>
-                        <label for="floatingInput">Nombre</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cdni" id="cdni" placeholder="Dni" required>
-                        <label for="floatingInput">DNI</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="ctelefono" placeholder="Telefono" required>
-                        <label for="floatingInput">Telefono</label>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cdireccion" id="cdireccion" placeholder="direccion" required>
-                        <label for="floatingInput">direccion</label>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cusername" id="cusername" placeholder="Username" required>
-                        <label for="floatingInput">Username</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="ccorreo" id="ccorreo" placeholder="Correo" required>
-                        <label for="floatingInput">Correo</label>
-                    </div>
-
-                    <div class="form-floating mb-3">
-                        <input type="password" class="form-control" name="cpassword" id="cpassword" placeholder="Password" required>
-                        <label for="floatingInput">Password</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="password" class="form-control" name="cpassconfirm" id="cpassconfirm" placeholder="Password" required>
-                        <label for="floatingInput">Confirmar Password</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button onclick="return Registrar('cusername', 'ccorreo', 'cpassword', 'cliente')" type="submit" class="btn btn-dark">Registrar</button>
-                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </form>
-        </div>
-    </div>
 </div>
 <br>
 <br>
