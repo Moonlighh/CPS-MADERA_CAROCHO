@@ -88,32 +88,33 @@ namespace CapaAccesoDatos
         }
         #endregion CarritoCompra
 
-        public List<entReporteCompra> MostrarReporteCompra(int idCompra)
+        public List<entDetCompra> MostrarDetalleCompra(int idCompra)
         {
 
             SqlCommand cmd = null;
-            var lista = new List<entReporteCompra>();
+            var lista = new List<entDetCompra>();
             try
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spMostrarReporteCompra", cn);
+                cmd = new SqlCommand("spMostrarDetalleCompra", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@idCompra", idCompra);
                 cn.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    entReporteCompra rpCompra = new entReporteCompra();
+                    entDetCompra rpCompra = new entDetCompra();
+                    entProducto producto = new entProducto();
+                    entCompra compra = new entCompra();
+                    compra.IdCompra = Convert.ToInt32(dr["idCompra"]);
+                    producto.Nombre = dr["nombre"].ToString().ToUpper();
+                    producto.Longitud = Convert.ToDouble(dr["longitud"]);
+                    producto.Diametro = Convert.ToDouble(dr["diametro"]);
+                    rpCompra.Cantidad = Convert.ToInt32(dr["cantidad"]);
+                    rpCompra.Subtotal = Convert.ToDouble(dr["subtotal"]);
 
-                    rpCompra.Codigo = Convert.ToInt32(dr["CODIGO"]);
-                    rpCompra.Proveedor = dr["PROVEEDOR"].ToString().ToUpper();
-                    rpCompra.Fecha = Convert.ToDateTime(dr["FECHA"]);
-                    rpCompra.Descripcion = dr["DESCRIPCIÓN"].ToString().ToUpper();
-                    rpCompra.Longitud = dr["LONGITUD"].ToString();
-                    rpCompra.Cantidad = dr["CANTIDAD"].ToString();
-                    rpCompra.PrecUnitario = dr["PRECIO_UNITARIO"].ToString();
-                    rpCompra.SubTotal = Convert.ToDouble(dr["SUBTOTAL"]);
-
+                    rpCompra.Producto = producto;
+                    rpCompra.Compra = compra;
                     lista.Add(rpCompra);
                 }
             }

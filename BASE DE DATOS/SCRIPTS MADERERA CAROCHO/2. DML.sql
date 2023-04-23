@@ -2030,7 +2030,7 @@ INSERT INTO ROL VALUES
 	('CLIENTE'),
 	('EMPLEADO');
 GO
-
+select *from rol
 --INSERT CLIENTE
 INSERT INTO USUARIO(razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,pass,idRol) VALUES 
 	('cesar', '74359211', '945613221','Mz20Lote34-Av. Ricardo Palma', '010109','cesar@gmail.com','cesar#255','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1),

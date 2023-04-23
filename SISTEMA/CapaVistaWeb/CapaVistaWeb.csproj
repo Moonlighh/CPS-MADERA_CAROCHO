@@ -311,6 +311,7 @@
     <Content Include="Views\ProveedorProducto\Listar.cshtml" />
     <Content Include="Views\Usuario\ListarCliente.cshtml" />
     <Content Include="Views\Usuario\ListarUsuarios.cshtml" />
+    <Content Include="Views\Compra\DetalleCompra.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

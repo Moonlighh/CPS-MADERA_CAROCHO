@@ -365,7 +365,7 @@ CREATE OR ALTER PROCEDURE spBuscarProductoid(
 AS
 BEGIN
 SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.nombre as tipo FROM PRODUCTO p
-	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto WHERE p.idProducto=@prmintidProducto;
+	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto WHERE p.idProducto=4;
 END
 GO
 
@@ -438,6 +438,17 @@ BEGIN
 END
 GO
 
+
+CREATE OR ALTER PROCEDURE spListarUsuarios
+AS
+BEGIN
+	SELECT c.idUsuario,c.razonSocial, c.dni,c.telefono,c.direccion, c.correo,
+	c.activo, c.fecCreacion, u.distrito, r.descripcion FROM 
+	Usuario c inner join UBIGEO u ON c.idUbigeo= u.idUbigeo inner join
+	Rol r ON r.idRol = c.idRol
+END
+GO
+
 CREATE OR ALTER PROCEDURE spListarCliente
 AS
 BEGIN
@@ -470,12 +481,12 @@ GO
 --END
 --GO
 
-CREATE OR ALTER PROCEDURE spEliminarUsuario(
+CREATE OR ALTER PROCEDURE spDeshabilitarUsuario(
 	@idUsuario int
 )
 AS
 BEGIN
-	delete USUARIO WHERE idUsuario = @idUsuario;
+	update USUARIO set activo = 0 where idUsuario = @idUsuario;
 END
 GO
 
@@ -563,23 +574,25 @@ GO
 --END
 --GO
 --------------------------------------COMPRA
---CREATE OR ALTER PROCEDURE spCrearCompra(
---	@id int out,
---	@total float,
---	@idProveedor int
---)
---AS
---BEGIN TRY
---	BEGIN TRANSACTION
---		INSERT INTO COMPRA (total,idProveedor)values (@total,@idProveedor);
---		Set @id=@@identity;
---	COMMIT TRANSACTION
---END TRY
---BEGIN CATCH
---	ROLLBACK TRANSACTION
---		Set @id=-1;
---END CATCH
---GO
+CREATE OR ALTER PROCEDURE spCrearCompra(
+	@id int out,
+	@total float,
+	@estado bit,
+	@idProveedor int,
+	@idUsuario int
+)
+AS
+BEGIN TRY
+	BEGIN TRANSACTION
+		INSERT INTO COMPRA (total, estado, idProveedor, idUsuario)values (@total,@estado, @idProveedor, @idUsuario);
+		Set @id=@@identity;
+	COMMIT TRANSACTION
+END TRY
+BEGIN CATCH
+	ROLLBACK TRANSACTION
+		Set @id=-1;
+END CATCH
+GO
 
 CREATE OR ALTER PROCEDURE spListarCompra
 AS
@@ -637,28 +650,22 @@ BEGIN
 END
 GO
 
---/*CREATE OR ALTER PROCEDURE spMostrarReporteCompra(
---	@idCompra int	
---)
---AS
---BEGIN
---	Select det.idCompra as CODIGO, p.razonSocial as PROVEEDOR , c.fecha as FECHA, pro.nombre as DESCRIPCIÓN, 
---	concat (pro.longitud, ' ','MTS') as LONGITUD, det.cantidad as CANTIDAD,det.preUnitario as PRECIO_UNITARIO, 
---	det.subTotal as SUBTOTAL FROM DETALLE_COMPRA det
-	
---	inner join COMPRA c ON det.idCompra = c.idCompra
---	inner join PROVEEDOR p ON c.idProveedor = p.idProveedor
---	inner join PRODUCTO pro ON det.idProducto = pro.idProducto
---	WHERE c.idCompra = @idCompra;
---END
---GO*/
+CREATE OR ALTER PROCEDURE spMostrarDetalleCompra(
+	@idCompra int	
+)
+AS
+BEGIN
+	SELECT dtC.idCompra, p.nombre, p.longitud, p.diametro, dtC.cantidad, dtC.subTotal FROM DETALLE_COMPRA dtC
+	inner join PRODUCTO p on p.idProducto = dtC.idProducto
+	WHERE dtC.idCompra = @idCompra;
+END
+GO
 --------------------------------------DETALLE_VENTA
 --CREATE OR ALTER PROCEDURE spCrearDetVenta(
 --	@idVenta int,
 --	@idProducto int,
 --	@cantidad int,
 --	@subTotal float
-	
 --)
 --AS
 --BEGIN

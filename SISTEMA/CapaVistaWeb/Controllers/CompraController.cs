@@ -8,8 +8,7 @@ using System.Linq;
 using System.Web.Mvc;
 
 namespace MadereraCarocho.Controllers
-{
-    
+{    
     [Authorize]
     [PermisosRol(entRol.Administrador)]
     public class CompraController : Controller
@@ -115,6 +114,13 @@ namespace MadereraCarocho.Controllers
                 return RedirectToAction("Index");
 
             }
+        }
+        [HttpGet]
+        public ActionResult DetalleCompra(int idCompra)
+        {
+            List<entDetCompra> lista = logDetCompra.Instancia.MostrarDetalleCompra(idCompra);
+            ViewBag.lista = lista;
+            return View(lista);
         }
     }
 }

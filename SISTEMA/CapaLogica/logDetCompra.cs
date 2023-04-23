@@ -22,9 +22,9 @@ namespace CapaLogica
         {
             return datDetCompra.Instancia.CrearDetCompra(comp);
         }
-        public List<entReporteCompra> MostrarReporteCompra(int idCompra)
+        public List<entDetCompra> MostrarDetalleCompra(int idCompra)
         {
-            return datDetCompra.Instancia.MostrarReporteCompra(idCompra);
+            return datDetCompra.Instancia.MostrarDetalleCompra(idCompra);
         }
         #endregion
 

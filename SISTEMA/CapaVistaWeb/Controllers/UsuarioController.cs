@@ -119,21 +119,21 @@ namespace MadereraCarocho.Controllers
             return RedirectToAction("ListarUsuarios");
         }
         [HttpGet]
-        public ActionResult DeshabilitarUsuario(int idu)
+        public ActionResult DeshabilitarUsuario(int idU)
         {
             try
             {
-                bool elimina = logUsuario.Instancia.DeshabilitarUsuario(idu);
+                bool elimina = logUsuario.Instancia.DeshabilitarUsuario(idU);
                 if (elimina)
                 {
-                    return RedirectToAction("ListarAdmin");
+                    return RedirectToAction("ListarUsuarios");
                 }
             }
             catch (Exception ex)
             {
-                return RedirectToAction("ListarAdmin", new { mesjExeption = ex.Message });
+                return RedirectToAction("ListarUsuarios", new { mesjExeption = ex.Message });
             }
-            return RedirectToAction("ListarAdmin");
+            return RedirectToAction("ListarUsuarios");
         }
     }
 }

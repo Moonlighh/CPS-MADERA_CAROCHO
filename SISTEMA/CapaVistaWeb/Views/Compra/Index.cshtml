@@ -107,8 +107,10 @@
                     @Html.DisplayFor(modelItem => item.Usuario.RazonSocial)
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    <button class="btn btn-warning" type="button">
+                        @Html.ActionLink("Detalle", "DetalleCompra", new { idCompra = item.IdCompra })
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
                 </td>
             </tr>
         }
