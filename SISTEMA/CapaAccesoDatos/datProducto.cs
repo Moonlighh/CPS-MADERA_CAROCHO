@@ -244,12 +244,12 @@ namespace CapaAccesoDatos
                 SqlConnection cn = Conexion.Instancia.Conectar();
                 cmd = new SqlCommand("spBuscarProductoid", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@prmintidProducto", idprod);
+                cmd.Parameters.AddWithValue("@idProducto", idprod);
                 cn.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    Prod.IdProducto = Convert.ToInt32(dr["idproducto"]);
+                    Prod.IdProducto = Convert.ToInt32(dr["idProducto"]);
                     Prod.Nombre = dr["nombre"].ToString();
                     Prod.Longitud = Convert.ToDouble(dr["longitud"]);
                     Prod.Diametro = Convert.ToDouble(dr["diametro"]);
