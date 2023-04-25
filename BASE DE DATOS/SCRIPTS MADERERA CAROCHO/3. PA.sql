@@ -360,12 +360,12 @@ END
 GO
 
 CREATE OR ALTER PROCEDURE spBuscarProductoid(
-	@prmintidProducto int
+	@idProducto int
 )
 AS
 BEGIN
 SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.nombre as tipo FROM PRODUCTO p
-	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto WHERE p.idProducto=4;
+	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto WHERE p.idProducto = @idProducto;
 END
 GO
 
