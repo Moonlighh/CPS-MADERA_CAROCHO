@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Collections;
+using System.Security.Cryptography;
 
 namespace CapaAccesoDatos
 {
@@ -53,40 +55,6 @@ namespace CapaAccesoDatos
             }
             return creado;
         }
-
-        #region Carrito de Compra
-        public void AgregarProductoCarrito(entDetCompra det)
-        {
-            detCompra.Add(det);
-        }
-
-        public List<entDetCompra> MostrarDetCarrito()
-        {
-            return detCompra;
-        }
-
-        public bool EliminarDetCarrito(int id)
-        {
-            bool eliminado = false;
-            try
-            {
-                for (int i = 0; i < detCompra.Count(); i++)
-                {
-                    if (detCompra[i].Producto.IdProducto.Equals(id))
-                    {
-                        detCompra.RemoveAt(i);
-                    }
-                }
-                eliminado = true;
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("El elemento esta fuera del indice o no existe", "Maderera carocho", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            return eliminado;
-
-        }
-        #endregion CarritoCompra
 
         public List<entDetCompra> MostrarDetalleCompra(int idCompra)
         {

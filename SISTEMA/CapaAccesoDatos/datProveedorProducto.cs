@@ -66,5 +66,100 @@ namespace CapaAccesoDatos
             }
             return lista;
         }
+        public List<entProveedorProducto> ListarProductoAdmin()
+        {
+            SqlCommand cmd = null;
+            List<entProveedorProducto> lista = new List<entProveedorProducto>();
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spListarProductoAdmin", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    entTipoProducto tipo = new entTipoProducto
+                    {
+                        Tipo = dr["tipo"].ToString()
+                    };
+                    entProducto producto = new entProducto
+                    {
+                        IdProducto = Convert.ToInt32(dr["idProducto"]),
+                        Nombre = dr["nombre"].ToString(),
+                        Longitud = Convert.ToDouble(dr["longitud"]),
+                        Diametro = Convert.ToDouble(dr["diametro"]),
+                        PrecioVenta = Convert.ToDouble(dr["precioVenta"]),
+                        Stock = Convert.ToInt32(dr["stock"]),
+                        Tipo = tipo
+                    };
+                    entProveedorProducto prov = new entProveedorProducto
+                    {
+                        PrecioCompra = Convert.ToDouble(dr["precioCompra"]),
+                        Producto = producto
+                    };
+
+                    lista.Add(prov);
+                }
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "EROR AL MOSTRAR LOS PRODUCTOS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+            return lista;
+        }
+        public List<entProveedorProducto> BuscarProductoAdmin(string busqueda)
+        {
+            List<entProveedorProducto> lista = new List<entProveedorProducto>();
+            SqlCommand cmd = null;
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spBuscarProductoAdmin", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Campo", busqueda);
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    entTipoProducto tipo = new entTipoProducto
+                    {
+                        IdTipo_producto = Convert.ToInt32(dr["idTipo_producto"]),
+                        Tipo = dr["tipo"].ToString()
+                    };
+                    entProducto Prod = new entProducto
+                    {
+                        IdProducto = Convert.ToInt32(dr["idproducto"]),
+                        Nombre = dr["nombre"].ToString(),
+                        Longitud = Convert.ToDouble(dr["longitud"]),
+                        Diametro = Convert.ToDouble(dr["diametro"]),
+                        PrecioVenta = Convert.ToDouble(dr["precioVenta"]),
+                        Stock = Convert.ToInt32(dr["stock"]),
+                        Tipo = tipo
+                    };
+                    entProveedorProducto prov = new entProveedorProducto
+                    {
+                        PrecioCompra = Convert.ToDouble(dr["precioCompra"]),
+                    };
+
+                    lista.Add(prov);
+                }
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+            return lista;
+        }
     }
 }

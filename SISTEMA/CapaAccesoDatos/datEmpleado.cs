@@ -86,6 +86,7 @@ namespace CapaAccesoDatos
                         Direccion = dr["direccion"].ToString(),
                         Salario = Convert.ToDouble(dr["salario"]),
                         Descripcion = dr["descripcion"].ToString(),
+                        F_fin = Convert.ToDateTime(dr["f_fin"]),
                         Tipo = tipo,
                         Ubigeo = ubi
                     };
@@ -118,7 +119,6 @@ namespace CapaAccesoDatos
                 cmd.Parameters.AddWithValue("@dni", emp.Dni);
                 cmd.Parameters.AddWithValue("@telefono", emp.Telefono);
                 cmd.Parameters.AddWithValue("@direccion", emp.Direccion);
-                cmd.Parameters.AddWithValue("@f_inicio", emp.F_inicio);
                 cmd.Parameters.AddWithValue("@f_fin", emp.F_fin);
                 cmd.Parameters.AddWithValue("@salario", emp.Salario);
                 cmd.Parameters.AddWithValue("@descripcion", emp.Descripcion);
@@ -237,8 +237,7 @@ namespace CapaAccesoDatos
                     emp.Direccion = dr["direccion"].ToString();
                     emp.F_inicio = Convert.ToDateTime(dr["f_inicio"]);
                     emp.F_fin = Convert.ToDateTime(dr["f_inicio"]);
-                    emp.Salario = Convert.ToDouble(dr["salario"]);
-                    emp.Descripcion = dr["descripcion"].ToString();
+                    emp.Salario = Convert.ToDouble(dr["salario"]);                    emp.Descripcion = dr["descripcion"].ToString();
                     emp.EstEmpleado = Convert.ToBoolean(dr["estEmpleado"]);
                     entTipoEmpleado tipo = new entTipoEmpleado();
 

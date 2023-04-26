@@ -114,7 +114,7 @@ namespace CapaAccesoDatos
             try
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spListarClienteAdmin", cn);
+                cmd = new SqlCommand("spListarAdministradores", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cn.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
@@ -172,12 +172,11 @@ namespace CapaAccesoDatos
                         Direccion = dr["direccion"].ToString(),
                         Correo = dr["correo"].ToString(),
                         UserName = dr["userName"].ToString(),
-                        Pass = dr["pass"].ToString(),
                         Activo = Convert.ToBoolean(dr["activo"])
                     };
                     entUbigeo u = new entUbigeo
                     {
-                        Departamento = dr["departamento"].ToString(),
+                        Distrito = dr["distrito"].ToString(),
                     };
                     entRoll r = new entRoll
                     {
@@ -242,8 +241,8 @@ namespace CapaAccesoDatos
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
                 cmd = new SqlCommand("spDeshabilitarUsuario", cn);
-                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@idUsuario", id);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i > 0)
@@ -255,6 +254,31 @@ namespace CapaAccesoDatos
             {
                
                 MessageBox.Show(e.Message, "Error al deshabilitar el usuario con id "+id, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally { cmd.Connection.Close(); }
+            return eliminado;
+        }
+        public bool HabilitarUsuario(int id)
+        {
+            SqlCommand cmd = null;
+            bool eliminado = false;
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spHabilitarUsuario", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@idUsuario", id);
+                cn.Open();
+                int i = cmd.ExecuteNonQuery();
+                if (i > 0)
+                {
+                    eliminado = true;
+                }
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show(e.Message, "Error al habilitar el usuario con id " + id, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally { cmd.Connection.Close(); }
             return eliminado;
@@ -317,7 +341,7 @@ namespace CapaAccesoDatos
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    entUsuario Cli = new entUsuario
+                    entUsuario user = new entUsuario
                     {
                         IdUsuario = Convert.ToInt16(dr["idUsuario"]),
                         RazonSocial = dr["razonsocial"].ToString(),
@@ -336,9 +360,9 @@ namespace CapaAccesoDatos
                     {
                         Descripcion = dr["descripcion"].ToString()
                     };
-                    Cli.Roll = r;
-                    Cli.Ubigeo = u;
-                    lista.Add(Cli);
+                    user.Roll = r;
+                    user.Ubigeo = u;
+                    lista.Add(user);
                 }
             }
             catch (Exception e)
@@ -375,13 +399,16 @@ namespace CapaAccesoDatos
                         Direccion = dr["direccion"].ToString(),
                         Correo = dr["correo"].ToString(),
                         UserName = dr["userName"].ToString(),
-                        Pass = dr["pass"].ToString(),
-                        Activo = Convert.ToBoolean(dr["activo"])
                     };
                     entUbigeo u = new entUbigeo
                     {
-                        IdUbigeo = dr["idUbigeo"].ToString()
+                        Distrito = dr["distrito"].ToString(),
                     };
+                    entRoll r = new entRoll
+                    {
+                        Descripcion = dr["descripcion"].ToString()
+                    };
+                    Cli.Roll = r;
                     Cli.Ubigeo = u;
                     lista.Add(Cli);
                 }
@@ -431,7 +458,7 @@ namespace CapaAccesoDatos
             try
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spBuscarClienteAdmin", cn);
+                cmd = new SqlCommand("spBuscarAdministrador", cn);
                 cmd.Parameters.AddWithValue("@Campo", dato);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cn.Open();

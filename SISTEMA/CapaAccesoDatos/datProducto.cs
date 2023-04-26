@@ -69,7 +69,7 @@ namespace CapaAccesoDatos
                 {
                     entProducto Prod = new entProducto
                     {
-                        IdProducto = Convert.ToInt32(dr["idproducto"]),
+                        IdProducto = Convert.ToInt32(dr["idProducto"]),
                         Nombre = dr["nombre"].ToString(),
                         Longitud = Convert.ToDouble(dr["longitud"]),
                         Diametro = Convert.ToDouble(dr["diametro"]),
@@ -78,8 +78,7 @@ namespace CapaAccesoDatos
                     };
                     entTipoProducto tipo = new entTipoProducto
                     {
-                        IdTipo_producto = Convert.ToInt32(dr["idTipo_producto"]),
-                        Nombre = dr["tipo"].ToString()
+                        Tipo = dr["tipo"].ToString()
                     };
                     Prod.Tipo = tipo;
 
@@ -179,7 +178,7 @@ namespace CapaAccesoDatos
                     Prod.Stock = Convert.ToInt32(dr["stock"]);
                     entTipoProducto tipo = new entTipoProducto();
                     tipo.IdTipo_producto = Convert.ToInt32(dr["idTipo_producto"]);
-                    tipo.Nombre = dr["tipo"].ToString();
+                    tipo.Tipo = dr["tipo"].ToString();
                     Prod.Tipo = tipo;
                     lista.Add(Prod);
                 }
@@ -219,7 +218,7 @@ namespace CapaAccesoDatos
                     Prod.Stock = Convert.ToInt32(dr["stock"]);
                     entTipoProducto tipo = new entTipoProducto();
                     tipo.IdTipo_producto = Convert.ToInt32(dr["idTipo_producto"]);
-                    tipo.Nombre = dr["tipo"].ToString();
+                    tipo.Tipo = dr["tipo"].ToString();
                     Prod.Tipo = tipo;
                     lista.Add(Prod);
                 }
@@ -257,16 +256,17 @@ namespace CapaAccesoDatos
                     Prod.Stock = Convert.ToInt32(dr["stock"]);
                     entTipoProducto tipo = new entTipoProducto();
                     tipo.IdTipo_producto = Convert.ToInt32(dr["idTipo_producto"]);
-                    tipo.Nombre = dr["tipo"].ToString();
+                    tipo.Tipo = dr["tipo"].ToString();
                     Prod.Tipo = tipo;
                 }
             }
             catch (Exception e)
             {
-
-                throw e;
+                return null;
             }
-            finally { cmd.Connection.Close(); }
+            finally { 
+                cmd.Connection.Close(); 
+            }
             return Prod;
         }
 

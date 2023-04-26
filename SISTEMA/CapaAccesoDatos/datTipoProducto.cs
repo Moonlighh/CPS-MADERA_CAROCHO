@@ -26,7 +26,7 @@ namespace CapaAccesoDatos
                 SqlConnection cn = Conexion.Instancia.Conectar();
                 cmd = new SqlCommand("spCrearTipoProducto", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@nombre", tip.Nombre);
+                cmd.Parameters.AddWithValue("@tipo", tip.Tipo);
                 cn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i != 0)
@@ -61,7 +61,7 @@ namespace CapaAccesoDatos
                 {
                     entTipoProducto tip = new entTipoProducto();
                     tip.IdTipo_producto = Convert.ToInt32(dr["idTipo_Producto"]);
-                    tip.Nombre = dr["nombre"].ToString();
+                    tip.Tipo = dr["tipo"].ToString();
                     lista.Add(tip);
                 }
 
@@ -88,7 +88,7 @@ namespace CapaAccesoDatos
                 cmd = new SqlCommand("spActualizarTipoProducto", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@idTipo_Producto", tip.IdTipo_producto);
-                cmd.Parameters.AddWithValue("@nombre", tip.Nombre);
+                cmd.Parameters.AddWithValue("@tipo", tip.Tipo);
                 cn.Open();
                 int i = cmd.ExecuteNonQuery();
                 if (i > 0)
