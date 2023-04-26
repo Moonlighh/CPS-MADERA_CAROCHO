@@ -36,7 +36,7 @@ namespace MadereraCarocho.Controllers
             return View(lista);
         }
         // GET: Cliente
-        public ActionResult ListarCliente(string dato)//listar y buscar en el mismo
+        public ActionResult ListarClientes(string dato)//listar y buscar en el mismo
         {
             List<entUsuario> lista;
             if (!String.IsNullOrEmpty(dato))
@@ -58,8 +58,7 @@ namespace MadereraCarocho.Controllers
             return View(lista);
         }
 
-        [HttpGet]
-        public ActionResult ListarAdmin(string dato)
+        public ActionResult ListarAdministradores(string dato)
         {
             List<entUsuario> lista;
             if (!String.IsNullOrEmpty(dato))
@@ -108,32 +107,71 @@ namespace MadereraCarocho.Controllers
                     }
                     else
                     {
-                        ViewBag.Error = "No se pudo crear";
+                        return RedirectToAction("Error", "Home", new { Informacion = "No se pudo crear la cuenta" });
                     }
+                }
+                else
+                {
+                    return RedirectToAction("Error", "Home", new { Informacion = "Las contras no coinciden" });
+
                 }
             }
             catch (Exception ex)
             {
-                return RedirectToAction("ListarUsuarios", new { mesjExeption = ex.Message });
+                return RedirectToAction("Error", "Home", new { mesjExeption = ex.Message });
             }
             return RedirectToAction("ListarUsuarios");
         }
         [HttpGet]
-        public ActionResult DeshabilitarUsuario(int idU)
+        public ActionResult HabilitarUsuario(int idU)
         {
             try
             {
-                bool elimina = logUsuario.Instancia.DeshabilitarUsuario(idU);
-                if (elimina)
+                bool habilitar = logUsuario.Instancia.HabilitarUsuario(idU);
+                if (habilitar)
                 {
                     return RedirectToAction("ListarUsuarios");
                 }
             }
             catch (Exception ex)
             {
-                return RedirectToAction("ListarUsuarios", new { mesjExeption = ex.Message });
+                return RedirectToAction("Error", "Home", new { mesjExeption = ex.Message });
             }
             return RedirectToAction("ListarUsuarios");
+        }
+        [HttpGet]
+        public ActionResult DeshabilitarCliente(int idC)
+        {
+            try
+            {
+                bool elimina = logUsuario.Instancia.DeshabilitarUsuario(idC);
+                if (elimina)
+                {
+                    return RedirectToAction("ListarClientes");
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mesjExeption = ex.Message });
+            }
+            return RedirectToAction("Error", "Home");
+        }
+        [HttpGet]
+        public ActionResult DeshabilitarAdmin(int idA)
+        {
+            try
+            {
+                bool elimina = logUsuario.Instancia.DeshabilitarUsuario(idA);
+                if (elimina)
+                {
+                    return RedirectToAction("ListarAdministradores");
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mesjExeption = ex.Message });
+            }
+            return RedirectToAction("Error", "Home");
         }
     }
 }

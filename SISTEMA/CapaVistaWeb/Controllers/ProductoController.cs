@@ -1,6 +1,7 @@
 ﻿using CapaEntidad;
 using CapaLogica;
 using MadereraCarocho.Permisos;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,17 +21,17 @@ namespace MadereraCarocho.Controllers
         [PermisosRol(entRol.Administrador)]
         public ActionResult Listar(string dato)//listar y buscar
         {
-            List<entProducto> lista;
+            List<entProveedorProducto> lista;
             if (!String.IsNullOrEmpty(dato))
             {
-                lista = logProducto.Instancia.BuscarProducto(dato);
+                lista = logProveedorProducto.Instancia.BuscarProductoAdmin(dato);
             }
             else
             {
-                lista = logProducto.Instancia.ListarProducto();
+                lista = logProveedorProducto.Instancia.ListarProductoAdmin();
             }
             List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
-            var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "nombre");
+            var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
 
             ViewBag.lista = lista;
             ViewBag.listaTipo = lsTipoProducto;
@@ -52,7 +53,7 @@ namespace MadereraCarocho.Controllers
                 lista = logProducto.Instancia.ListarProducto();
             }
             List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
-            var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "nombre");
+            var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
 
             ViewBag.lista = lista;
             ViewBag.listaTipo = lsTipoProducto;
@@ -97,7 +98,7 @@ namespace MadereraCarocho.Controllers
             prod = logProducto.Instancia.BuscarProductoId(idprod);
 
             List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
-            var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "nombre");
+            var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
             ViewBag.listaTipo = lsTipoProducto;
             return View(prod);
         }
@@ -151,12 +152,36 @@ namespace MadereraCarocho.Controllers
         {
             List <entProducto> lista= logProducto.Instancia.Ordenar(dato);
             List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
-            var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "nombre");
+            var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
 
             ViewBag.listaTipo = lsTipoProducto;
             ViewBag.lista = lista;
             return RedirectToAction("Listar");
         }
 
+        //*-*-*
+        [HttpGet]
+        public ActionResult AgregarCarrito(int idProducto)
+        {
+            try
+            {
+                entProducto p = logProducto.Instancia.BuscarProductoId(idProducto);
+                if (p != null)
+                {
+                    entCarrito carrito = new entCarrito();
+                    entUsuario c = Session["Usuario"] as entUsuario;
+                    carrito.Cliente = c;
+                    carrito.Producto = p;
+                    carrito.Cantidad = 0;
+                    carrito.Subtotal = 0;
+                    logCarrito.Instancia.AgregarProductoCarrito(carrito);
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mesjExeption = ex.Message });
+            }
+            return RedirectToAction("Listar");
+        }
     }
 }

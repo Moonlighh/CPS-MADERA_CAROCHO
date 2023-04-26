@@ -10,6 +10,7 @@ using System.Web.Mvc;
 namespace MadereraCarocho.Controllers
 {
     [PermisosRol(entRol.Administrador)]
+    [Authorize]// No puede si es que no esta autorizado
     public class EmpleadoController : Controller
     {
         // GET: Empleado
@@ -100,15 +101,12 @@ namespace MadereraCarocho.Controllers
                 {
                     return RedirectToAction("Listar");
                 }
-                else
-                {
-                    return View(e);
-                }
             }
             catch (ApplicationException ex)
             {
-                return RedirectToAction("Listar", new { mesjExceptio = ex.Message });
+                return RedirectToAction("Error", "Home", new { mesjExceptio = ex.Message });
             }
+            return RedirectToAction("Error", "Home");
         }
 
         [HttpGet]

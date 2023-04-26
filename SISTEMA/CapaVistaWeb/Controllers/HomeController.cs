@@ -111,5 +111,11 @@ namespace MadereraCarocho.Controllers
             return RedirectToAction("Index");
         }
         // Una sesion almacena toda la informacion de un objeto en el lado del servidor
+        
+        [Authorize]
+        public ActionResult Error()
+        {
+            return View();
+        }
     }
 }
