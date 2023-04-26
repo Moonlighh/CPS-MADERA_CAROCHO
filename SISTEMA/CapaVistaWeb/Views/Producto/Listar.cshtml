@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CapaEntidad.entProducto>
+﻿@model IEnumerable<CapaEntidad.entProveedorProducto>
 
 @{
     ViewBag.Title = "Listar";
@@ -24,8 +24,8 @@
                 <li class="dropdown">
                     <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
                     <ul>
-                        <li><a href="/Usuario/ListarAdmin">Administradores</a></li>
-                        <li><a href="/Usuario/ListarCliente">Clientes</a></li>
+                        <li><a href="/Usuario/ListarAdministradores">Administradores</a></li>
+                        <li><a href="/Usuario/ListarClientes">Clientes</a></li>
                         <li><a href="/Usuario/ListarUsuarios">Usuarios</a></li>
                         <li><a href="/Producto/Listar">Productos</a></li>
                         <li><a href="/Proveedor/Listar">Proveedores</a></li>
@@ -54,8 +54,8 @@
     <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModInsertarProducto"><i class="bi bi-plus-square"></i> Agregar Producto</button>
     <hr>
     <!-- Ordenar -->
-    <a onclick="return Ordenar(this)" aria-current="page"  class="btn btn-primary btn-lg" id="ASC" href="Ordenar?dato=1"><i class="bi bi-sort-up"></i></a>
-    <a onclick="return Ordenar(this)" aria-current="page"  class="btn btn-secondary btn-lg" id="DESC" href="Ordenar?dato=0"><i class="bi bi-sort-down"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-primary btn-lg" id="ASC" href="Ordenar?dato=1"><i class="bi bi-sort-up"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-secondary btn-lg" id="DESC" href="Ordenar?dato=0"><i class="bi bi-sort-down"></i></a>
     <hr>
     <!-- Buscar -->
     <form class="d-flex mb-4" role="search" action="Listar" method="POST" id="Bproducto">
@@ -69,24 +69,28 @@
                     ID
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Nombre)
+                    NOMBRE
                 </th>
                 <th>
-                    METRAJE
+                    LONGITUD
                 </th>
                 <th>
                     DIAMETRO
                 </th>
                 <th>
-                    PRE.VENTA
+                    S/. PRE.COMPRA
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Stock)
+                    S/. PRE.VENTA
+                </th>
+                <th>
+                    STOCK
                 </th>
                 <th>
                     TIPO
                 </th>
                 <th>EDITAR</th>
+                <th>AGREGAR</th>
                 <th>ELIMINAR</th>
             </tr>
         </thead>
@@ -95,34 +99,43 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.IdProducto)
+                        @Html.DisplayFor(modelItem => item.Producto.IdProducto)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Nombre)
+                        @Html.DisplayFor(modelItem => item.Producto.Nombre)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Longitud)
+                        @Html.DisplayFor(modelItem => item.Producto.Longitud)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Diametro)
+                        @Html.DisplayFor(modelItem => item.Producto.Diametro)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.PrecioVenta)
+                        @Html.DisplayFor(modelItem => item.PrecioCompra)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Stock)
+                        @Html.DisplayFor(modelItem => item.Producto.PrecioVenta)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Tipo.Nombre)
+                        @Html.DisplayFor(modelItem => item.Producto.Stock)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producto.Tipo.Tipo)
                     </td>
                     <td>
                         <button class="btn btn-warning" type="button">
-                            @Html.ActionLink("Edit", "EditarProducto", new { idprod = item.IdProducto })
+                            @Html.ActionLink("Edit", "EditarProducto", new { idprod = item.Producto.IdProducto })
                             <i class="bi bi-pencil-square"></i>
                         </button>
                     </td>
                     <td>
-                        <a onclick="return Eliminar(this)" href="/Producto/EliminarProducto?idP=@item.IdProducto" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+                        <button class="btn btn-warning" type="button">
+                            @Html.ActionLink("Agregar", "AgregarCarrito", new { idProducto = item.Producto.IdProducto })
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <a onclick="return Eliminar(this)" href="/Producto/EliminarProducto?idP=@item.Producto.IdProducto" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
                     </td>
 
                 </tr>
@@ -176,6 +189,5 @@
         </div>
     </div>
 </div>
-
 
 

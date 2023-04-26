@@ -21,8 +21,8 @@
                 <li class="dropdown">
                     <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
                     <ul>
-                        <li><a href="/Usuario/ListarAdmin">Administradores</a></li>
-                        <li><a href="/Usuario/ListarCliente">Clientes</a></li>
+                        <li><a href="/Usuario/ListarAdministradores">Administradores</a></li>
+                        <li><a href="/Usuario/ListarClientes">Clientes</a></li>
                         <li><a href="/Usuario/ListarUsuarios">Usuarios</a></li>
                         <li><a href="/Producto/Listar">Productos</a></li>
                         <li><a href="/Proveedor/Listar">Proveedores</a></li>
@@ -66,7 +66,7 @@
             </div>
         </div>
 
-        <div class="mb-3 row">
+        <div class="mb-3 row" hidden>
             <label for="staticEmail" class="col-sm-2 col-form-label">IdEmpleado</label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.IdEmpleado, new { htmlAttributes = new { @class = "form-control" } })
@@ -103,14 +103,6 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Direccion, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Direccion, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">fecha inicio</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.F_inicio, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.F_inicio, "", new { @class = "text-danger" })
             </div>
         </div>
 

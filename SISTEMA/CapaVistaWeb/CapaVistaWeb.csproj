@@ -302,16 +302,18 @@
     <Content Include="Views\Home\SinPermisos.cshtml" />
     <Content Include="Views\Proveedor\EditarProveedor.cshtml" />
     <Content Include="Views\Home\Empleado.cshtml" />
-    <Content Include="Views\Usuario\ListarAdmin.cshtml" />
+    <Content Include="Views\Usuario\ListarAdministradores.cshtml" />
     <Content Include="Views\Venta\Detalle.cshtml" />
     <Content Include="Views\Venta\Listar.cshtml" />
     <Content Include="Views\Compra\Index.cshtml" />
     <Content Include="Views\Compra\DetalleCarrito.cshtml" />
     <Content Include="Views\Empleado\EditarEmpleado.cshtml" />
     <Content Include="Views\ProveedorProducto\Listar.cshtml" />
-    <Content Include="Views\Usuario\ListarCliente.cshtml" />
+    <Content Include="Views\Usuario\ListarClientes.cshtml" />
     <Content Include="Views\Usuario\ListarUsuarios.cshtml" />
     <Content Include="Views\Compra\DetalleCompra.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
+    <Content Include="Views\Compra\EditarProductoCarrito.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

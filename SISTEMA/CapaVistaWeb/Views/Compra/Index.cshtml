@@ -26,8 +26,8 @@
                 <li class="dropdown">
                     <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
                     <ul>
-                        <li><a href="/Usuario/ListarAdmin">Administradores</a></li>
-                        <li><a href="/Usuario/ListarCliente">Clientes</a></li>
+                        <li><a href="/Usuario/ListarAdministradores">Administradores</a></li>
+                        <li><a href="/Usuario/ListarClientes">Clientes</a></li>
                         <li><a href="/Usuario/ListarUsuarios">Usuarios</a></li>
                         <li><a href="/Producto/Listar">Productos</a></li>
                         <li><a href="/Proveedor/Listar">Proveedores</a></li>
@@ -66,12 +66,6 @@
                 @Html.DisplayNameFor(model => model.Total)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Proveedor.IdProveedor)
-            </th>
-            <th>
-                Proveedor
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Usuario.IdUsuario)
             </th>
             <th>
@@ -93,12 +87,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Total)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Proveedor.IdProveedor)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Usuario.IdUsuario)
