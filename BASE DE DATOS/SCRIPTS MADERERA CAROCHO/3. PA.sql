@@ -247,7 +247,7 @@ GO
 CREATE OR ALTER PROCEDURE spListarEmpleado
 AS
 BEGIN
-    SELECT e.idEmpleado, e.nombres, e.dni, e.telefono, e.direccion, e.salario, e.descripcion, t.nombre as tipo, u.distrito as distrito FROM EMPLEADO e 
+    SELECT e.idEmpleado, e.nombres, e.dni, e.telefono, e.direccion, e.salario, e.descripcion, t.nombre as tipo, u.distrito as distrito, e.f_fin FROM EMPLEADO e 
     inner join Ubigeo u ON e.idUbigeo = u.idUbigeo
     inner join TIPO_EMPLEADO t ON e.idTipo_Empleado = t.idTipo_Empleado
     WHERE estEmpleado = 1
@@ -354,8 +354,18 @@ GO
 CREATE OR ALTER PROCEDURE spListarProducto
 AS
 BEGIN
-	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.nombre as tipo FROM PRODUCTO p
-	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto;
+	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.tipo FROM PRODUCTO p
+	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto
+END
+GO
+
+CREATE OR ALTER PROCEDURE spListarProductoAdmin
+AS
+BEGIN
+	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, pro.precioCompra, p.precioVenta, p.stock, t.tipo FROM PRODUCTO p
+	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto
+	inner join PROVEEDOR_PRODUCTO pro on pro.idProducto = p.idProducto
+	order by p.nombre;
 END
 GO
 
@@ -364,7 +374,7 @@ CREATE OR ALTER PROCEDURE spBuscarProductoid(
 )
 AS
 BEGIN
-SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.nombre as tipo FROM PRODUCTO p
+SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.tipo FROM PRODUCTO p
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto WHERE p.idProducto = @idProducto;
 END
 GO
@@ -397,9 +407,21 @@ CREATE OR ALTER PROCEDURE spBuscarProducto(
 )
 AS
 BEGIN
-SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.nombre as tipo FROM PRODUCTO p
+SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.tipo FROM PRODUCTO p
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto WHERE p.nombre LIKE '%'+@campo+'%' OR P.longitud LIKE @Campo;
  
+END
+GO
+
+CREATE OR ALTER PROCEDURE spBuscarProductoAdmin(
+	@Campo varchar(40)
+)
+AS
+BEGIN
+	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, pro.precioCompra, p.precioVenta, p.stock, t.tipo FROM PRODUCTO p
+	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto
+	inner join PROVEEDOR_PRODUCTO pro on pro.idProducto = p.idProducto
+	WHERE p.nombre LIKE '%'+@campo+'%' OR P.longitud LIKE @Campo;
 END
 GO
 
@@ -411,15 +433,14 @@ AS
 BEGIN
 
 IF(@dato=1)
-SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.nombre as tipo FROM PRODUCTO p
+SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.tipo FROM PRODUCTO p
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto ORDER BY p.nombre ASC;
 else
 
-	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.nombre as tipo FROM PRODUCTO p
+	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.tipo FROM PRODUCTO p
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto ORDER BY p.nombre DESC;
 END
 GO
-
 --------------------------------------USUARIO
 CREATE OR ALTER PROCEDURE spCrearUsuario(
     @razonSocial varchar(40),
@@ -452,17 +473,19 @@ GO
 CREATE OR ALTER PROCEDURE spListarCliente
 AS
 BEGIN
-	SELECT c.idUsuario,c.razonSocial, c.dni,c.telefono,c.direccion, c.correo, c.userName, c.pass, c.activo, u.departamento, r.descripcion FROM 
+	SELECT c.idUsuario,c.razonSocial, c.dni,c.telefono,c.direccion, c.correo, c.userName, c.activo, u.distrito, r.descripcion FROM 
 	Usuario c inner join UBIGEO u ON c.idUbigeo= u.idUbigeo inner join
-	Rol r ON r.idRol = c.idRol WHERE c.idRol = 2
+	Rol r ON r.idRol = c.idRol 
+	WHERE c.idRol = 2 AND c.activo = 1
 END
 GO
 
-CREATE OR ALTER PROCEDURE spListarClienteAdmin
+CREATE OR ALTER PROCEDURE spListarAdministradores
 AS
 BEGIN
-	SELECT c.idUsuario,c.razonSocial, c.dni,c.telefono,c.direccion,c.userName,c.correo,r.descripcion,c.activo FROM 
-	Usuario c inner join Rol r ON r.idRol = c.idRol WHERE c.idRol=1
+	SELECT a.idUsuario,a.razonSocial, a.dni,a.telefono,a.direccion,a.userName,a.correo,r.descripcion,a.activo FROM 
+	Usuario a inner join Rol r ON r.idRol = a.idRol 
+	WHERE a.idRol=1 AND a.activo = 1
 END
 GO
 
@@ -490,14 +513,52 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spHabilitarUsuario(
+	@idUsuario int
+)
+AS
+BEGIN
+	update USUARIO set activo = 1 where idUsuario = @idUsuario;
+END
+GO
+
+CREATE OR ALTER PROCEDURE spBuscarUsuario(
+	@Campo varchar(40)
+)
+AS
+BEGIN
+	Select *FROM Usuario a
+	inner join ROL r on r.idRol = a.idRol
+	inner join UBIGEO u on u.idUbigeo = a.idUbigeo
+	WHERE razonSocial like @Campo+'%'
+	or dni like @Campo+'%';
+END
+GO
+
 CREATE OR ALTER PROCEDURE spBuscarCliente(
 	@Campo varchar(40)
 )
 AS
 BEGIN
-	Select *FROM Usuario WHERE razonSocial like @Campo+'%'
-	or dni like @Campo+'%'
+	Select *FROM Usuario c
+	inner join ROL r on r.idRol = c.idRol
+	inner join UBIGEO u on u.idUbigeo = c.idUbigeo
+	WHERE razonSocial like @Campo+'%'
+	or dni like @Campo+'%' and c.activo = 1 and c.idRol = 2 ;
 	
+END
+GO
+
+CREATE OR ALTER PROCEDURE spBuscarAdministrador(
+	@Campo varchar(40)
+)
+AS
+BEGIN
+	Select *FROM Usuario a
+	inner join ROL r on r.idRol = a.idRol
+	inner join UBIGEO u on u.idUbigeo = a.idUbigeo
+	WHERE razonSocial like @Campo+'%'
+	or dni like @Campo+'%' and a.activo = 1 and a.idRol = 1;
 END
 GO
 
@@ -578,13 +639,12 @@ CREATE OR ALTER PROCEDURE spCrearCompra(
 	@id int out,
 	@total float,
 	@estado bit,
-	@idProveedor int,
 	@idUsuario int
 )
 AS
 BEGIN TRY
 	BEGIN TRANSACTION
-		INSERT INTO COMPRA (total, estado, idProveedor, idUsuario)values (@total,@estado, @idProveedor, @idUsuario);
+		INSERT INTO COMPRA (total, estado, idUsuario)values (@total,@estado, @idUsuario);
 		Set @id=@@identity;
 	COMMIT TRANSACTION
 END TRY
@@ -597,8 +657,7 @@ GO
 CREATE OR ALTER PROCEDURE spListarCompra
 AS
 BEGIN
-	Select c.idCompra, c.fecha, c.estado, c.total, c.idProveedor, p.razonSocial as proveedor, u.idUsuario, u.razonSocial as comprador FROM COMPRA c 
-	inner join PROVEEDOR p ON p.idProveedor = c.idProveedor
+	Select c.idCompra, c.fecha, c.estado, c.total, u.idUsuario, u.razonSocial as comprador FROM COMPRA c 
 	inner join USUARIO u ON u.idUsuario = c.idUsuario
 END
 GO
@@ -731,3 +790,102 @@ GO
 --	order by count(2) desc; 
 --END
 --GO
+
+
+CREATE OR ALTER PROCEDURE spAgregarProductoCarrito(
+	@idCliente int,
+	@idProducto int,
+	@cantidad int,
+	@subTotal float
+)
+AS
+BEGIN
+	INSERT INTO CARRITO VALUES (@idCliente, @idProducto, @cantidad, @subTotal);
+END
+GO
+
+CREATE OR ALTER PROCEDURE spMostrarCarrito(
+	@idUsuario int
+)
+AS
+BEGIN
+	SELECT p.idProducto, car.idCarrito, p.nombre, p.longitud, p.diametro, tip.tipo, car.cantidad, car.subtotal FROM CARRITO car
+	inner join USUARIO u on car.idCliente = u.idUsuario
+	inner join PRODUCTO p on p.idProducto = p.idProducto
+	inner join TIPO_PRODUCTO tip on tip.idTipo_Producto = p.idTipo_Producto
+	WHERE car.idCliente = @idUsuario and car.idProducto = p.idProducto;
+END
+GO
+
+CREATE OR ALTER PROCEDURE spEditarProductoCarrito(
+	@idCarrito int,
+	@cantidad int,
+	@subtotal int
+)
+AS
+BEGIN
+	UPDATE CARRITO SET CANTIDAD = @cantidad, subtotal = @subtotal
+	WHERE idCarrito = @idCarrito;
+END
+GO
+
+CREATE OR ALTER PROCEDURE spEliminarProductoCarrito(
+	@idProducto int,
+	@idCliente int
+)
+AS
+BEGIN
+	DELETE CARRITO WHERE @idProducto = idProducto and @idCliente = idCliente;
+END
+GO
+
+CREATE OR ALTER TRIGGER tgInsertarCompra
+	on Compra
+after insert
+as
+begin
+	declare @idUsuario int;
+	select @idUsuario = inserted.idUsuario from inserted
+	inner join compra on inserted.idCompra = compra.idCompra;
+	delete from CARRITO where CARRITO.idCliente = @idUsuario;
+end
+go
+
+
+CREATE OR ALTER TRIGGER tgUpdateCompra
+on compra
+after update
+as
+begin
+	declare @estado int
+	declare @idcompra int
+	DECLARE @idc INT
+	declare @idp int
+    DECLARE @stock_origen int
+    DECLARE @stock_destino int
+
+	select @estado=inserted.estado,@idcompra=inserted.idCompra from inserted
+	
+	if @estado = 1
+	begin
+		DECLARE cursor_actualizar CURSOR FOR
+		SELECT idProducto,cantidad
+		FROM DETALLE_COMPRA
+		where idCompra=@idcompra
+
+		OPEN cursor_actualizar
+
+		FETCH NEXT FROM cursor_actualizar INTO @idp, @stock_origen
+
+		WHILE @@FETCH_STATUS = 0
+		BEGIN
+		   UPDATE PRODUCTO
+		   SET stock +=@stock_origen
+		   WHERE idProducto = @idp
+		   FETCH NEXT FROM cursor_actualizar INTO @idp, @stock_origen
+		END
+		CLOSE cursor_actualizar
+		DEALLOCATE cursor_actualizar
+	 end
+end
+go
