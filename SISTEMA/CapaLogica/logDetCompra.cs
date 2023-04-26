@@ -28,20 +28,5 @@ namespace CapaLogica
         }
         #endregion
 
-        #region Carrito de Compras
-        public void AgregarProductoCarrito(entDetCompra det)
-        {
-           datDetCompra.Instancia.AgregarProductoCarrito(det);
-        }
-        public List<entDetCompra> MostrarDetCarrito()
-        {
-            return datDetCompra.Instancia.MostrarDetCarrito();
-        }
-        public bool EliminarDetCarrito(int id)
-        {
-            return datDetCompra.Instancia.EliminarDetCarrito(id);
-        }
-        #endregion Carrito de Compras
-
     }
 }

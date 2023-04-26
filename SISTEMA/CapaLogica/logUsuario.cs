@@ -43,6 +43,10 @@ namespace CapaLogica
         {
             return datUsuario.Instancia.DeshabilitarUsuario(id);
         }
+        public bool HabilitarUsuario(int id)
+        {
+            return datUsuario.Instancia.HabilitarUsuario(id);
+        }
         #endregion
 
         #region Otros
@@ -58,8 +62,6 @@ namespace CapaLogica
         {
             return datUsuario.Instancia.BuscarAdministrador(dato);
         }
-
-
 
 
 
@@ -85,6 +87,7 @@ namespace CapaLogica
                     {
                         if (!u.Activo)
                         {
+                            return u = null;
                             throw new ApplicationException("Usuario ha sido dado de baja");
                         }
 

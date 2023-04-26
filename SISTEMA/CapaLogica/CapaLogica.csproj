@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="logCarrito.cs" />
     <Compile Include="logUsuario.cs" />
     <Compile Include="logCompra.cs" />
     <Compile Include="logDetCompra.cs" />
