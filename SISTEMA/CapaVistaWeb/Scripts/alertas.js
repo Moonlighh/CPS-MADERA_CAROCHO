@@ -136,3 +136,59 @@ function Buscar(opcion) {
         }
     });
 }
+
+function Deshabilitar(opc) {
+    event.preventDefault();
+    Swal.fire({
+        title: '¿Estas seguro?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, quiero deshabilitarlo',
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Deshabilitar!',
+                text: 'Su registro fue deshabilitado',
+                icon: 'success',
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = opc.href;
+                }
+            });
+        }
+    });
+}
+
+function Habilitar(opc) {
+    event.preventDefault();
+    Swal.fire({
+        title: '¿Estas seguro?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, quiero Habilitarlo',
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Habilitar!',
+                text: 'Su registro fue Habilitado',
+                icon: 'success',
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.href = opc.href;
+                }
+            });
+        }
+    });
+}
