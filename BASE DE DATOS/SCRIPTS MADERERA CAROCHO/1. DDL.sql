@@ -1,171 +1,171 @@
 USE MASTER 
 GO
-alter database [BD_PRUEBAS_MADERERA] set single_user with rollback immediate
+AlTER DATABASE [BD_PRUEBAS_MADERERA]  SET SINGLE_USER WITH ROLLBACK IMMEDIATE
 DROP DATABASE [BD_PRUEBAS_MADERERA]
 CREATE DATABASE [BD_PRUEBAS_MADERERA]
 USE [BD_PRUEBAS_MADERERA]
 GO
 
 CREATE TABLE UBIGEO(
-	idUbigeo VARCHAR(6) UNIQUE NOT NULL,
-	departamento varchar(32) DEFAULT NULL,
-	provincia varchar(32) DEFAULT NULL,
-	distrito varchar(32) DEFAULT NULL
+	idUbigeo VARCHAR(6) UNIQUE not null,
+	departamento VARCHAR(32) DEFAULT null,
+	provincia VARCHAR(32) DEFAULT null,
+	distrito VARCHAR(32) DEFAULT null
 )
 GO
 
 CREATE TABLE PROVEEDOR(
-	idProveedor int primary key identity,
-	razonSocial varchar(40) not null,
-	dni varchar(8) not null,
-	correo varchar(40),
-	telefono varchar(9) default null,
-	descripcion varchar (80),
-	estProveedor bit default 1,
+	idProveedor INT PRIMARY KEY IDENTITY,
+	razonSocial VARCHAR(40) not null,
+	dni VARCHAR(8) not null,
+	correo VARCHAR(40),
+	telefono VARCHAR(9) DEFAULT null,
+	descripcion VARCHAR (80),
+	estProveedor BIT DEFAULT 1,
 	idUbigeo VARCHAR(6) null
 
-	constraint fk_Proveedor_Ubigeo foreign key (idUbigeo) references Ubigeo (idUbigeo)
+	CONSTRAINT fk_Proveedor_Ubigeo FOREIGN KEY (idUbigeo) REFERENCES Ubigeo (idUbigeo)
 )
 GO
 
 CREATE TABLE TIPO_PRODUCTO(
-	idTipo_Producto int primary key identity,
-	tipo varchar(30) not null,
+	idTipo_Producto INT PRIMARY KEY IDENTITY,
+	tipo VARCHAR(30) not null,
 )
 GO
 
 CREATE TABLE PRODUCTO(
-	idProducto int primary key identity,
-	nombre varchar(40) not null,
-	longitud float not null,
-	diametro float not null,
-	precioVenta float not null,
-	stock int default 0,
-	idTipo_Producto int not null
+	idProducto INT PRIMARY KEY IDENTITY,
+	nombre VARCHAR(40) not null,
+	longitud FLOAT not null,
+	diametro FLOAT not null,
+	precioVenta FLOAT not null,
+	stock INT DEFAULT 0,
+	idTipo_Producto INT not null
 
-	constraint fk_Producto_Tipo foreign key (idTipo_Producto) references TIPO_PRODUCTO (idTipo_Producto)
+	CONSTRAINT fk_Producto_Tipo FOREIGN KEY (idTipo_Producto) REFERENCES TIPO_PRODUCTO (idTipo_Producto)
 )
 GO
 
 CREATE TABLE PROVEEDOR_PRODUCTO
 (
-  idProvedoor_Producto int primary key identity,
-  idProveedor int not null,
-  idProducto int not null,
-  precioCompra float not null,
+  idProvedoor_Producto INT PRIMARY KEY IDENTITY,
+  idProveedor INT not null,
+  idProducto INT not null,
+  precioCompra FLOAT not null,
  
-  constraint fk_proveedor_producto_producto foreign key (idProducto) references PRODUCTO (idProducto),
-  constraint fk_proveedor_producto_proveedor foreign key (idProveedor) references PROVEEDOR (idProveedor)
+  CONSTRAINT fk_proveedor_producto_producto FOREIGN KEY (idProducto) REFERENCES PRODUCTO (idProducto),
+  CONSTRAINT fk_proveedor_producto_proveedor FOREIGN KEY (idProveedor) REFERENCES PROVEEDOR (idProveedor)
 )
 GO
 
 CREATE TABLE ROL(
-	idRol int primary key identity,
-	descripcion varchar(50)
+	idRol INT PRIMARY KEY IDENTITY,
+	descripcion VARCHAR(50)
 )
 GO
 
 CREATE TABLE TIPO_EMPLEADO(
-	idTipo_Empleado int primary key identity,
-	nombre varchar(30) not null
+	idTipo_Empleado INT PRIMARY KEY IDENTITY,
+	nombre VARCHAR(30) not null
 )
 GO
 
 CREATE TABLE EMPLEADO(
-    idEmpleado int primary key identity,
-    nombres varchar(50) not null,
-    dni varchar(8) not null,
-    telefono varchar(9) default null,
-    direccion varchar(60) null,
-    f_inicio datetime default getdate(),
-    f_fin date default getdate(),
-    salario float,
-    descripcion varchar(50),
-    estEmpleado bit default 1,
-    idTipo_Empleado int null,
+    idEmpleado INT PRIMARY KEY IDENTITY,
+    nombres VARCHAR(50) not null,
+    dni VARCHAR(8) not null,
+    telefono VARCHAR(9) DEFAULT null,
+    direccion VARCHAR(60) null,
+    f_inicio DATETIME DEFAULT GETDATE(),
+    f_fin DATE DEFAULT GETDATE(),
+    salario FLOAT,
+    descripcion VARCHAR(50),
+    estEmpleado BIT DEFAULT 1,
+    idTipo_Empleado INT null,
     idUbigeo VARCHAR(6) null
 
 
-    constraint fk_EMPLEADO_TIPO foreign key (idTipo_Empleado) references TIPO_EMPLEADO (idTipo_Empleado),
-    constraint fk_EMPLEADO_UBIGEO foreign key (idUbigeo) references Ubigeo (idUbigeo),
+    CONSTRAINT fk_EMPLEADO_TIPO FOREIGN KEY (idTipo_Empleado) REFERENCES TIPO_EMPLEADO (idTipo_Empleado),
+    CONSTRAINT fk_EMPLEADO_UBIGEO FOREIGN KEY (idUbigeo) REFERENCES Ubigeo (idUbigeo),
 )
 GO
 
 CREATE TABLE USUARIO(
-	idUsuario int primary key identity,
-	razonSocial varchar(40) not null,
-	dni varchar(8) not null,
-	telefono varchar(9),
-	direccion varchar(60),
+	idUsuario INT PRIMARY KEY IDENTITY,
+	razonSocial VARCHAR(40) not null,
+	dni VARCHAR(8) not null,
+	telefono VARCHAR(9),
+	direccion VARCHAR(60),
 	idUbigeo VARCHAR(6),
-	fecCreacion datetime default getdate(),
-	correo varchar(40),
-	userName varchar (20) not null,
-	pass varchar(200) null,
-	idRol int,
-	activo bit default 1,
+	fecCreacion DATETIME DEFAULT GETDATE(),
+	correo VARCHAR(40),
+	userName VARCHAR (20) not null,
+	pass VARCHAR(200) null,
+	idRol INT,
+	activo BIT DEFAULT 1,
 
-	constraint fk_Usuario_Ubigeo foreign key (idUbigeo) references Ubigeo (idUbigeo),
-	constraint fk_Usuario_rol foreign key(idRol) references Rol (idRol)
+	CONSTRAINT fk_Usuario_Ubigeo FOREIGN KEY (idUbigeo) REFERENCES Ubigeo (idUbigeo),
+	CONSTRAINT fk_Usuario_rol FOREIGN KEY(idRol) REFERENCES Rol (idRol)
 )
 GO
 
 CREATE TABLE CARRITO(
-	idCarrito int primary key identity,
-	idCliente int,
-	idProducto int,
-	cantidad int,
-	subtotal float,
-	constraint fk_Carrito_Cliente foreign key (idCliente) references Usuario (idUsuario),
-	constraint fk_Carrito_Producto foreign key (idProducto) references Producto (idProducto)
+	idCarrito INT PRIMARY KEY IDENTITY,
+	idCliente INT,
+	idProducto INT,
+	cantidad INT,
+	subtotal FLOAT,
+	CONSTRAINT fk_Carrito_Cliente FOREIGN KEY (idCliente) REFERENCES Usuario (idUsuario),
+	CONSTRAINT fk_Carrito_Producto FOREIGN KEY (idProducto) REFERENCES Producto (idProducto)
 )
 GO
 
 CREATE TABLE VENTA(
-	idVenta int primary key identity,
-	fecha datetime default getdate(),
-	total float not null,
-	estado bit default 1,-- 0 En espera 1 Pagado
-	idUsuario int not null
+	idVenta INT PRIMARY KEY IDENTITY,
+	fecha DATETIME DEFAULT GETDATE(),
+	total FLOAT not null,
+	estado BIT DEFAULT 1,-- 0 En espera 1 Pagado
+	idUsuario INT not null
 
-	constraint fk_Venta_Cliente foreign key (idUsuario) references USUARIO (idUsuario)
+	CONSTRAINT fk_Venta_Cliente FOREIGN KEY (idUsuario) REFERENCES USUARIO (idUsuario)
 )
 GO
 
 CREATE TABLE DETALLE_VENTA(
-	idDetVenta int identity,
-	idVenta int not null,
-	idProducto int not null,
-	cantidad int not null,
-	subTotal float not null
+	idDetVenta INT IDENTITY,
+	idVenta INT not null,
+	idProducto INT not null,
+	cantidad INT not null,
+	subTotal FLOAT not null
 	
-	constraint pk_detVenta primary key (idDetVenta), 
-	constraint fk_detVenta_Venta foreign key (idVenta) references VENTA (idVenta),
-	constraint fk_detVenta_Producto foreign key (idProducto) references PRODUCTO (idProducto)
+	CONSTRAINT pk_detVenta PRIMARY KEY (idDetVenta), 
+	CONSTRAINT fk_detVenta_Venta FOREIGN KEY (idVenta) REFERENCES VENTA (idVenta),
+	CONSTRAINT fk_detVenta_Producto FOREIGN KEY (idProducto) REFERENCES PRODUCTO (idProducto)
 )
 GO
 
 CREATE TABLE COMPRA(
-	idCompra int primary key identity,
-	fecha date default getdate(),
-	total float not null,
-	estado bit default 0,-- 0 En espera 1 Pagado
-	idUsuario int not null
+	idCompra INT PRIMARY KEY IDENTITY,
+	fecha DATE DEFAULT GETDATE(),
+	total FLOAT not null,
+	estado BIT DEFAULT 0,-- 0 En espera 1 Pagado
+	idUsuario INT not null
 
-	constraint fk_Compra_Usuario foreign key (idUsuario) references USUARIO (idUsuario)
+	CONSTRAINT fk_Compra_Usuario FOREIGN KEY (idUsuario) REFERENCES USUARIO (idUsuario)
 )
 GO
 
 CREATE TABLE DETALLE_COMPRA(
-	idDetCompra int identity,
-	idCompra int not null,
-	idProducto int not null,
-	cantidad int not null,
-	subTotal float not null
+	idDetCompra INT IDENTITY,
+	idCompra INT not null,
+	idProducto INT not null,
+	cantidad INT not null,
+	subTotal FLOAT not null
 
-	constraint pk_detCompra primary key (idDetCompra),
-	constraint fk_detCompra_Compra foreign key (idCompra) references COMPRA (idCompra),
-	constraint fk_detCompra_Producto foreign key (idProducto) references PRODUCTO (idProducto)
+	CONSTRAINT pk_detCompra PRIMARY KEY (idDetCompra),
+	CONSTRAINT fk_detCompra_Compra FOREIGN KEY (idCompra) REFERENCES COMPRA (idCompra),
+	CONSTRAINT fk_detCompra_Producto FOREIGN KEY (idProducto) REFERENCES PRODUCTO (idProducto)
 )
 GO
 

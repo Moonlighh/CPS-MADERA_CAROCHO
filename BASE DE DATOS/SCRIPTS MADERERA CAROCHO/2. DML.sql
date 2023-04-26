@@ -2020,9 +2020,6 @@ INSERT INTO PROVEEDOR_PRODUCTO VALUES
 	(15,51,0.2),
 	(15,56,1);
 GO
- --SELECT prov.idProveedor,prov.razonSocial,prov.descripcion,p.idproducto,prod.nombre,prod.longitud,p.precioCompra
- --FROM PROVEEDOR PROV INNER JOIN PROVEEDOR_PRODUCTO P ON PROV.idProveedor=P.idProveedor
- --inner join PRODUCTO prod on p.idproducto=prod.idProducto
 
 --INSERT ROL
 INSERT INTO ROL VALUES
