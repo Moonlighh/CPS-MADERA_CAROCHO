@@ -30,7 +30,7 @@ GO
 
 CREATE TABLE TIPO_PRODUCTO(
 	idTipo_Producto int primary key identity,
-	nombre varchar(30) not null,
+	tipo varchar(30) not null,
 )
 GO
 
@@ -54,7 +54,6 @@ CREATE TABLE PROVEEDOR_PRODUCTO
   idProducto int not null,
   precioCompra float not null,
  
-
   constraint fk_proveedor_producto_producto foreign key (idProducto) references PRODUCTO (idProducto),
   constraint fk_proveedor_producto_proveedor foreign key (idProveedor) references PROVEEDOR (idProveedor)
 )
@@ -78,7 +77,7 @@ CREATE TABLE EMPLEADO(
     dni varchar(8) not null,
     telefono varchar(9) default null,
     direccion varchar(60) null,
-    f_inicio date default getdate(),
+    f_inicio datetime default getdate(),
     f_fin date default getdate(),
     salario float,
     descripcion varchar(50),
@@ -111,6 +110,17 @@ CREATE TABLE USUARIO(
 )
 GO
 
+CREATE TABLE CARRITO(
+	idCarrito int primary key identity,
+	idCliente int,
+	idProducto int,
+	cantidad int,
+	subtotal float,
+	constraint fk_Carrito_Cliente foreign key (idCliente) references Usuario (idUsuario),
+	constraint fk_Carrito_Producto foreign key (idProducto) references Producto (idProducto)
+)
+GO
+
 CREATE TABLE VENTA(
 	idVenta int primary key identity,
 	fecha datetime default getdate(),
@@ -139,11 +149,9 @@ CREATE TABLE COMPRA(
 	idCompra int primary key identity,
 	fecha date default getdate(),
 	total float not null,
-	estado bit,-- 0 En espera 1 Pagado
-	idProveedor int not null,
+	estado bit default 0,-- 0 En espera 1 Pagado
 	idUsuario int not null
 
-	constraint fk_Compra_Proveedor foreign key (idProveedor) references PROVEEDOR (idProveedor),
 	constraint fk_Compra_Usuario foreign key (idUsuario) references USUARIO (idUsuario)
 )
 GO
