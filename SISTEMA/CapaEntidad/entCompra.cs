@@ -12,7 +12,6 @@ namespace CapaEntidad
         private DateTime fecha;
         private double total;
         private bool estado;
-        private entProveedor proveedor;
         private entUsuario usuario;
 
         #region Get and Set
@@ -34,11 +33,6 @@ namespace CapaEntidad
         {
             get { return estado; }
             set { estado = value; }
-        }
-        public entProveedor Proveedor
-        {
-            get { return proveedor; }
-            set { proveedor = value; }
         }
         public entUsuario Usuario
         {
