@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Text;
 using System.Web.Security;//FormsAutenticathion
 using MadereraCarocho.Permisos;//Para los permisos
+using System.Collections;
 
 namespace MadereraCarocho.Controllers
 {
@@ -74,36 +75,49 @@ namespace MadereraCarocho.Controllers
             {
                 if (cpassword == cpassconfirm)
                 {
-                    entUsuario c = new entUsuario();
-                    c.RazonSocial = cNombre;
-                    c.Dni = cdni;
-                    c.Telefono = ctelefono;
-                    c.Direccion = cdireccion;
-                    c.Ubigeo = new entUbigeo();
-                    c.Ubigeo.IdUbigeo = frmub["cUbi"].ToString();
-                    c.UserName = cusername;
-                    c.Correo = ccorreo;
-                    c.Pass = cpassword;
-                    entRoll rol = new entRoll();
-                    rol.IdRoll = 2;
-                    c.Roll = rol;
-                    bool creado = logUsuario.Instancia.CrearCliente(c);
-                    if (creado)
+                    entRoll rol = new entRoll
+                    {
+                        IdRoll = 2
+                    };
+                    entUbigeo u = new entUbigeo { 
+                        IdUbigeo = frmub["cUbi"].ToString() 
+                    };
+                    entUsuario c = new entUsuario
+                    {
+                        RazonSocial = cNombre,
+                        Dni = cdni,
+                        Telefono = ctelefono,
+                        Direccion = cdireccion,
+                        UserName = cusername,
+                        Correo = ccorreo,
+                        Pass = cpassword,
+                        Roll = rol
+                    };
+                    List<string> errores = new List<string>();
+                    bool creado = logUsuario.Instancia.CrearCliente(c, out errores);
+                    if (creado == true && errores.Count == 0)
                     {
                         return RedirectToAction("Index");
                     }
                     else
                     {
-                        ViewBag.Error = "No se pudo crear";
+                        foreach (var error in errores)
+                        {
+                            TempData["Error"] += error;
+                        }
+                        return RedirectToAction("Error");
                     } 
+                }
+                else
+                {
+                    return RedirectToAction("Error", "Home", new { Informacion = "Las contras no coinciden" });
                 }
             }
             catch (Exception ex)
             {
-                return RedirectToAction("ListarAdmin", new { mesjExeption = ex.Message });
+                return RedirectToAction("Error", "Home", new { mesjExeption = ex.Message });
             }
-            return RedirectToAction("ListarAdmin");
-        }       
+        }
         public ActionResult CerrarSesion()
         {
             Session["Usuario"] = null;// Terminar la sesión
@@ -111,10 +125,11 @@ namespace MadereraCarocho.Controllers
             return RedirectToAction("Index");
         }
         // Una sesion almacena toda la informacion de un objeto en el lado del servidor
-        
-        [Authorize]
         public ActionResult Error()
         {
+            string mensaje = TempData["Error"] as string;
+            TempData["Error"] = null; // Limpiar el mensaje de error de la TempData
+            ViewBag.Error = mensaje;
             return View();
         }
     }

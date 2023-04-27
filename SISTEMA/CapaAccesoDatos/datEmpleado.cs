@@ -86,6 +86,7 @@ namespace CapaAccesoDatos
                         Direccion = dr["direccion"].ToString(),
                         Salario = Convert.ToDouble(dr["salario"]),
                         Descripcion = dr["descripcion"].ToString(),
+                        F_inicio = Convert.ToDateTime(dr["f_inicio"]),
                         F_fin = Convert.ToDateTime(dr["f_fin"]),
                         Tipo = tipo,
                         Ubigeo = ubi

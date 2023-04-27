@@ -163,23 +163,27 @@ namespace CapaAccesoDatos
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
                 cmd = new SqlCommand("spBuscarProducto", cn);
-                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Campo", busqueda);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cn.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    entProducto Prod = new entProducto();
-                    Prod.IdProducto = Convert.ToInt32(dr["idproducto"]);
-                    Prod.Nombre = dr["nombre"].ToString();
-                    Prod.Longitud = Convert.ToDouble(dr["longitud"]);
-                    Prod.Diametro = Convert.ToDouble(dr["diametro"]);
-                    Prod.PrecioVenta = Convert.ToDouble(dr["precioVenta"]);
-                    Prod.Stock = Convert.ToInt32(dr["stock"]);
-                    entTipoProducto tipo = new entTipoProducto();
-                    tipo.IdTipo_producto = Convert.ToInt32(dr["idTipo_producto"]);
-                    tipo.Tipo = dr["tipo"].ToString();
-                    Prod.Tipo = tipo;
+                    entTipoProducto tipo = new entTipoProducto
+                    {
+                        IdTipo_producto = Convert.ToInt32(dr["idTipo_Producto"]),
+                        Tipo = dr["tipo"].ToString()
+                    };
+                    entProducto Prod = new entProducto
+                    {
+                        IdProducto = Convert.ToInt32(dr["idProducto"]),
+                        Nombre = dr["nombre"].ToString(),
+                        Longitud = Convert.ToDouble(dr["longitud"]),
+                        Diametro = Convert.ToDouble(dr["diametro"]),
+                        PrecioVenta = Convert.ToDouble(dr["precioVenta"]),
+                        Stock = Convert.ToInt32(dr["stock"]),
+                        Tipo = tipo
+                    };
                     lista.Add(Prod);
                 }
             }

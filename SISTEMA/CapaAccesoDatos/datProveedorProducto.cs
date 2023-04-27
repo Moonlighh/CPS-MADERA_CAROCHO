@@ -121,20 +121,19 @@ namespace CapaAccesoDatos
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
                 cmd = new SqlCommand("spBuscarProductoAdmin", cn);
-                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Campo", busqueda);
+                cmd.CommandType = CommandType.StoredProcedure;
                 cn.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
                     entTipoProducto tipo = new entTipoProducto
                     {
-                        IdTipo_producto = Convert.ToInt32(dr["idTipo_producto"]),
                         Tipo = dr["tipo"].ToString()
                     };
-                    entProducto Prod = new entProducto
+                    entProducto producto = new entProducto
                     {
-                        IdProducto = Convert.ToInt32(dr["idproducto"]),
+                        IdProducto = Convert.ToInt32(dr["idProducto"]),
                         Nombre = dr["nombre"].ToString(),
                         Longitud = Convert.ToDouble(dr["longitud"]),
                         Diametro = Convert.ToDouble(dr["diametro"]),
@@ -145,6 +144,7 @@ namespace CapaAccesoDatos
                     entProveedorProducto prov = new entProveedorProducto
                     {
                         PrecioCompra = Convert.ToDouble(dr["precioCompra"]),
+                        Producto = producto
                     };
 
                     lista.Add(prov);

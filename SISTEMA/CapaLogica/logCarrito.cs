@@ -28,6 +28,9 @@ namespace CapaLogica
         }
         public bool EditarProductoCarrito(entCarrito car)
         {
+            logProveedorProducto obj = new logProveedorProducto();
+            //double subTotal 
+
             return datCarrito.Instancia.EditarProductoCarrito(car);
         }
         public bool EliminarProductoCarrito(int idProducto, int idCliente)

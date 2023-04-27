@@ -168,13 +168,23 @@ namespace MadereraCarocho.Controllers
                 entProducto p = logProducto.Instancia.BuscarProductoId(idProducto);
                 if (p != null)
                 {
-                    entCarrito carrito = new entCarrito();
                     entUsuario c = Session["Usuario"] as entUsuario;
-                    carrito.Cliente = c;
-                    carrito.Producto = p;
-                    carrito.Cantidad = 0;
-                    carrito.Subtotal = 0;
-                    logCarrito.Instancia.AgregarProductoCarrito(carrito);
+                    entCarrito objCarrrito = logCarrito.Instancia.MostrarDetCarrito(c.IdUsuario).Where(car => car.Producto.IdProducto == p.IdProducto).FirstOrDefault();
+                    if (objCarrrito == null)
+                    {
+                        entCarrito carrito = new entCarrito();
+                        entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.Producto.IdProducto == p.IdProducto).FirstOrDefault();
+                        carrito.Cliente = c;
+                        carrito.Producto = p;
+                        carrito.Cantidad = 1;
+                        carrito.Subtotal = (1 * detalle.PrecioCompra);
+                        logCarrito.Instancia.AgregarProductoCarrito(carrito);
+                    }
+                    else
+                    {
+                        TempData["Error"] = "No puedes agregar el mismo producto dos veces";
+                        return RedirectToAction("Error", "Home");
+                    }
                 }
             }
             catch (Exception ex)

@@ -133,6 +133,10 @@ namespace MadereraCarocho.Controllers
             {
                 entUsuario u = Session["Usuario"] as entUsuario;
                 entCarrito carrito = logCarrito.Instancia.MostrarDetCarrito(u.IdUsuario).Where(c => c.IdCarrito == idCarrito).FirstOrDefault();
+
+                entProducto prod = logProducto.Instancia.BuscarProductoId(carrito.Producto.IdProducto);
+
+                carrito.Producto = prod;
                 return View(carrito);
             }
             catch (Exception e)
@@ -142,11 +146,17 @@ namespace MadereraCarocho.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditarProductoCarrito(entCarrito c, FormCollection frm)
+        public ActionResult EditarProductoCarrito(entCarrito c)
         {
             try
             {
+                entUsuario u = Session["Usuario"] as entUsuario;
+                entCarrito carrito = logCarrito.Instancia.MostrarDetCarrito(u.IdUsuario).Where(x => x.IdCarrito == c.IdCarrito).FirstOrDefault();
 
+                entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.Producto.IdProducto == carrito.Producto.IdProducto).FirstOrDefault();
+               
+                
+                c.Subtotal = c.Cantidad * detalle.PrecioCompra;
                 bool edita = logCarrito.Instancia.EditarProductoCarrito(c);
                 if (edita)
                 {

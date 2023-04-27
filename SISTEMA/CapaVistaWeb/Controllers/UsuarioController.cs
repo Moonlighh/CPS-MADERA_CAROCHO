@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -87,27 +88,38 @@ namespace MadereraCarocho.Controllers
             {
                 if (cpassword == cpassconfirm)
                 {
-                    entUsuario c = new entUsuario();
-                    c.RazonSocial = cNombre;
-                    c.Dni = cdni;
-                    c.Telefono = ctelefono;
-                    c.Direccion = cdireccion;
-                    c.Ubigeo = new entUbigeo();
-                    c.Ubigeo.IdUbigeo = frmub["cUbi"].ToString();
-                    c.UserName = cusername;
-                    c.Correo = ccorreo;
-                    c.Pass = cpassword;
-                    entRoll rol = new entRoll();
-                    rol.IdRoll = 2;
-                    c.Roll = rol;
-                    bool creado = logUsuario.Instancia.CrearCliente(c);
-                    if (creado)
+                    entRoll rol = new entRoll
                     {
-                        return RedirectToAction("ListarUsuarios");
+                        IdRoll = 2
+                    };
+                    entUbigeo u = new entUbigeo
+                    {
+                        IdUbigeo = frmub["cUbi"].ToString()
+                    };
+                    entUsuario c = new entUsuario
+                    {
+                        RazonSocial = cNombre,
+                        Dni = cdni,
+                        Telefono = ctelefono,
+                        Direccion = cdireccion,
+                        UserName = cusername,
+                        Correo = ccorreo,
+                        Pass = cpassword,
+                        Roll = rol
+                    };
+                    List<string> errores = new List<string>();
+                    bool creado = logUsuario.Instancia.CrearCliente(c, out errores);
+                    if (creado == true && errores.Count == 0)
+                    {
+                        return RedirectToAction("Index");
                     }
                     else
                     {
-                        return RedirectToAction("Error", "Home", new { Informacion = "No se pudo crear la cuenta" });
+                        foreach (var error in errores)
+                        {
+                            TempData["Error"] += error + "\n";
+                        }
+                        return RedirectToAction("Error", "Home");
                     }
                 }
                 else
@@ -120,7 +132,6 @@ namespace MadereraCarocho.Controllers
             {
                 return RedirectToAction("Error", "Home", new { mesjExeption = ex.Message });
             }
-            return RedirectToAction("ListarUsuarios");
         }
         [HttpGet]
         public ActionResult HabilitarUsuario(int idU)

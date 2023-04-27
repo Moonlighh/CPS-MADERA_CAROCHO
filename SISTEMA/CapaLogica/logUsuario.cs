@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.ComponentModel.DataAnnotations;//Validaciones
 
 namespace CapaLogica
 {
@@ -18,14 +19,15 @@ namespace CapaLogica
         }
 
         #region CRUD
-        public bool CrearCliente(entUsuario c)
+        public bool CrearCliente(entUsuario user, out List<string> lsErrores)
         {
-            if (string.IsNullOrEmpty(c.UserName) || string.IsNullOrEmpty(c.Correo))
+            bool isValid = ValidationHelper.TryValidateEntity(user, out lsErrores);
+            if (!isValid)
             {
                 return false;
             }
-            c.Pass = logRecursos.GetSHA256(c.Pass);
-            return datUsuario.Instancia.CrearCliente(c);
+            user.Pass = logRecursos.GetSHA256(user.Pass);
+            return datUsuario.Instancia.CrearCliente(user);
         }
         public List<entUsuario> ListarUsuarios()
         {

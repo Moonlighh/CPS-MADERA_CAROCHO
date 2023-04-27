@@ -4,6 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@{
+    var urlReferrer = Request.UrlReferrer;
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 <!-- ======= Header index ======= -->
 <header id="header" class="fixed-top d-flex align-items-center">
     <div class="container d-flex align-items-center justify-content-between">
@@ -37,7 +41,28 @@
     <br>
     <br>
     <br>
-    <center><h1>PRODUJO UN ERROR AL INTENTAR REALIZAR LA ACCION</h1></center>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card bg-danger text-white">
+                    <div class="card-header text-center">
+                        <h1><i class="fas fa-sad-tear fa-3x mr-3"></i>¡Oh no! Hubo un error.</h1>
+                    </div>
+                    <div class="card-body">
+                        @if (!String.IsNullOrEmpty(ViewBag.Error))
+                        {
+                            <p class="lead">@ViewBag.Error</p>
+                        }
+                        <p>Lo sentimos, algo salió mal durante el proceso. Por favor, inténtalo de nuevo más tarde.</p>
+                        @if (urlReferrer != null)
+                        {
+                            <button onclick="location.href='@urlReferrer'">Volver</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <br>
     <br>
     <br>
