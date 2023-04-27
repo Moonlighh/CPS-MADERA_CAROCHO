@@ -1,5 +1,7 @@
-USE BD_PRUEBAS_MADERERA
 ----------------------------------------INSERCION--------------------------------------------------
+USE BD_PRUEBAS_MADERERA
+GO
+
 --INSERT UBIGEO
 INSERT INTO UBIGEO VALUES
 	('010101', 'Amazonas', 'Chachapoyas', 'Chachapoyas'),
@@ -1931,8 +1933,8 @@ INSERT INTO PRODUCTO  (nombre,longitud,diametro,precioVenta, idTipo_Producto) VA
 	('PARADOR(2X1)',2,2,1,1),
 	('PARANTILLO',2,1.5,0.5,1),
 	('TORCIDOS',1.50,1.5,1,1)
-GO
-	
+GO	
+
 --INSERT  PROVEEDOR_PRODUCTO
 INSERT INTO PROVEEDOR_PRODUCTO VALUES 
 	(1,1,20),
@@ -2021,6 +2023,21 @@ INSERT INTO PROVEEDOR_PRODUCTO VALUES
 	(15,56,1);
 GO
 
+--INSERT TIPO EMPLEADO
+INSERT INTO TIPO_EMPLEADO VALUES
+	('AYUDANTE'),
+	('CONDUCTOR'),
+	('OPERARIO');
+GO
+
+--INSERT EMPLEADO
+INSERT INTO EMPLEADO (nombres, dni, telefono, direccion, salario, descripcion, estEmpleado, idTipo_Empleado, idUbigeo) VALUES
+	('VLADIMIRO MONTESINOS', '74253221', '946832167', 'Mz20Lote34-Av. Ricardo Palma', 1300.50, 'COVID', 1, 1,'080304'),
+	('TONGO GIGANTE', '74319122', '941832131', 'Mz20Lote34-Av. CIELO',1200.50, 'CANCER', 1, 2, '080304'),
+	('ALAN GARCIA', '74352133', '946892141', 'Mz20Lote34-Av. LA LUNA',2500.50, 'TIFOIDEA', 1, 3, '080304'),
+	('HOMERO SIMPSON', '71399144', '941832151', 'Mz20Lote34-Av. EL SOL',1300.58, 'FIEBRE', 1, 2, '080304');
+GO
+
 --INSERT ROL
 INSERT INTO ROL VALUES
 	('ADMINISTRADOR'),
@@ -2034,18 +2051,4 @@ INSERT INTO USUARIO(razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,
 	('omar', '70790019', '933423291', 'santiago mariños 1618', '010109','omar@gmail.com','omar#345','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1),
 	('ximena', '58791234', '999067966', 'MZA. 1-A LOTE. 3', '120102','ximena@gmailcom','ximena#167','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',2),
 	('daniel', '74399141','913423491','Mz20Lote34-Av.5556',  '010109','daniel@gmail.com','daniel#222','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',2);
-GO
-
---INSERT TIPO EMPLEADO
-INSERT INTO TIPO_EMPLEADO VALUES
-	('AYUDANTE'),
-	('CONDUCTOR'),
-	('OPERARIO');
-GO
---INSERT EMPLEADO
-INSERT INTO EMPLEADO (nombres, dni, telefono, direccion, salario, descripcion, estEmpleado, idTipo_Empleado, idUbigeo) VALUES
-	('VLADIMIRO MONTESINOS', '74253221', '946832167', 'Mz20Lote34-Av. Ricardo Palma', 1300.50, 'COVID', 1, 1,'080304'),
-	('TONGO GIGANTE', '74319122', '941832131', 'Mz20Lote34-Av. CIELO',1200.50, 'CANCER', 1, 2, '080304'),
-	('ALAN GARCIA', '74352133', '946892141', 'Mz20Lote34-Av. LA LUNA',2500.50, 'TIFOIDEA', 1, 3, '080304'),
-	('HOMERO SIMPSON', '71399144', '941832151', 'Mz20Lote34-Av. EL SOL',1300.58, 'FIEBRE', 1, 2, '080304');
 GO
