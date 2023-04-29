@@ -132,7 +132,6 @@ namespace CapaAccesoDatos
         public bool EliminarProducto(int id)
         {
             SqlCommand cmd = null;
-            bool eliminado = false;
             try
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
@@ -141,17 +140,19 @@ namespace CapaAccesoDatos
                 cmd.Parameters.AddWithValue("@idProducto", id);
                 cn.Open();
                 int i = cmd.ExecuteNonQuery();
-                if (i > 0)
-                {
-                    eliminado = true;
-                }
+                return i > 0;
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                throw new Exception("ProductoReferenciadoException", e);
             }
-            finally { cmd.Connection.Close(); }
-            return eliminado;
+            finally
+            {
+                if (cmd != null)
+                {
+                    cmd.Connection.Close();
+                }
+            }
         }
         #endregion CRUD
 
@@ -238,16 +239,16 @@ namespace CapaAccesoDatos
             }
             return lista;
         }
-        public entProducto BuscarProductoId(int idprod)
+        public entProducto BuscarProductoId(int idProd)
         {
             SqlCommand cmd = null;
             entProducto Prod = new entProducto();
             try
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spBuscarProductoid", cn);
+                cmd = new SqlCommand("spBuscarProductoId", cn);
+                cmd.Parameters.AddWithValue("@idProducto", idProd);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@idProducto", idprod);
                 cn.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
@@ -264,9 +265,10 @@ namespace CapaAccesoDatos
                     Prod.Tipo = tipo;
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return null;
+                Prod = null;
+                throw new Exception("El producto no se encontro", ex);
             }
             finally { 
                 cmd.Connection.Close(); 

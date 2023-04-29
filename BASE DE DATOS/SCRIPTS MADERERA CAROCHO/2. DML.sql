@@ -1845,21 +1845,21 @@ GO
 
 --INSERT PROVEEDOR
 INSERT INTO PROVEEDOR VALUES
-	('Juan SAC', '73359111', 'juan@jn.pe', '943423491',  'Proveedor de VIGA', 1, '010109'),
-	('Carmen SAC', '71359112', 'carmen@crm.pe', '943423492',  'Proveedor de SUPER ', 1, '010109'),
-	('keyla SAC ', '72759138', 'keyla@ky.pe', '943423493',  'Proveedor de MANDALLON', 1, '010109'),
-	('Antonio SAC', '78359114', 'antonio@ant.pe', '943423594',  'Proveedor de MANDANA', 1, '010109'),
-	('Luis SAC' , '79359119', 'luis@ls.pe', '943423495',  'Proveedor de MANDANILLA', 1, '010109'),
-	('Angel SAC' , '79359120', 'angel@an.pe', '943423496',  'Proveedor de VARA', 1, '010109'),
-	('Deniss SAC' , '79359121', 'deniss@dss.pe', '943423497',  'Proveedor de VARA PAQUETE', 1, '010109'),
-	('Nixi SAC' , '79359122', 'nixi@nx.pe', '943423498',  'Proveedor de CHACLA', 1, '010109'),
-	('Michael SAC' , '79359123', 'michael@mc.pe', '943423699',  'Proveedor de POSTES', 1, '010109'),
-	('Macarena SAC' , '79359124', 'macarena@mac.pe', '943523497',  'Proveedor de PARANTE', 1, '010109'),
-	('Jazmin SAC' , '79359125', 'jazmin@jz.pe', '943426495',  'Proveedor de PARANTE(2X1)', 1, '010109'),
-	('Rambo SAC' , '79359126', 'rambo@rmb.pe', '943428497',  'Proveedor de PARADOR', 1, '010109'),
-	('SAC SAC' , '79359127', 'sac@sac.pe', '944423497',  'Proveedor de PARADOR(2X1)', 1, '010109'),
-	('jack SAC' , '79359128', 'jack@jk.pe', '945423497',  'Proveedor de PARANTILLO', 1, '010109'),
-	('orlando SAC' , '79359129', 'orlando@or.pe', '943623497',  'Proveedor de PELO', 1, '010109');
+	('Juan SAC', '73359111', 'juan@jn.pe', '943423491',  'Proveedor de VIGA', 1, '010110'),
+	('Carmen SAC', '71359112', 'carmen@crm.pe', '943423492',  'Proveedor de SUPER ', 1, '010111'),
+	('keyla SAC ', '72759138', 'keyla@ky.pe', '943423493',  'Proveedor de MANDALLON', 1, '010112'),
+	('Antonio SAC', '78359114', 'antonio@ant.pe', '943423594',  'Proveedor de MANDANA', 1, '010113'),
+	('Luis SAC' , '79359119', 'luis@ls.pe', '943423495',  'Proveedor de MANDANILLA', 1, '010114'),
+	('Angel SAC' , '79359120', 'angel@an.pe', '943423496',  'Proveedor de VARA', 1, '010115'),
+	('Deniss SAC' , '79359121', 'deniss@dss.pe', '943423497',  'Proveedor de VARA PAQUETE', 1, '010116'),
+	('Nixi SAC' , '79359122', 'nixi@nx.pe', '943423498',  'Proveedor de CHACLA', 1, '010117'),
+	('Michael SAC' , '79359123', 'michael@mc.pe', '943423699',  'Proveedor de POSTES', 1, '010118'),
+	('Macarena SAC' , '79359124', 'macarena@mac.pe', '943523497',  'Proveedor de PARANTE', 1, '010110'),
+	('Jazmin SAC' , '79359125', 'jazmin@jz.pe', '943426495',  'Proveedor de PARANTE(2X1)', 1, '010110'),
+	('Rambo SAC' , '79359126', 'rambo@rmb.pe', '943428497',  'Proveedor de PARADOR', 1, '010110'),
+	('SAC SAC' , '79359127', 'sac@sac.pe', '944423497',  'Proveedor de PARADOR(2X1)', 1, '010110'),
+	('jack SAC' , '79359128', 'jack@jk.pe', '945423497',  'Proveedor de PARANTILLO', 1, '010110'),
+	('orlando SAC' , '79359129', 'orlando@or.pe', '943623497',  'Proveedor de PELO', 1, '010110');
 GO
 
 --INSERT TIPO PRODUCTO
@@ -2032,10 +2032,10 @@ GO
 
 --INSERT EMPLEADO
 INSERT INTO EMPLEADO (nombres, dni, telefono, direccion, salario, descripcion, estEmpleado, idTipo_Empleado, idUbigeo) VALUES
-	('VLADIMIRO MONTESINOS', '74253221', '946832167', 'Mz20Lote34-Av. Ricardo Palma', 1300.50, 'COVID', 1, 1,'080304'),
+	('VLADIMIRO MONTESINOS', '74253221', '946832167', 'Mz20Lote34-Av. Ricardo Palma', 1300.50, 'COVID', 1, 1,'010110'),
 	('TONGO GIGANTE', '74319122', '941832131', 'Mz20Lote34-Av. CIELO',1200.50, 'CANCER', 1, 2, '080304'),
-	('ALAN GARCIA', '74352133', '946892141', 'Mz20Lote34-Av. LA LUNA',2500.50, 'TIFOIDEA', 1, 3, '080304'),
-	('HOMERO SIMPSON', '71399144', '941832151', 'Mz20Lote34-Av. EL SOL',1300.58, 'FIEBRE', 1, 2, '080304');
+	('ALAN GARCIA', '74352133', '946892141', 'Mz20Lote34-Av. LA LUNA',2500.50, 'TIFOIDEA', 1, 3, '010112'),
+	('HOMERO SIMPSON', '71399144', '941832151', 'Mz20Lote34-Av. EL SOL',1300.58, 'FIEBRE', 1, 2, '010111');
 GO
 
 --INSERT ROL

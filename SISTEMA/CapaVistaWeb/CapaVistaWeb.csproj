@@ -230,6 +230,7 @@
     <Content Include="Imagenes\logo.png" />
     <Content Include="Imagenes\tienda.png" />
     <Content Include="Imagenes\tiendalogo.png" />
+    <Content Include="Scripts\funcionalidades.js" />
     <Content Include="Scripts\alertas.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

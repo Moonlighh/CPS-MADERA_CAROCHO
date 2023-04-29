@@ -602,15 +602,15 @@ BEGIN
 END
 GO
 
---CREATE OR ALTER PROCEDURE spEliminarCompra(
---	@idCompra INT
---)
---AS
---BEGIN
---    DELETE DETALLE_COMPRA WHERE idCompra= @idCompra;
---	DELETE COMPRA WHERE idCompra = @idCompra;
---END
---GO
+CREATE OR ALTER PROCEDURE spEliminarCompra(
+	@idCompra INT
+)
+AS
+BEGIN
+    DELETE DETALLE_COMPRA WHERE idCompra= @idCompra;
+	DELETE COMPRA WHERE idCompra = @idCompra;
+END
+GO
 
 -- COMPRA - OTROS
 --CREATE OR ALTER PROCEDURE spBuscarCompra(

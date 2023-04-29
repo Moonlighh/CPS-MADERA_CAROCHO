@@ -46,43 +46,45 @@
 <br>
 <br>
 <div class="container">
-    <center><h1>DETALLE DE LA COMPRA</h1></center>
-    <table class="table">
-        <tr>
-            <th>ID</th>
-            <th>NOMBRE</th>
-            <th>LONGITUD</th>
-            <th>DIAMETRO</th>
-            <th>CANTIDAD</th>
-            <th>SUBTOTAL</th>
-        </tr>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Compra.IdCompra)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Producto.Nombre)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Producto.Longitud)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Producto.Diametro)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Cantidad)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Subtotal)
-                    </td>
-                </tr>
-            }
-        </tbody>
+    <center><h1 style="background-color: black; color: white; padding: 10px;">DETALLE DE LA COMPRA</h1></center>
+    <div class="table-responsive">
+        <table class="table">
+            <tr>
+                <th>ID</th>
+                <th>NOMBRE</th>
+                <th>LONGITUD</th>
+                <th>DIAMETRO</th>
+                <th>CANTIDAD</th>
+                <th>SUBTOTAL</th>
+            </tr>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Compra.IdCompra)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Producto.Longitud)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Producto.Diametro)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cantidad)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Subtotal)
+                        </td>
+                    </tr>
+                }
+            </tbody>
 
-    </table>
+        </table>
+    </div>
     <br>
 </div>
 <br>

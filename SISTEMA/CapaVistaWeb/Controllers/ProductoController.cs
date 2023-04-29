@@ -92,10 +92,10 @@ namespace MadereraCarocho.Controllers
         
         [PermisosRol(entRol.Administrador)]
         [HttpGet]
-        public ActionResult EditarProducto(int idprod)
+        public ActionResult EditarProducto(int idProd)
         {
             entProducto prod = new entProducto();
-            prod = logProducto.Instancia.BuscarProductoId(idprod);
+            prod = logProducto.Instancia.BuscarProductoId(idProd);
 
             List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
             var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
@@ -134,17 +134,17 @@ namespace MadereraCarocho.Controllers
         {
             try
             {
-                bool elimina = logProducto.Instancia.EliminarProducto(idP);
-                if (elimina)
+                if (logProducto.Instancia.EliminarProducto(idP))
                 {
                     return RedirectToAction("Listar");
                 }
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Listar", new { mesjExeption = ex.Message });
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Error", "Home");
             }
-            return RedirectToAction("Listar");
+            return View();
         }
 
         [HttpGet]
@@ -161,11 +161,11 @@ namespace MadereraCarocho.Controllers
 
         //*-*-*
         [HttpGet]
-        public ActionResult AgregarCarrito(int idProducto)
+        public ActionResult AgregarCarrito(int idProd)
         {
             try
-            {
-                entProducto p = logProducto.Instancia.BuscarProductoId(idProducto);
+            {//REVISAR
+                entProducto p = logProducto.Instancia.BuscarProductoId(idProd);
                 if (p != null)
                 {
                     entUsuario c = Session["Usuario"] as entUsuario;
@@ -179,6 +179,7 @@ namespace MadereraCarocho.Controllers
                         carrito.Cantidad = 1;
                         carrito.Subtotal = (1 * detalle.PrecioCompra);
                         logCarrito.Instancia.AgregarProductoCarrito(carrito);
+                        return RedirectToAction("Listar");
                     }
                     else
                     {
@@ -186,12 +187,16 @@ namespace MadereraCarocho.Controllers
                         return RedirectToAction("Error", "Home");
                     }
                 }
+                else
+                {
+                    TempData["Error"] = "El producto seleccionado ya no se encuentra disponible";
+                    return RedirectToAction("Error", "Home");
+                }
             }
             catch (Exception ex)
             {
                 return RedirectToAction("Error", "Home", new { mesjExeption = ex.Message });
             }
-            return RedirectToAction("Listar");
         }
     }
 }

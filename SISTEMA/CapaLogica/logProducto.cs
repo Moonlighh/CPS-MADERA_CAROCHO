@@ -35,7 +35,14 @@ namespace CapaLogica
         }
         public bool EliminarProducto(int id)
         {
-            return datProducto.Instancia.EliminarProducto(id);
+            try
+            {
+                return datProducto.Instancia.EliminarProducto(id);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("El producto no se puede eliminar", e);
+            }
         }
         #endregion CRUD
 

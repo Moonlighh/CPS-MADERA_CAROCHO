@@ -63,61 +63,35 @@
       <input class="form-control me-2" type="search" placeholder="Buscar" name="dato" aria-label="Search">
       <button onclick="return Buscar('Bproducto')" class="btn btn-outline-success" type="submit">Buscar</button>
    </form>
-   <table class="table">
-      <thead class="table-dark">
-          <tr>
-              <th>
-                  ID
-              </th>
-              <th>
-                  PROVEEDOR
-              </th>
-              <th>
-                  MADERA
-              </th>
-              <th>
-                  LONGITUD
-              </th>
-              <th>
-                  DIAMETRO
-              </th>
-              <th>
-                  STOCK
-              </th>
-              <th>
-                  PRECIO
-              </th>
-          </tr>
-      </thead>
-      <tbody>
-         @foreach (var item in Model)
-         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IdProveedorProducto)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Producto.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Producto.Longitud)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Producto.Diametro)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Producto.Stock)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PrecioCompra)
-                </td>
-            </tr>
-         }
-      <tbody>
-   </table>
+   <div class="table-responsive">
+       <table class="table table-striped table-hover">
+           <thead class="thead-dark">
+               <tr>
+                   <th>ID</th>
+                   <th>Proveedor</th>
+                   <th>Madera</th>
+                   <th>Longitud</th>
+                   <th>Diámetro</th>
+                   <th>Stock</th>
+                   <th>Precio</th>
+               </tr>
+           </thead>
+           <tbody>
+               @foreach (var item in Model)
+               {
+                   <tr>
+                       <td>@Html.DisplayFor(modelItem => item.IdProveedorProducto)</td>
+                       <td>@Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)</td>
+                       <td>@Html.DisplayFor(modelItem => item.Producto.Nombre)</td>
+                       <td>@Html.DisplayFor(modelItem => item.Producto.Longitud)</td>
+                       <td>@Html.DisplayFor(modelItem => item.Producto.Diametro)</td>
+                       <td>@Html.DisplayFor(modelItem => item.Producto.Stock)</td>
+                       <td>@Html.DisplayFor(modelItem => item.PrecioCompra)</td>
+                   </tr>
+               }
+           </tbody>
+       </table>
+   </div>
 </div>
 <br>
 <br>

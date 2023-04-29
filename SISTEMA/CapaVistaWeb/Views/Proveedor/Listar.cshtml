@@ -64,96 +64,44 @@
         <button onclick="return Buscar('Bproveedor')" class="btn btn-outline-success" type="submit">Buscar</button>
     </form>
 
-    <table class="table">
-        <thead class="table-dark">
-           <tr>
-
-              <th>
-                 ID
-              </th>
-              <th>
-                 NOMBRE
-              </th>
-              <th>
-                 RUC
-              </th>
-              <th>
-                 CORREO
-              </th>
-              <th>
-                 TELEFONO
-              </th>
-              <th>
-                 DEPARTAMENTO
-              </th>
-              <th>
-                 PROVINCIA
-              </th>
-              <th>
-                 DISTRITO
-              </th>
-              <th>
-                 DESCRIPCION
-              </th>
-              <th>
-                 ESTADO
-              </th>
-              <th>
-                 EDITAR
-              </th>
-              <th>
-                 DESHABILITAR
-              </th>
-
-
-           </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    <div class="table-responsive table-responsive-sm">
+        <table class="table">
+            <thead class="bg-dark text-white">
                 <tr>
-                   <td>
-                      @Html.DisplayFor(modelItem => item.IdProveedor)
-                   </td>
-                   <td>
-                      @Html.DisplayFor(modelItem => item.RazonSocial)
-                   </td>
-                   <td>
-                      @Html.DisplayFor(modelItem => item.Dni)
-                   </td>
-                   <td>
-                      @Html.DisplayFor(modelItem => item.Correo)
-                   </td>
-                   <td>
-                      @Html.DisplayFor(modelItem => item.Telefono)
-                   </td>
-                   <td>
-                      @Html.DisplayFor(modelItem => item.Ubigeo.Departamento)
-                   </td>
-                   <td>
-                      @Html.DisplayFor(modelItem => item.Ubigeo.Provincia)
-                   </td>
-                   <td>
-                      @Html.DisplayFor(modelItem => item.Ubigeo.Distrito)
-                   </td>
-                   <td>
-                      @Html.DisplayFor(modelItem => item.Descripcion)
-                   </td>
-                   <td>
-                      @Html.DisplayFor(modelItem => item.EstProveedor)
-                   </td>
-                   <td>
-                      <button class="btn btn-warning" type="button">
-                         @Html.ActionLink("******", "EditarProveedor", new { idprov = item.IdProveedor })
-                      </button>
-                   </td>
-                   <td>
-                      <a onclick="return Eliminar(this)" href="/Proveedor/DeshabilitarProveedor?idc=@item.IdProveedor" class="btn btn-danger" type="button"><i class="bi bi-backspace"></i></a>
-                   </td>
+                    <th>ID</th>
+                    <th>NOMBRE</th>
+                    <th>RUC</th>
+                    <th>CORREO</th>
+                    <th>TELÉFONO</th>
+                    <th>UBIGEO</th>
+                    <th>DESCRIPCIÓN</th>
+                    <th>ESTADO</th>
+                    <th>ACCIONES</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.IdProveedor)</td>
+                        <td>@Html.DisplayFor(modelItem => item.RazonSocial)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Dni)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Correo)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Telefono)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Ubigeo.Departamento), @Html.DisplayFor(modelItem => item.Ubigeo.Provincia), @Html.DisplayFor(modelItem => item.Ubigeo.Distrito)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                        <td>@Html.DisplayFor(modelItem => item.EstProveedor)</td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Acciones">
+                                @Html.ActionLink("Editar", "EditarProveedor", new { idprov = item.IdProveedor }, new { @class = "btn btn-outline-secondary" })
+                                <a  class="btn btn-outline-danger" onclick="return Eliminar(this)" href="/Proveedor/DeshabilitarProveedor?idc=@item.IdProveedor" type="button">Eliminar</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 <br>
 <br>
