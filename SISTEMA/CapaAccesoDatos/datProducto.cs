@@ -251,6 +251,7 @@ namespace CapaAccesoDatos
                 cmd.CommandType = CommandType.StoredProcedure;
                 cn.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
+                
                 while (dr.Read())
                 {
                     Prod.IdProducto = Convert.ToInt32(dr["idProducto"]);
@@ -267,7 +268,6 @@ namespace CapaAccesoDatos
             }
             catch (Exception ex)
             {
-                Prod = null;
                 throw new Exception("El producto no se encontro", ex);
             }
             finally { 

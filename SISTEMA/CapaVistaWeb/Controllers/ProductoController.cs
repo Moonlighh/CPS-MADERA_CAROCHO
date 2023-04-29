@@ -164,27 +164,29 @@ namespace MadereraCarocho.Controllers
         public ActionResult AgregarCarrito(int idProd)
         {
             try
-            {//REVISAR
-                entProducto p = logProducto.Instancia.BuscarProductoId(idProd);
-                if (p != null)
+            {  
+                entProducto pro = logProducto.Instancia.BuscarProductoId(idProd);
+                if (pro.IdProducto !=0)
                 {
                     entUsuario c = Session["Usuario"] as entUsuario;
-                    entCarrito objCarrrito = logCarrito.Instancia.MostrarDetCarrito(c.IdUsuario).Where(car => car.Producto.IdProducto == p.IdProducto).FirstOrDefault();
-                    if (objCarrrito == null)
-                    {
-                        entCarrito carrito = new entCarrito();
-                        entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.Producto.IdProducto == p.IdProducto).FirstOrDefault();
-                        carrito.Cliente = c;
-                        carrito.Producto = p;
-                        carrito.Cantidad = 1;
-                        carrito.Subtotal = (1 * detalle.PrecioCompra);
-                        logCarrito.Instancia.AgregarProductoCarrito(carrito);
-                        return RedirectToAction("Listar");
-                    }
-                    else
+
+                    entCarrito carrito = logCarrito.Instancia.MostrarDetCarrito(c.IdUsuario).Where(car => car.Producto.IdProducto == pro.IdProducto).FirstOrDefault();
+
+                    if (carrito != null)
                     {
                         TempData["Error"] = "No puedes agregar el mismo producto dos veces";
                         return RedirectToAction("Error", "Home");
+                    }
+                    else
+                    {
+                        entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.Producto.IdProducto == idProd).FirstOrDefault();
+                        entCarrito car = new entCarrito();
+                        car.Cliente = c;
+                        car.Producto = pro;
+                        car.Cantidad = 1;
+                        car.Subtotal = detalle.PrecioCompra;
+                        logCarrito.Instancia.AgregarProductoCarrito(car);
+                        return RedirectToAction("Listar");
                     }
                 }
                 else
@@ -193,9 +195,10 @@ namespace MadereraCarocho.Controllers
                     return RedirectToAction("Error", "Home");
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                return RedirectToAction("Error", "Home", new { mesjExeption = ex.Message });
+                TempData["Error"] = "No se pudo agregar el producto";
+                return RedirectToAction("Error", "Home");
             }
         }
     }

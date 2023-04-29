@@ -1932,9 +1932,12 @@ INSERT INTO PRODUCTO  (nombre,longitud,diametro,precioVenta, idTipo_Producto) VA
 	('PARANTE(2x1)',2,2.5,1,1),
 	('PARADOR(2X1)',2,2,1,1),
 	('PARANTILLO',2,1.5,0.5,1),
-	('TORCIDOS',1.50,1.5,1,1)
+	('TORCIDOS',1.50,1.5,3.5,1)
 GO	
-
+select *from PROVEEDOR_PRODUCTO pro inner join PRODUCTO p on p.idProducto = pro.idProducto
+inner join PROVEEDOR x on x.idProveedor = pro.idProveedor where pro.idProducto = 4
+order by p.idProducto 
+exec spMostrarCarrito 1
 --INSERT  PROVEEDOR_PRODUCTO
 INSERT INTO PROVEEDOR_PRODUCTO VALUES 
 	(1,1,20),
@@ -1963,7 +1966,7 @@ INSERT INTO PROVEEDOR_PRODUCTO VALUES
 	(4,17,10),
 	(4,25,6),
 	(4,33,5),
-	(4,56,1),
+	(4,56,1.5),
 
 	(5,5,12),
 	(5,11,11),
@@ -1983,7 +1986,7 @@ INSERT INTO PROVEEDOR_PRODUCTO VALUES
 	(7,20,2),
 	(7,28,1),
 	(7,36,0.5),
-	(7,56,1),
+	(7,56,3),
 
 	(8,21,1),
 	(8,29,1),
@@ -2001,7 +2004,7 @@ INSERT INTO PROVEEDOR_PRODUCTO VALUES
 	(11,40,5),
 	(11,47,2),
 	(11,53,0.5),
-	(11,56,1),
+	(11,56,2.5),
 
 	(12,41,4),
 	(12,48,2),
@@ -2016,11 +2019,11 @@ INSERT INTO PROVEEDOR_PRODUCTO VALUES
 	(14,43,1),
 	(14,50,1),
 	(14,55,0.2),
-	(14,56,1),
+	(14,56,3),
 
 	(15,44,0.3),
 	(15,51,0.2),
-	(15,56,1);
+	(15,56,2);
 GO
 
 --INSERT TIPO EMPLEADO
