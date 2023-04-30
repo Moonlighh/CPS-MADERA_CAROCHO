@@ -1,5 +1,6 @@
 ﻿using CapaEntidad;
 using CapaLogica;
+using MadereraCarocho.Permisos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ using System.Web.Services.Description;
 
 namespace MadereraCarocho.Controllers
 {
+    [PermisosRol(entRol.Administrador)]
+    [Authorize]// No puede si es que no esta autorizado
     public class ProveedorProductoController : Controller
     {
         // GET: ProveedorProducto

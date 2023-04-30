@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CapaEntidad.entProveedor>
+﻿@model IEnumerable<CapaEntidad.entProveedorProducto>
 
 @{
     ViewBag.Title = "Listar";
@@ -33,7 +33,6 @@
                         <li><a href="/ProveedorProducto/Listar">Proveedores - Productos</a></li>
                         <li><a href="/Empleado/Listar">Empleados</a></li>
                         <li><a href="/Compra/Index">Ver compras</a></li>
-
                         <li><a onclick="cerrarSesion('@Url.Action("CerrarSesion", "Home")')">Cerrar Sesión</a></li>
                     </ul>
                 </li>
@@ -50,33 +49,33 @@
 <br>
 <br>
 <div class="container">
-    <br><h2 style="text-align: center">LISTADO DE PROVEEDORES</h2>
+    <br><h2 style="text-align: center">LISTADO DE PRODUCTOS DISPONIBLES</h2>
     <!-- Agregar producto -->
 
-    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModInsertarProveedor"><i class="bi bi-plus-square"></i> Agregar Proveedor</button>
+    <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#ModInsertarProducto"><i class="bi bi-plus-square"></i> Agregar Producto</button>
     <hr>
     <!-- Ordenar -->
-    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" th:href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
-    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-primary btn-lg" id="ASC" href="Ordenar?dato=1"><i class="bi bi-sort-up"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-secondary btn-lg" id="DESC" href="Ordenar?dato=0"><i class="bi bi-sort-down"></i></a>
     <hr>
     <!-- Buscar -->
-    <form class="d-flex mb-4" role="search" action="Listar" method="POST" id="Bproveedor">
+    <form class="d-flex mb-4" role="search" action="Listar" method="POST" id="Bproducto">
         <input class="form-control me-2" type="search" placeholder="Buscar" name="dato" aria-label="Search">
-        <button onclick="return Buscar('Bproveedor')" class="btn btn-outline-success" type="submit">Buscar</button>
+        <button onclick="return Buscar('Bproducto')" class="btn btn-outline-success" type="submit">Buscar</button>
     </form>
-
     <div class="table-responsive table-responsive-sm">
         <table class="table">
             <thead class="bg-dark text-white">
                 <tr>
-                    <th>ID</th>
+                    <th>ID PRODUCTO</th>
                     <th>NOMBRE</th>
-                    <th>RUC</th>
-                    <th>CORREO</th>
-                    <th>TELÉFONO</th>
-                    <th>UBIGEO</th>
-                    <th>DESCRIPCIÓN</th>
-                    <th>ESTADO</th>
+                    <th>LONGITUD</th>
+                    <th>DIÁMETRO</th>
+                    <th>S/. PRE. COMPRA</th>
+                    <th>S/. PRE. VENTA</th>
+                    <th>STOCK</th>
+                    <th>TIPO</th>
+                    <th>PROVEEDOR</th>
                     <th>ACCIONES</th>
                 </tr>
             </thead>
@@ -84,18 +83,20 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(modelItem => item.IdProveedor)</td>
-                        <td>@Html.DisplayFor(modelItem => item.RazonSocial)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Dni)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Correo)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Telefono)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Ubigeo.Departamento), @Html.DisplayFor(modelItem => item.Ubigeo.Provincia), @Html.DisplayFor(modelItem => item.Ubigeo.Distrito)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
-                        <td>@Html.DisplayFor(modelItem => item.EstProveedor)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Producto.IdProducto)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Producto.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Producto.Longitud)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Producto.Diametro)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PrecioCompra)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Producto.PrecioVenta)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Producto.Stock)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Producto.Tipo.Tipo)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Proveedor.RazonSocial)</td>
                         <td>
                             <div class="btn-group" role="group" aria-label="Acciones">
-                                @Html.ActionLink("Editar", "EditarProveedor", new { idprov = item.IdProveedor }, new { @class = "btn btn-outline-secondary" })
-                                <a  class="btn btn-outline-danger" onclick="return Eliminar(this)" href="/Proveedor/DeshabilitarProveedor?idc=@item.IdProveedor" type="button">Eliminar</a>
+                                <button class="btn btn-outline-dark" onclick="AgregarProductoCarrito('@Url.Action("AgregarCarrito", "Producto", new { idProveedorProducto = item.IdProveedorProducto })')">Agregar</button>
+                                @Html.ActionLink("Editar", "EditarProducto", new { idProd = item.Producto.IdProducto }, new { @class = "btn btn-outline-success" })
+                                <a class="btn btn-outline-danger" onclick="return Eliminar(this)" href="/Producto/EliminarProducto?idP=@item.Producto.IdProducto" type="button">Eliminar</a>
                             </div>
                         </td>
                     </tr>
@@ -107,50 +108,49 @@
 <br>
 <br>
 <br>
-<!--Agregar Provedor-->
-<div class="modal" tabindex="-1" id="ModInsertarProveedor" aria-hidden="true">
+<!--Agregar Producto-->
+<div class="modal" tabindex="-1" id="ModInsertarProducto" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="/Proveedor/CrearProveedor" method="POST" id="proveedor">
+            <form action="/Producto/CrearProducto" method="POST" id="producto">
                 <div class="modal-header ">
-                    <h5 class="modal-title">Ingresar Proveedor</h5>
+                    <h5 class="modal-title">Ingresar Producto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-floating mb-3">
                         <div class="form-group">
-                            ubigeo:
+                            Tipo de producto:
                             <div class="col-md-10">
-                                @Html.DropDownList("Ubi", (SelectList)ViewBag.listaUbigeo, "Seleccionar")
+                                @Html.DropDownList("cTipo", (SelectList)ViewBag.listaTipo, "Seleccionar")
                             </div>
                         </div>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="uNombre" id="uNombre" placeholder="Nombre" required>
+                        <input type="text" class="form-control" name="cNombreP" id="nombre" placeholder="Nombre" required>
                         <label for="floatingInput">Nombre</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="uRuc" id="uRuc" placeholder="RUC" required>
-                        <label for="floatingInput">RUC</label>
+                        <input type="text" class="form-control" name="cLongitudP" id="longitud" placeholder="Longitud" required>
+                        <label for="floatingInput">Longitud</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="uCorreo" id="uCorreo" placeholder="Corrreo" required>
-                        <label for="floatingInput">Correo</label>
+                        <input type="text" class="form-control" name="cDiametro" id="diametro" placeholder="Diametro" required>
+                        <label for="floatingInput">Diametro</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="uTelefono" placeholder="Telefono" required>
-                        <label for="floatingInput">Telefono</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="uDescripcion" id="uDescripcion" placeholder="uDescripcion" required>
-                        <label for="floatingInput">Descripcion</label>
+                        <input type="text" class="form-control" name="cPreVentaP" placeholder="Precio de Venta" required>
+                        <label for="floatingInput">Precio de Venta</label>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="return Registrar('uNombre', 'uRuc', 'uDescripcion', 'proveedor')" type="submit" class="btn btn-dark">Registrar</button>
+                    <button onclick="return Registrar('nombre', 'longitud', 'diametro', 'producto')" type="submit" class="btn btn-dark">Registrar</button>
                     <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+
+

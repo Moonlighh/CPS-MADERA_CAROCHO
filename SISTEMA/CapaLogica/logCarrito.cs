@@ -24,7 +24,13 @@ namespace CapaLogica
         }
         public List<entCarrito> MostrarDetCarrito(int idUsuario)
         {
-            return datCarrito.Instancia.MostrarDetCarrito(idUsuario);
+            try
+            {
+                return datCarrito.Instancia.MostrarDetCarrito(idUsuario);
+            }
+            catch {
+                throw new ApplicationException ("No se pudo mostrar sus productos");
+            }
         }
         public bool EditarProductoCarrito(entCarrito car)
         {
@@ -33,9 +39,9 @@ namespace CapaLogica
 
             return datCarrito.Instancia.EditarProductoCarrito(car);
         }
-        public bool EliminarProductoCarrito(int idProducto, int idCliente)
+        public bool EliminarProductoCarrito(int idProvProd, int idCliente)
         {
-            return datCarrito.Instancia.EliminarProductoCarrito(idProducto, idCliente);
+            return datCarrito.Instancia.EliminarProductoCarrito(idProvProd, idCliente);
         }
         #endregion Carrito de Compras
 

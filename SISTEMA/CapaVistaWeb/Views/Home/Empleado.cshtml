@@ -19,11 +19,10 @@
                 <li class="dropdown">
                     <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
                     <ul>
-                        <li><a href="/Producto/Listar">Productos</a></li>
-                        <li><a href="/Usuario/ListarClientes">Clientes</a></li>
+                        <li><a href="/Usuario/Clientes">Clientes</a></li>
                         <li><a href="/Proveedor/Listar">Proveedores</a></li>
                         <li><a href="/Empleado/Listar">Empleados</a></li>
-                        <li><a href="/Home/CerrarSesion">Cerrar Sesión</a></li>
+                        <li><a onclick="cerrarSesion('@Url.Action("CerrarSesion", "Home")')">Cerrar Sesión</a></li>
                     </ul>
                 </li>
                 <li><a class="nav-link scrollto" href="/Compra/DetalleCarrito"><i class="bi bi-cart4"></i>Carrito de compra</a></li>

@@ -20,15 +20,16 @@
                 <li class="dropdown">
                     <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
                     <ul>
-                        <li><a href="/Usuario/ListarAdministradores">Administradores</a></li>
-                        <li><a href="/Usuario/ListarClientes">Clientes</a></li>
+                        <li><a href="/Usuario/Administradores">Administradores</a></li>
+                        <li><a href="/Usuario/Clientes">Clientes</a></li>
                         <li><a href="/Usuario/ListarUsuarios">Usuarios</a></li>
-                        <li><a href="/Producto/Listar">Productos</a></li>
+                        <li><a href="/Producto/productos-disponibles">Productos Disponibles</a></li>
+                        <li><a href="/Producto/mostrar-productos">Productos</a></li>
                         <li><a href="/Proveedor/Listar">Proveedores</a></li>
                         <li><a href="/ProveedorProducto/Listar">Proveedores - Productos</a></li>
                         <li><a href="/Empleado/Listar">Empleados</a></li>
                         <li><a href="/Compra/Index">Ver compras</a></li>
-                        <li><a href="/Home/CerrarSesion">Cerrar Sesión</a></li>
+                        <li><a onclick="cerrarSesion('@Url.Action("CerrarSesion", "Home")')">Cerrar Sesión</a></li>
                     </ul>
                 </li>
                 <li><a class="nav-link scrollto" href="/Compra/DetalleCarrito"><i class="bi bi-cart4"></i>Carrito de compra</a></li>
@@ -62,6 +63,7 @@
                 <th>TIPO</th>
                 <th>CANTIDAD</th>
                 <th>SUBTOTAL</th>
+                <th>PROVEEDOR</th>
                 <th>EDITAR</th>
                 <th>ELIMINAR</th>
             </tr>
@@ -74,22 +76,25 @@
                         @Html.DisplayFor(modelItem => item.IdCarrito)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                        @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Nombre)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Producto.Longitud)
+                        @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Longitud)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Producto.Diametro)
+                        @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Diametro)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Producto.Tipo.Tipo)
+                        @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Tipo.Tipo)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Cantidad)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Subtotal)
+                        S/. @Html.DisplayFor(modelItem => item.Subtotal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProveedorProducto.Proveedor.RazonSocial)
                     </td>
                     <td>
                         <button class="btn btn-warning" type="button">
@@ -98,7 +103,7 @@
                         </button>
                     </td>
                     <td>
-                        <a onclick="return Eliminar(this)" href="/Compra/EliminarDetalleCarrito?idProducto=@item.Producto.IdProducto" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+                        <a onclick="return Eliminar(this)" href="/Compra/EliminarDetalleCarrito?idProveedorProducto=@item.ProveedorProducto.IdProveedorProducto" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
                     </td>
 
                 </tr>

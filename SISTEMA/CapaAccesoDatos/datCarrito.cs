@@ -33,7 +33,7 @@ namespace CapaAccesoDatos
                 SqlConnection cn = Conexion.Instancia.Conectar();
                 cmd = new SqlCommand("spAgregarProductoCarrito", cn);
                 cmd.Parameters.AddWithValue("@idCliente", car.Cliente.IdUsuario);
-                cmd.Parameters.AddWithValue("@idProducto", car.Producto.IdProducto);
+                cmd.Parameters.AddWithValue("@idProveedor_Producto", car.ProveedorProducto.IdProveedorProducto);
                 cmd.Parameters.AddWithValue("@cantidad", car.Cantidad);
                 cmd.Parameters.AddWithValue("@subTotal", car.Subtotal);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -73,6 +73,10 @@ namespace CapaAccesoDatos
                     {
                         Tipo = dr["tipo"].ToString(),
                     };
+                    entProveedor proveedor = new entProveedor
+                    {
+                        RazonSocial = dr["razonSocial"].ToString()
+                    };
                     entProducto p = new entProducto
                     {
                         IdProducto = Convert.ToInt32(dr["idProducto"]),
@@ -80,13 +84,20 @@ namespace CapaAccesoDatos
                         Longitud = Convert.ToDouble(dr["longitud"]),
                         Diametro = Convert.ToDouble(dr["diametro"]),
                         Tipo = tipoProducto
-                    };             
+                    };
+                    entProveedorProducto pro = new entProveedorProducto
+                    {
+                        IdProveedorProducto = Convert.ToInt32(dr["idProveedor_Producto"]),
+                        PrecioCompra = Convert.ToDouble(dr["precioCompra"]),
+                        Producto = p,
+                        Proveedor = proveedor
+                    };
                     entCarrito c = new entCarrito
                     {
                         IdCarrito = Convert.ToInt32(dr["idCarrito"]),
                         Cantidad = Convert.ToInt32(dr["cantidad"]),
                         Subtotal = Convert.ToDouble(dr["subtotal"]),
-                        Producto = p
+                        ProveedorProducto = pro
                     };
                     list.Add(c);
                 };
@@ -128,7 +139,7 @@ namespace CapaAccesoDatos
             finally { cmd.Connection.Close(); }
             return actualiza;
         }
-        public bool EliminarProductoCarrito(int idProducto, int idCliente)
+        public bool EliminarProductoCarrito(int idProveedor_Producto, int idCliente)
         {
             SqlCommand cmd = null;
             bool eliminar = false;
@@ -137,7 +148,7 @@ namespace CapaAccesoDatos
                 SqlConnection cn = Conexion.Instancia.Conectar();
                 cmd = new SqlCommand("spEliminarProductoCarrito", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@idProducto", idProducto);
+                cmd.Parameters.AddWithValue("@idProveedor_Producto", idProveedor_Producto);
                 cmd.Parameters.AddWithValue("@idCliente", idCliente);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cn.Open();

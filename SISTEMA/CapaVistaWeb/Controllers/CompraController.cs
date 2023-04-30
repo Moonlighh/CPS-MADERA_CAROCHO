@@ -42,7 +42,7 @@ namespace MadereraCarocho.Controllers
                 entCarrito carrito = new entCarrito();
                 entProducto prod = logProducto.Instancia.BuscarProductoId(Convert.ToInt32(frm["Prd"]));
                 entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.Producto.IdProducto == prod.IdProducto).FirstOrDefault();
-                carrito.Producto = prod;
+                carrito.ProveedorProducto = detalle;
                 carrito.Cantidad = pvCantidad;
                 carrito.Subtotal = (pvCantidad * detalle.PrecioCompra);
                 logCarrito.Instancia.AgregarProductoCarrito(carrito);
@@ -54,13 +54,13 @@ namespace MadereraCarocho.Controllers
                 return RedirectToAction("DetalleCarrito");
             }
         }
-        public ActionResult EliminarDetalleCarrito(int idProducto)
+        public ActionResult EliminarDetalleCarrito(int idProveedorProducto)
         {
             try
             {
                 //Elimina un producto
                 var user = Session["Usuario"] as entUsuario;
-                logCarrito.Instancia.EliminarProductoCarrito(idProducto, user.IdUsuario);
+                logCarrito.Instancia.EliminarProductoCarrito(idProveedorProducto, user.IdUsuario);
                 return RedirectToAction("DetalleCarrito");
             }
             catch (Exception e)
@@ -105,8 +105,7 @@ namespace MadereraCarocho.Controllers
                     var det = new entDetCompra();
                     for (int i = 0; i < carrito.Count; i++)
                     {
-                        det.Producto = carrito[i].Producto;
-                        det.Producto = carrito[i].Producto;
+                        det.Producto = carrito[i].ProveedorProducto.Producto;
                         det.Cantidad = carrito[i].Cantidad;
                         det.Subtotal = carrito[i].Subtotal;
                         det.Compra = compra;
@@ -148,16 +147,12 @@ namespace MadereraCarocho.Controllers
             try
             {
                 entUsuario u = Session["Usuario"] as entUsuario;
-                entCarrito carrito = logCarrito.Instancia.MostrarDetCarrito(u.IdUsuario).Where(c => c.IdCarrito == idCarrito).FirstOrDefault();
-
-                entProducto prod = logProducto.Instancia.BuscarProductoId(carrito.Producto.IdProducto);
-
-                carrito.Producto = prod;
+                entCarrito carrito = logCarrito.Instancia.MostrarDetCarrito(u.IdUsuario).Where(c => c.IdCarrito == idCarrito).FirstOrDefault();        
                 return View(carrito);
             }
             catch (Exception e)
             {
-                return RedirectToAction("Error", "Home", new { mesjExeption = e.Message });
+                return RedirectToAction("Error", "Home");
             }
         }
 
@@ -169,7 +164,7 @@ namespace MadereraCarocho.Controllers
                 entUsuario u = Session["Usuario"] as entUsuario;
                 entCarrito carrito = logCarrito.Instancia.MostrarDetCarrito(u.IdUsuario).Where(x => x.IdCarrito == c.IdCarrito).FirstOrDefault();
 
-                entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.Producto.IdProducto == carrito.Producto.IdProducto).FirstOrDefault();
+                entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.IdProveedorProducto == carrito.ProveedorProducto.IdProveedorProducto).FirstOrDefault();
 
 
                 c.Subtotal = c.Cantidad * detalle.PrecioCompra;

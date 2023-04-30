@@ -48,7 +48,7 @@ namespace CapaAccesoDatos
                     };
                     entProveedorProducto obj = new entProveedorProducto
                     {
-                        IdProveedorProducto = Convert.ToInt32(dr["id"]),
+                        IdProveedorProducto = Convert.ToInt32(dr["idProveedor_Producto"]),
                         Proveedor = p,
                         Producto = prod,
                         PrecioCompra = Convert.ToDouble(dr["precio"])
@@ -79,6 +79,10 @@ namespace CapaAccesoDatos
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
+                    entProveedor provedor = new entProveedor
+                    {
+                        RazonSocial = dr["razonSocial"].ToString(),
+                    };
                     entTipoProducto tipo = new entTipoProducto
                     {
                         Tipo = dr["tipo"].ToString()
@@ -95,8 +99,10 @@ namespace CapaAccesoDatos
                     };
                     entProveedorProducto prov = new entProveedorProducto
                     {
+                        IdProveedorProducto = Convert.ToInt32(dr["idProveedor_Producto"]),
                         PrecioCompra = Convert.ToDouble(dr["precioCompra"]),
-                        Producto = producto
+                        Producto = producto,
+                        Proveedor = provedor
                     };
 
                     lista.Add(prov);

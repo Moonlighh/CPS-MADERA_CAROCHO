@@ -271,7 +271,7 @@ namespace CapaAccesoDatos
                 throw new Exception("El producto no se encontro", ex);
             }
             finally { 
-                cmd.Connection.Close(); 
+                cmd.Connection.Close();
             }
             return Prod;
         }

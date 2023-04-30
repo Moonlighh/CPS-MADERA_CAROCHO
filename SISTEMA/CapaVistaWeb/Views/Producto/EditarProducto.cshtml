@@ -20,15 +20,16 @@
                 <li class="dropdown">
                     <a href="#"><span>Gestionar</span> <i class="bi bi-chevron-down"></i></a>
                     <ul>
-                        <li><a href="/Usuario/ListarAdministradores">Administradores</a></li>
-                        <li><a href="/Usuario/ListarClientes">Clientes</a></li>
+                        <li><a href="/Usuario/Administradores">Administradores</a></li>
+                        <li><a href="/Usuario/Clientes">Clientes</a></li>
                         <li><a href="/Usuario/ListarUsuarios">Usuarios</a></li>
-                        <li><a href="/Producto/Listar">Productos</a></li>
+                        <li><a href="/Producto/productos-disponibles">Productos Disponibles</a></li>
+                        <li><a href="/Producto/mostrar-productos">Productos</a></li>
                         <li><a href="/Proveedor/Listar">Proveedores</a></li>
                         <li><a href="/ProveedorProducto/Listar">Proveedores - Productos</a></li>
                         <li><a href="/Empleado/Listar">Empleados</a></li>
                         <li><a href="/Compra/Index">Ver compras</a></li>
-                        <li><a href="/Home/CerrarSesion">Cerrar Sesión</a></li>
+                        <li><a onclick="cerrarSesion('@Url.Action("CerrarSesion", "Home")')">Cerrar Sesión</a></li>
                     </ul>
                 </li>
             </ul>
@@ -46,66 +47,64 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="container">
-        <hr>
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Tipo de madera</label>
-            <div class="col-md-10">
-                @Html.DropDownList("cTipoU", (SelectList)ViewBag.listaTipo, new { @class = "formcontrol", required = "required" })
-            </div>
+<div class="container">
+    <hr>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Tipo de madera</label>
+        <div class="col-md-10">
+            @Html.DropDownList("cTipoU", (SelectList)ViewBag.listaTipo, new { @class = "form-control", required = "required" })
         </div>
-
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">IdProducto</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IdProducto, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.IdProducto, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Nombre</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Longitud</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Longitud, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Longitud, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Precio de compra</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Diametro, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Diametro, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Precio de venta</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PrecioVenta, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PrecioVenta, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
-        <br>
-        <button type="button" class="btn btn-warning">
-            @Html.ActionLink("Regresar", "Listar")
-        </button>
-
-        <button type="submit" class="btn btn-info">
-            Confirmar
-        </button>
     </div>
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="mb-3 row" hidden>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.IdProducto, new { htmlAttributes = new { @class = "form-control", @type = "hidden" } })
+            @Html.ValidationMessageFor(model => model.IdProducto, "", new { @class = "text-danger", @type = "hidden" })
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Nombre</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Nombre, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Longitud</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Longitud, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Longitud, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Diametro</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Diametro, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Diametro, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="mb-3 row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Precio de venta</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.PrecioVenta, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PrecioVenta, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <br>
+    <button type="button" class="btn btn-warning">
+        @Html.ActionLink("Regresar", "ListarProductos")
+    </button>
+
+    <button type="submit" class="btn btn-info">
+        Confirmar
+    </button>
+</div>
     <br>
     <br>
     <br>

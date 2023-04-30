@@ -10,13 +10,13 @@ namespace CapaEntidad
     {
         private int idCarrito;
         private entUsuario cliente;
-        private entProducto producto;
+        private entProveedorProducto proveedorProducto;
         private int cantidad;
         private double subtotal;
 
         public int IdCarrito { get => idCarrito; set => idCarrito = value; }
         public entUsuario Cliente { get => cliente; set => cliente = value; }
-        public entProducto Producto { get => producto; set => producto = value; }
+        public entProveedorProducto ProveedorProducto { get => proveedorProducto; set => proveedorProducto = value; }
         public int Cantidad { get => cantidad; set => cantidad = value; }
         public double Subtotal { get => subtotal; set => subtotal = value; }
     }
