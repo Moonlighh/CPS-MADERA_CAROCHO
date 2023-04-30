@@ -155,7 +155,7 @@ GO
 CREATE OR ALTER PROCEDURE spListarProductoAdmin
 AS
 BEGIN
-	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, pro.precioCompra, p.precioVenta, p.stock, t.tipo FROM PRODUCTO p
+	SELECT pro.idProvedoor_Producto, p.idProducto, p.nombre, p.longitud, p.diametro, pro.precioCompra, p.precioVenta, p.stock, t.tipo FROM PRODUCTO p
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto
 	inner join PROVEEDOR_PRODUCTO pro on p.idProducto = pro.idProducto
 	ORDER BY p.idProducto;
@@ -543,11 +543,12 @@ CREATE OR ALTER PROCEDURE spMostrarCarrito(
 )
 AS
 BEGIN
-	SELECT p.idProducto, car.idCarrito, p.nombre, p.longitud, p.diametro, tip.tipo, car.cantidad, car.subtotal FROM CARRITO car
+	SELECT pro.idProvedoor_Producto, pro.precioCompra, p.idProducto, car.idCarrito, p.nombre, p.longitud, p.diametro, tip.tipo, car.cantidad, car.subtotal FROM CARRITO car
 	inner join USUARIO u ON car.idCliente = u.idUsuario
-	inner join PRODUCTO p ON p.idProducto = p.idProducto
+	inner join PROVEEDOR_PRODUCTO pro ON pro.idProvedoor_Producto = car.idProveedor_Producto
+	inner join PRODUCTO P ON P.idProducto = pro.idProducto
 	inner join TIPO_PRODUCTO tip ON tip.idTipo_Producto = p.idTipo_Producto
-	WHERE car.idCliente = @idUsuario and car.idProducto = p.idProducto;
+	WHERE car.idCliente = 1 and car.idProveedor_Producto = p.idProducto;
 END
 GO
 
@@ -564,12 +565,12 @@ END
 GO
 
 CREATE OR ALTER PROCEDURE spEliminarProductoCarrito(
-	@idProducto INT,
+	@idProveedor_Producto INT,
 	@idCliente INT
 )
 AS
 BEGIN
-	DELETE CARRITO WHERE @idProducto = idProducto and @idCliente = idCliente;
+	DELETE CARRITO WHERE @idProveedor_Producto = idProveedor_Producto and @idCliente = idCliente;
 END
 GO
 

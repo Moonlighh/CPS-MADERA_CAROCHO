@@ -1934,10 +1934,7 @@ INSERT INTO PRODUCTO  (nombre,longitud,diametro,precioVenta, idTipo_Producto) VA
 	('PARANTILLO',2,1.5,0.5,1),
 	('TORCIDOS',1.50,1.5,3.5,1)
 GO	
-select *from PROVEEDOR_PRODUCTO pro inner join PRODUCTO p on p.idProducto = pro.idProducto
-inner join PROVEEDOR x on x.idProveedor = pro.idProveedor where pro.idProducto = 4
-order by p.idProducto 
-exec spMostrarCarrito 1
+
 --INSERT  PROVEEDOR_PRODUCTO
 INSERT INTO PROVEEDOR_PRODUCTO VALUES 
 	(1,1,20),

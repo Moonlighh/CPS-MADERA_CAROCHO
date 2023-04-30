@@ -112,11 +112,11 @@ GO
 CREATE TABLE CARRITO(
 	idCarrito INT PRIMARY KEY IDENTITY,
 	idCliente INT,
-	idProducto INT,
+	idProveedor_Producto INT,
 	cantidad INT,
 	subtotal FLOAT,
 	CONSTRAINT fk_Carrito_Cliente FOREIGN KEY (idCliente) REFERENCES Usuario (idUsuario),
-	CONSTRAINT fk_Carrito_Producto FOREIGN KEY (idProducto) REFERENCES Producto (idProducto)
+	CONSTRAINT fk_Carrito_ProveedorProducto FOREIGN KEY (idProveedor_Producto) REFERENCES PROVEEDOR_PRODUCTO (idProvedoor_Producto)
 )
 GO
 
