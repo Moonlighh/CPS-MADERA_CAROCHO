@@ -48,7 +48,7 @@ GO
 
 CREATE TABLE PROVEEDOR_PRODUCTO
 (
-  idProvedoor_Producto INT PRIMARY KEY IDENTITY,
+  idProveedor_Producto INT PRIMARY KEY IDENTITY,
   idProveedor INT not null,
   idProducto INT not null,
   precioCompra FLOAT not null,
@@ -116,7 +116,7 @@ CREATE TABLE CARRITO(
 	cantidad INT,
 	subtotal FLOAT,
 	CONSTRAINT fk_Carrito_Cliente FOREIGN KEY (idCliente) REFERENCES Usuario (idUsuario),
-	CONSTRAINT fk_Carrito_ProveedorProducto FOREIGN KEY (idProveedor_Producto) REFERENCES PROVEEDOR_PRODUCTO (idProvedoor_Producto)
+	CONSTRAINT fk_Carrito_ProveedorProducto FOREIGN KEY (idProveedor_Producto) REFERENCES PROVEEDOR_PRODUCTO (idProveedor_Producto)
 )
 GO
 

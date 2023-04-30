@@ -75,8 +75,9 @@ namespace MadereraCarocho.Controllers
         {
             try
             {
-                //Obtener el cliente actual
+                // Obtener el cliente actual
                 entUsuario cliente = Session["Usuario"] as entUsuario;
+
                 // Obtener los detalles del carrito de compras del cliente
                 var carrito = logCarrito.Instancia.MostrarDetCarrito(cliente.IdUsuario);
 
@@ -86,6 +87,7 @@ namespace MadereraCarocho.Controllers
                     TempData["Error"] = "No tiene productos, por favor asegurese de contar con productos antes de intentar comprar";
                     return RedirectToAction("Error", "Home");
                 }
+
                 //Calculamos el total de toda la compra
                 double totalCompra = carrito.Sum(detalle => detalle.Subtotal);
 
@@ -96,13 +98,15 @@ namespace MadereraCarocho.Controllers
                     Estado = true,
                     Total = totalCompra
                 };
+
                 // Obtener el ID de la compra creada
                 int idCompra = logCompra.Instancia.CrearCompra(compra);
                 compra.IdCompra = idCompra;
-
                 try
                 {
                     var det = new entDetCompra();
+
+                    // Agregar detalles de la compra
                     for (int i = 0; i < carrito.Count; i++)
                     {
                         det.Producto = carrito[i].ProveedorProducto.Producto;
@@ -114,6 +118,7 @@ namespace MadereraCarocho.Controllers
                 }
                 catch (Exception)
                 {
+                    // Si no se pueden agregar los detalles de la compra, eliminar la compra creada anteriormente
                     if (!logCompra.Instancia.EliminarCompra(idCompra))
                     {
                         TempData["Error"] = "No se pudo cancelar la transacción. Comuniquese de inmediato con soporte e informele del problema";
@@ -124,9 +129,12 @@ namespace MadereraCarocho.Controllers
                     }
                     return RedirectToAction("Error", "Home");
                 }
+                // Limpiar el carrito de compras del cliente
                 carrito.Clear();
                 return RedirectToAction("Index");
             }
+
+            // Manejo de excepciones
             catch
             {
                 // No se pudo crear la compra, redirigir a la página de error
@@ -161,27 +169,38 @@ namespace MadereraCarocho.Controllers
         {
             try
             {
+                // Obtenemos el usuario de la sesión actual
                 entUsuario u = Session["Usuario"] as entUsuario;
+
+                // Obtenemos el producto del carrito que se va a editar
                 entCarrito carrito = logCarrito.Instancia.MostrarDetCarrito(u.IdUsuario).Where(x => x.IdCarrito == c.IdCarrito).FirstOrDefault();
 
+                // Obtenemos los detalles del proveedor del producto
                 entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.IdProveedorProducto == carrito.ProveedorProducto.IdProveedorProducto).FirstOrDefault();
 
-
+                // Calculamos el subtotal del producto editado
                 c.Subtotal = c.Cantidad * detalle.PrecioCompra;
+
+                // Actualizamos la cantidad y subtotal del producto en el carrito
                 bool edita = logCarrito.Instancia.EditarProductoCarrito(c);
+
+                // Redirigimos al detalle del carrito si la edición fue exitosa
                 if (edita)
                 {
                     return RedirectToAction("DetalleCarrito", "Compra");
                 }
                 else
                 {
+                    // Redirigimos a la página de error si la edición falló
                     return RedirectToAction("Error", "Home");
                 }
             }
             catch (ApplicationException ex)
             {
+                // Redirigimos a la página de error con el mensaje de la excepción si hubo un error
                 return RedirectToAction("Error", "Home", new { mesjExceptio = ex.Message });
             }
+
         }
     }
 }

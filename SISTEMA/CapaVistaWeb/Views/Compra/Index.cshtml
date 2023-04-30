@@ -51,60 +51,67 @@
 <br>
 <br>
 <div class="container">
-   <center><h1>LISTA DE COMPRAS REALIZADAS</h1></center>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IdCompra)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fecha)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Total)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Usuario.IdUsuario)
-            </th>
-            <th>
-                Comprador
-            </th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IdCompra)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fecha)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estado)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Total)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Usuario.IdUsuario)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Usuario.RazonSocial)
-                </td>
-                <td>
-                    <button class="btn btn-warning" type="button">
-                        @Html.ActionLink("Detalle", "DetalleCompra", new { idCompra = item.IdCompra })
-                        <i class="bi bi-pencil-square"></i>
-                    </button>
-                </td>
-            </tr>
-        }
-    </table>
+    <center><h1>LISTA DE COMPRAS REALIZADAS</h1></center>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="bg-dark text-light">
+                <tr>
+                    <th>IdCompra</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                    <th>IdUsuario</th>
+                    <th>Comprador</th>
+                    <th>Detalle</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.IdCompra)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Fecha)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Estado)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Usuario.IdUsuario)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Usuario.RazonSocial)</td>
+                        <td>
+                            <a class="btn btn-warning" href="@Url.Action("DetalleCompra", new { idCompra = item.IdCompra })" role="button">
+                                <i class="bi bi-pencil-square"></i> Detalle
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<style>
+    table {
+        background-color: #f9f9f9;
+        border-collapse: collapse;
+        font-size: 14px;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #343a40;
+        color: #fff;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('table').DataTable();
+    });
+</script>
 <br>
 <br>
 <br>

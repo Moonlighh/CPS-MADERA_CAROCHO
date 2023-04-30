@@ -48,16 +48,19 @@
 <br>
 <div class="container">
     <center><h1 style="background-color: black; color: white; padding: 10px;">DETALLE DE LA COMPRA</h1></center>
+
     <div class="table-responsive">
-        <table class="table">
-            <tr>
-                <th>ID</th>
-                <th>NOMBRE</th>
-                <th>LONGITUD</th>
-                <th>DIAMETRO</th>
-                <th>CANTIDAD</th>
-                <th>SUBTOTAL</th>
-            </tr>
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>NOMBRE</th>
+                    <th>LONGITUD</th>
+                    <th>DIAMETRO</th>
+                    <th>CANTIDAD</th>
+                    <th>SUBTOTAL</th>
+                </tr>
+            </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
@@ -91,4 +94,9 @@
 <br>
 <br>
 <br>
+<br>
+<br>
+<br>
+<br>
+
 

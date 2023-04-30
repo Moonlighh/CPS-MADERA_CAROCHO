@@ -52,65 +52,67 @@
     <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" th:href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
     <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
     <hr>
-
-    <table class="table">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>NOMBRE</th>
-                <th>LONGITUD</th>
-                <th>DIAMETRO</th>
-                <th>TIPO</th>
-                <th>CANTIDAD</th>
-                <th>SUBTOTAL</th>
-                <th>PROVEEDOR</th>
-                <th>EDITAR</th>
-                <th>ELIMINAR</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    <center><h1>PRODUCTOS AGREGADOS AL CARRITO DE COMPRAS</h1></center>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IdCarrito)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Nombre)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Longitud)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Diametro)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Tipo.Tipo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Cantidad)
-                    </td>
-                    <td>
-                        S/. @Html.DisplayFor(modelItem => item.Subtotal)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProveedorProducto.Proveedor.RazonSocial)
-                    </td>
-                    <td>
-                        <button class="btn btn-warning" type="button">
-                            @Html.ActionLink("Edit", "EditarProductoCarrito", new { idCarrito = item.IdCarrito })
-                            <i class="bi bi-pencil-square"></i>
-                        </button>
-                    </td>
-                    <td>
-                        <a onclick="return Eliminar(this)" href="/Compra/EliminarDetalleCarrito?idProveedorProducto=@item.ProveedorProducto.IdProveedorProducto" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
-                    </td>
-
+                    <th>ID</th>
+                    <th>NOMBRE</th>
+                    <th>LONGITUD</th>
+                    <th>DIAMETRO</th>
+                    <th>TIPO</th>
+                    <th>CANTIDAD</th>
+                    <th>SUBTOTAL</th>
+                    <th>PROVEEDOR</th>
+                    <th>EDITAR</th>
+                    <th>ELIMINAR</th>
                 </tr>
-            }
-        </tbody>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdCarrito)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Longitud)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Diametro)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Tipo.Tipo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cantidad)
+                        </td>
+                        <td>
+                            S/. @Html.DisplayFor(modelItem => item.Subtotal)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProveedorProducto.Proveedor.RazonSocial)
+                        </td>
+                        <td>
+                            <button class="btn btn-warning" type="button">
+                                @Html.ActionLink("Edit", "EditarProductoCarrito", new { idCarrito = item.IdCarrito })
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <a onclick="return Eliminar(this)" href="/Compra/EliminarDetalleCarrito?idProveedorProducto=@item.ProveedorProducto.IdProveedorProducto" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+                        </td>
 
-    </table>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
     <br>
     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Modcomprar">Confirmar compra <i class="bi bi-dropbox"></i></button>
 </div>
@@ -119,7 +121,7 @@
 <div class="modal" tabindex="-1" id="Modcomprar" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="/Compra/ConfirmarCompra" method="POST" >
+            <form action="/Compra/ConfirmarCompra" method="POST">
                 <div class="modal-header ">
                     <h4 class="modal-title">¿Desea Confirmar la compra?</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

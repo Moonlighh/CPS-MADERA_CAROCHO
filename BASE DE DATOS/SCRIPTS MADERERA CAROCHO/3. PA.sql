@@ -155,10 +155,11 @@ GO
 CREATE OR ALTER PROCEDURE spListarProductoAdmin
 AS
 BEGIN
-	SELECT pro.idProvedoor_Producto, p.idProducto, p.nombre, p.longitud, p.diametro, pro.precioCompra, p.precioVenta, p.stock, t.tipo FROM PRODUCTO p
+	SELECT pro.idProveedor_Producto, prov.razonSocial, p.idProducto, p.nombre, p.longitud, p.diametro, pro.precioCompra, p.precioVenta, p.stock, t.tipo FROM PRODUCTO p
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto
 	inner join PROVEEDOR_PRODUCTO pro on p.idProducto = pro.idProducto
-	ORDER BY p.idProducto;
+	inner join PROVEEDOR prov on prov.idProveedor = pro.idProveedor
+	ORDER BY p.idProducto desc;
 END
 GO
 
@@ -217,7 +218,17 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE spBuscarProductoid(
+CREATE OR ALTER PROCEDURE spBuscarProductoId(
+	@idProducto INT
+)
+AS
+BEGIN
+	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.tipo FROM PRODUCTO p
+	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto WHERE p.idProducto = 1;
+END
+GO
+
+CREATE OR ALTER PROCEDURE spBuscarProductoByProveedorProducto(
 	@idProducto INT
 )
 AS
@@ -246,14 +257,13 @@ GO
 CREATE OR ALTER PROCEDURE spListarProveedorProducto
 AS
 BEGIN
-	SELECT p.idProvedoor_Producto AS id, pro.razonSocial AS proveedor, prod.nombre AS madera, prod.longitud, prod.diametro,
+	SELECT p.idProveedor_Producto, p.idProveedor AS id, pro.razonSocial AS proveedor, prod.nombre AS madera, prod.longitud, prod.diametro,
 	prod.stock, p.precioCompra AS precio, pro.idProveedor, prod.idProducto FROM PROVEEDOR_PRODUCTO p
 	inner join PROVEEDOR pro ON p.idProveedor = pro.idProveedor
 	inner join PRODUCTO prod ON p.idProducto = prod.idProducto
 	WHERE pro.estProveedor = 1;
 END
 GO
-
 
 -- PA - TIPO_EMPLEADO
 -- *************************************
@@ -528,13 +538,13 @@ GO
 -- *************************************
 CREATE OR ALTER PROCEDURE spAgregarProductoCarrito(
 	@idCliente INT,
-	@idProducto INT,
+	@idProveedor_Producto INT,
 	@cantidad INT,
 	@subTotal FLOAT
 )
 AS
 BEGIN
-	INSERT INTO CARRITO VALUES (@idCliente, @idProducto, @cantidad, @subTotal);
+	INSERT INTO CARRITO VALUES (@idCliente, @idProveedor_Producto, @cantidad, @subTotal);
 END
 GO
 
@@ -543,12 +553,13 @@ CREATE OR ALTER PROCEDURE spMostrarCarrito(
 )
 AS
 BEGIN
-	SELECT pro.idProvedoor_Producto, pro.precioCompra, p.idProducto, car.idCarrito, p.nombre, p.longitud, p.diametro, tip.tipo, car.cantidad, car.subtotal FROM CARRITO car
+	SELECT P_P.idProveedor_Producto, P_P.precioCompra, p.idProducto, car.idCarrito, p.nombre, p.longitud, p.diametro, tip.tipo, car.cantidad, car.subtotal, prov.razonSocial FROM CARRITO car
 	inner join USUARIO u ON car.idCliente = u.idUsuario
-	inner join PROVEEDOR_PRODUCTO pro ON pro.idProvedoor_Producto = car.idProveedor_Producto
-	inner join PRODUCTO P ON P.idProducto = pro.idProducto
+	inner join PROVEEDOR_PRODUCTO P_P ON P_P.idProveedor_Producto = car.idProveedor_Producto
+	inner join PRODUCTO P ON P.idProducto = P_P.idProducto
 	inner join TIPO_PRODUCTO tip ON tip.idTipo_Producto = p.idTipo_Producto
-	WHERE car.idCliente = 1 and car.idProveedor_Producto = p.idProducto;
+	inner join PROVEEDOR prov on prov.idProveedor = P_P.idProveedor
+	WHERE car.idCliente = @idUsuario;
 END
 GO
 
@@ -573,7 +584,7 @@ BEGIN
 	DELETE CARRITO WHERE @idProveedor_Producto = idProveedor_Producto and @idCliente = idCliente;
 END
 GO
-
+SELECT *FROM CARRITO
 -- PA - COMPRA
 -- *************************************
 CREATE OR ALTER PROCEDURE spCrearCompra(
