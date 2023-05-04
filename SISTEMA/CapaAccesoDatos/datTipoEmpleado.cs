@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+
 using CapaEntidad;
 namespace CapaAccesoDatos
 {
@@ -37,7 +37,8 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "ERROR AL INSERTAR UN TIPO", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception(e.Message);
+
             }
             finally
             {
@@ -69,7 +70,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "EROR AL MOSTRAR LOS TIPOS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception(e.Message);
             }
             finally
             {
@@ -99,7 +100,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                throw new Exception(e.Message);
             }
             finally { cmd.Connection.Close(); }
             return actualiza;
@@ -125,7 +126,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                throw new Exception(e.Message);
             }
             finally { cmd.Connection.Close(); }
             return eliminado;

@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="packages\NUnit.3.13.3\build\NUnit.props" Condition="Exists('packages\NUnit.3.13.3\build\NUnit.props')" />
   <Import Project="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -47,9 +46,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="nunit.framework, Version=3.13.3.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>packages\NUnit.3.13.3\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -159,17 +155,16 @@
     <Content Include="Content\assets\img\slide\slide-1.jpg" />
     <Content Include="Content\assets\img\slide\slide-2.jpg" />
     <Content Include="Content\assets\img\slide\slide-3.jpg" />
-    <Content Include="Content\assets\img\team\team1.jpg" />
-    <Content Include="Content\assets\img\team\team2.jpg" />
-    <Content Include="Content\assets\img\team\team3.jpg" />
-    <Content Include="Content\assets\img\team\team4.jpg" />
+    <Content Include="Content\assets\img\team\team-1.jpg" />
+    <Content Include="Content\assets\img\team\team-2.jpg" />
+    <Content Include="Content\assets\img\team\team-3.jpg" />
+    <Content Include="Content\assets\img\team\team-4.jpg" />
     <Content Include="Content\assets\img\testimonials-bg.jpg" />
     <Content Include="Content\assets\img\testimonials\testimonials-1.jpg" />
     <Content Include="Content\assets\img\testimonials\testimonials-2.jpg" />
     <Content Include="Content\assets\img\testimonials\testimonials-3.jpg" />
     <Content Include="Content\assets\img\testimonials\testimonials-4.jpg" />
     <Content Include="Content\assets\img\testimonials\testimonials-5.jpg" />
-    <Content Include="Content\assets\js\alertas.js" />
     <Content Include="Content\assets\js\main.js" />
     <Content Include="Content\assets\scss\Readme.txt" />
     <Content Include="Content\assets\vendor\animate.css\animate.compat.css" />
@@ -219,6 +214,7 @@
     <Content Include="Content\assets\vendor\remixicon\remixicon.symbol.svg" />
     <Content Include="Content\assets\vendor\swiper\swiper-bundle.min.css" />
     <Content Include="Content\assets\vendor\swiper\swiper-bundle.min.js" />
+    <Content Include="Scripts\alerts.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -234,10 +230,9 @@
     <Content Include="Imagenes\logo.png" />
     <Content Include="Imagenes\tienda.png" />
     <Content Include="Imagenes\tiendalogo.png" />
-    <Content Include="Scripts\funcionalidades.js" />
-    <Content Include="Scripts\alertas.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\forms\contact.php" />
     <Content Include="Content\assets\vendor\bootstrap-icons\bootstrap-icons.json" />
     <Content Include="Content\assets\vendor\bootstrap-icons\fonts\bootstrap-icons.woff" />
     <Content Include="Content\assets\vendor\bootstrap-icons\fonts\bootstrap-icons.woff2" />
@@ -273,7 +268,6 @@
     <Content Include="Content\assets\vendor\remixicon\remixicon.woff" />
     <Content Include="Content\assets\vendor\remixicon\remixicon.woff2" />
     <Content Include="Content\assets\vendor\swiper\swiper-bundle.min.js.map" />
-    <Content Include="Content\forms\contact.php" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -285,6 +279,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\validator.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -319,6 +314,7 @@
     <Content Include="Views\Compra\DetalleCompra.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\Compra\EditarProductoCarrito.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -381,7 +377,6 @@
       <ErrorText>Este proyecto hace referencia a los paquetes NuGet que faltan en este equipo. Use la restauración de paquetes NuGet para descargarlos. Para obtener más información, consulte http://go.microsoft.com/fwlink/?LinkID=322105. El archivo que falta es {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
-    <Error Condition="!Exists('packages\NUnit.3.13.3\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\NUnit.3.13.3\build\NUnit.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

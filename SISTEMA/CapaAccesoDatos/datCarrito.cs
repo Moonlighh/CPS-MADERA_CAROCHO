@@ -3,13 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using System.Collections;
-using System.Security.Cryptography;
 
 namespace CapaAccesoDatos
 {
@@ -26,49 +19,60 @@ namespace CapaAccesoDatos
         #region Carrito de Compra
         public bool AgregarProductoCarrito(entCarrito car)
         {
-            SqlCommand cmd = null;
-            bool creado = false;
+            // Este método registra un producto en el carrito de compras de un cliente
+            // Parámetros:
+            // - car: objeto de la clase Carrito con la información del carrito de compras
+            // Retorna:
+            // - bool: true si el registro fue exitoso, false si hubo algún error
+
+            bool creado = false; // variable para indicar si el registro fue exitoso o no
+
             try
             {
-                SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spAgregarProductoCarrito", cn);
-                cmd.Parameters.AddWithValue("@idCliente", car.Cliente.IdUsuario);
-                cmd.Parameters.AddWithValue("@idProveedor_Producto", car.ProveedorProducto.IdProveedorProducto);
-                cmd.Parameters.AddWithValue("@cantidad", car.Cantidad);
-                cmd.Parameters.AddWithValue("@subTotal", car.Subtotal);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cn.Open();
-                int i = cmd.ExecuteNonQuery();
-                if (i != 0)
+                SqlConnection cn = Conexion.Instancia.Conectar(); // instancia de la conexión a la base de datos
+                using (SqlCommand cmd = new SqlCommand("spAgregarProductoCarrito", cn))
                 {
-                    creado = true;
+                    cmd.Parameters.AddWithValue("@idCliente", car.Cliente.IdUsuario); // asignación de parámetros del procedimiento almacenado
+                    cmd.Parameters.AddWithValue("@idProveedor_Producto", car.ProveedorProducto.IdProveedorProducto);
+                    cmd.Parameters.AddWithValue("@cantidad", car.Cantidad);
+                    cmd.Parameters.AddWithValue("@subTotal", car.Subtotal);
+                    cmd.CommandType = CommandType.StoredProcedure; // indicación del tipo de comando
+                    cn.Open(); // apertura de la conexión
+                    int i = cmd.ExecuteNonQuery(); // ejecución del procedimiento almacenado
+                    if (i != 0) // si se registró al menos un registro, se marca como creado
+                    {
+                        creado = true;
+                    }
                 }
             }
-            catch (Exception e)
+            catch (Exception e) // si se produce una excepción, se muestra un mensaje de error
             {
-                MessageBox.Show(e.Message);
+                throw new Exception(e.Message);
             }
-            finally
-            {
-                cmd.Connection.Close();
-            }
-            return creado;
+
+            return creado; // se retorna el valor de la variable creado
         }
 
         public List<entCarrito> MostrarDetCarrito(int idCliente)
         {
+            // Esta función muestra los productos que un cliente tiene en su carrito de compras
+
             SqlCommand cmd = null;
             List<entCarrito> list = new List<entCarrito>();
             try
             {
+                // Conectar a la base de datos
                 SqlConnection cn = Conexion.Instancia.Conectar();
+                // Crear el comando para ejecutar el procedimiento almacenado
                 cmd = new SqlCommand("spMostrarCarrito", cn);
                 cmd.Parameters.AddWithValue("@idUsuario", idCliente);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cn.Open();
+                // Ejecutar el comando y leer los datos obtenidos
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
+                    // Crear los objetos necesarios para almacenar los datos obtenidos
                     entTipoProducto tipoProducto = new entTipoProducto
                     {
                         Tipo = dr["tipo"].ToString(),
@@ -99,60 +103,80 @@ namespace CapaAccesoDatos
                         Subtotal = Convert.ToDouble(dr["subtotal"]),
                         ProveedorProducto = pro
                     };
+                    // Agregar el carrito a la lista de carritos
                     list.Add(c);
                 };
-            } 
+            }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                // En caso de error, mostrar un mensaje con la excepción lanzada
+                throw new Exception(e.Message);
             }
             finally
             {
+                // Cerrar la conexión a la base de datos
                 cmd.Connection.Close();
             }
+            // Devolver la lista de carritos obtenida
             return list;
         }
 
         public bool EditarProductoCarrito(entCarrito car)
         {
-            SqlCommand cmd = null;
-            bool actualiza = false;
-            try
+            bool editar = false;
+            using (SqlConnection cn = Conexion.Instancia.Conectar())
             {
-                SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spEditarProductoCarrito", cn);
-                cmd.Parameters.AddWithValue("@idCarrito", car.IdCarrito);
-                cmd.Parameters.AddWithValue("@cantidad", car.Cantidad);
-                cmd.Parameters.AddWithValue("@subtotal", car.Subtotal);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cn.Open();
-                int i = cmd.ExecuteNonQuery();
-                if (i > 0)
+                using (SqlCommand cmd = new SqlCommand("spEditarProductoCarrito", cn))
                 {
-                    actualiza = true;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@idCarrito", car.IdCarrito);
+                    cmd.Parameters.AddWithValue("@cantidad", car.Cantidad);
+                    cmd.Parameters.AddWithValue("@subtotal", car.Subtotal);
+
+                    try
+                    {
+                        cn.Open();
+                        int i = cmd.ExecuteNonQuery();
+                        if (i > 0)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        return editar;
+                        throw new Exception ("No se pudo editar el producto del carrito");
+                    }
                 }
             }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            finally { cmd.Connection.Close(); }
-            return actualiza;
         }
-        public bool EliminarProductoCarrito(int idProveedor_Producto, int idCliente)
+        public bool EliminarProductosCarrito(int idProveedor_Producto, int idCliente)
         {
+            // Esta función elimina un producto del carrito de compras
+
+            // Inicializamos las variables
             SqlCommand cmd = null;
             bool eliminar = false;
+
             try
             {
+                // Conectamos a la base de datos y preparamos el comando
                 SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spEliminarProductoCarrito", cn);
+                cmd = new SqlCommand("spEliminarProductosCarrito", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
+                // Añadimos los parámetros necesarios para el procedimiento almacenado
                 cmd.Parameters.AddWithValue("@idProveedor_Producto", idProveedor_Producto);
                 cmd.Parameters.AddWithValue("@idCliente", idCliente);
-                cmd.CommandType = CommandType.StoredProcedure;
+
+                // Abrimos la conexión y ejecutamos el comando
                 cn.Open();
                 int i = cmd.ExecuteNonQuery();
+
+                // Si se elimina algún producto, actualizamos la variable eliminar a true
                 if (i != 0)
                 {
                     eliminar = true;
@@ -160,12 +184,16 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                // Si se produce una excepción, mostramos un mensaje de error
+                throw new Exception(e.Message);
             }
             finally
             {
+                // Cerramos la conexión
                 cmd.Connection.Close();
             }
+
+            // Devolvemos el valor de la variable eliminar
             return eliminar;
         }
         #endregion CarritoCompra

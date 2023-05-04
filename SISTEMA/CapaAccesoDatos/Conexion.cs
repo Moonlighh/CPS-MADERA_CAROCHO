@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CapaAccesoDatos
 {
@@ -28,7 +27,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception)
             {
-                MessageBox.Show("Error al intentar conectarse al servidor");
+                throw new Exception("Error al intentar conectarse al servidor");
             }
             return cn;
         }

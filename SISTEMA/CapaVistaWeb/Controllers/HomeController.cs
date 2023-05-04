@@ -44,29 +44,50 @@ namespace MadereraCarocho.Controllers
             ViewBag.Message = "Usted no tiene permisos para acceder a esta pagina";
             return View();
         }
-        [HttpPost]
-        public ActionResult VerificarAcceso(string dato, string contra)
+        public ActionResult Login()
         {
-            //entUsuario ousuario = logUsuario.Instancia.ObtenerUsuarios().Where(u => u.Correo == dato && u.Pass == Encriptar.GetSHA256(contra)).FirstOrDefault();
-            entUsuario objCliente = logUsuario.Instancia.IniciarSesion(dato, contra);
-            if (objCliente != null)
+            return View();
+        }
+        [HttpPost]
+        public ActionResult VerificarAcceso(string user, string pass)
+        {
+            try
             {
-                FormsAuthentication.SetAuthCookie(objCliente.Correo, false); //Almacenar autenticacion dentro de una cokkie (segundo parametro es que el obj no sera persistente)
-                Session["Usuario"] = objCliente;// Una sesión puede almacenar cualquier tipo de dato
-                if (objCliente.Rol == entRol.Administrador)
+                if (!(String.IsNullOrEmpty(user) || String.IsNullOrEmpty(pass)))
                 {
-                    return RedirectToAction("Admin"); 
-                }
-                else
-                {
-                    if (objCliente.Rol == entRol.Cliente)
+                    //entUsuario ousuario = logUsuario.Instancia.ObtenerUsuarios().Where(u => u.Correo == dato && u.Pass == Encriptar.GetSHA256(contra)).FirstOrDefault();
+                    entUsuario objCliente = logUsuario.Instancia.IniciarSesion(user, pass);
+                    if (objCliente != null)
                     {
-                        return RedirectToAction("Cliente");
+                        FormsAuthentication.SetAuthCookie(objCliente.Correo, false); //Almacenar autenticacion dentro de una cokkie (segundo parametro es que el obj no sera persistente)
+                        Session["Usuario"] = objCliente;// Una sesión puede almacenar cualquier tipo de dato
+                        if (objCliente.Rol == entRol.Administrador)
+                        {
+                            return RedirectToAction("Admin");
+                        }
+                        else
+                        {
+                            if (objCliente.Rol == entRol.Cliente)
+                            {
+                                return RedirectToAction("Cliente");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        TempData["Mensaje"] = "Usuario o contraseña incorrectos";
+                        return RedirectToAction("Login");
                     }
                 }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
 
-            return RedirectToAction("Index"); //Si es que hay otro tipo igual que te recargue la pagina
+            return RedirectToAction("Login"); //Si es que hay otro tipo igual que te recargue la pagina
         }
         [HttpPost]
         public ActionResult SingUp(string cNombre, string cdni, string ctelefono, string cdireccion, string cusername, string ccorreo, string cpassword, string cpassconfirm, FormCollection frmub, FormCollection frm)
@@ -91,7 +112,8 @@ namespace MadereraCarocho.Controllers
                         UserName = cusername,
                         Correo = ccorreo,
                         Pass = cpassword,
-                        Roll = rol
+                        Roll = rol,
+                        Ubigeo = u
                     };
                     List<string> errores = new List<string>();
                     bool creado = logUsuario.Instancia.CrearCliente(c, out errores);

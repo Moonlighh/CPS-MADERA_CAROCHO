@@ -2046,9 +2046,10 @@ INSERT INTO ROL VALUES
 GO
 
 --INSERT CLIENTE
-INSERT INTO USUARIO(razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,pass,idRol) VALUES 
-	('cesar', '74359211', '945613221','Mz20Lote34-Av. Ricardo Palma', '010109','cesar@gmail.com','cesar#255','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1),
-	('omar', '70790019', '933423291', 'santiago mariños 1618', '010109','omar@gmail.com','omar#345','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1),
-	('ximena', '58791234', '999067966', 'MZA. 1-A LOTE. 3', '120102','ximena@gmailcom','ximena#167','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',2),
-	('daniel', '74399141','913423491','Mz20Lote34-Av.5556',  '010109','daniel@gmail.com','daniel#222','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',2);
+INSERT INTO USUARIO(razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,pass,idRol) 
+VALUES 
+    ('cesar', '74359211', '945613221','Mz20Lote34-Av. Ricardo Palma', '010109','cesar@gmail.com','cesar#255','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1),
+    ('omar', '70790019', '933423291', 'santiago mariños 1618', '010109','omar@gmail.com','omar#345','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1),
+    ('ximena', '58791234', '999067966', 'MZA. 1-A LOTE. 3', '120102','ximena@gmailcom','ximena#167','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',2),
+    ('daniel', '74399141','913423491','Mz20Lote34-Av.5556',  '010109','daniel@gmail.com','daniel#222','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',2);
 GO

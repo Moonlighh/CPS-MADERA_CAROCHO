@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+
 
 namespace CapaAccesoDatos
 {
@@ -44,7 +44,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "ERROR AL INSERTAR UN PRODUCTO", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception(e.Message);
             }
             finally
             {
@@ -88,7 +88,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message,"EROR AL MOSTRAR LOS PRODUCTOS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception(e.Message);
             }
             finally
             {
@@ -122,7 +122,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                throw new Exception(e.Message);
             }
             finally { cmd.Connection.Close(); }
             return actualiza;
@@ -191,7 +191,7 @@ namespace CapaAccesoDatos
             catch (Exception e)
             {
 
-                MessageBox.Show(e.Message);
+                throw new Exception(e.Message);
             }
             finally
             {
@@ -231,7 +231,7 @@ namespace CapaAccesoDatos
             catch (Exception e)
             {
 
-                MessageBox.Show(e.Message);
+                throw new Exception(e.Message);
             }
             finally
             {

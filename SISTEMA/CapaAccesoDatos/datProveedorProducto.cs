@@ -6,7 +6,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CapaAccesoDatos
 {
@@ -58,7 +57,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "ERROR AL MOSTRAR DATOS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception("No se pudo listar los productos");
             }
             finally
             {
@@ -111,7 +110,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "EROR AL MOSTRAR LOS PRODUCTOS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception("No se pudo listar los productos");
             }
             finally
             {
@@ -159,7 +158,7 @@ namespace CapaAccesoDatos
             catch (Exception e)
             {
 
-                MessageBox.Show(e.Message);
+                throw new Exception("No se pudo listar los productos");
             }
             finally
             {

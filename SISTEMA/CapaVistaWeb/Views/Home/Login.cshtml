@@ -1,0 +1,73 @@
+﻿
+<style>
+    .login-container {
+        width: 30%;
+        margin: auto;
+        margin-top: 100px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+        .login-container h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+    label {
+        display: block;
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #45a049;
+        }
+</style>
+
+<div class="login-container">
+    <h1>Iniciar Sesión</h1>
+    <form method="post" id="idLogin" action="/Home/VerificarAcceso" class="row g-3 needs-validation" novalidate>
+        <div>
+            <label for="validationCustom01" class="form-label">Username</label>
+            <input type="text" id="validationCustom02" name="user" placeholder="Enter your username" class="form-control" required>
+            <div class="invalid-feedback">
+                Please choose a username.
+            </div>
+        </div>
+
+        <div>
+            <label for="validationCustom01" class="form-label">Password</label>
+            <input type="text" id="validationCustom03" name="pass" placeholder="Enter your username" class="form-control" required>
+            <div class="invalid-feedback">
+                Please choose a password.
+            </div>
+        </div>
+        <button class="btn btn-dark" type="submit">Login</button>
+        @if (TempData["Mensaje"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["Mensaje"]
+            </div>
+        }
+    </form>
+</div>

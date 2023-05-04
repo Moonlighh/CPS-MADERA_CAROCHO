@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
-using System.Windows.Forms;
+
 
 namespace CapaAccesoDatos
 {
@@ -48,7 +48,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "ERROR AL INGRESAR UN USUARIO", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception(e.Message);
             }
             finally
             {
@@ -98,7 +98,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "ERROR AL MOSTRAR CLIENTES", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception(e.Message);
 
             }
             finally
@@ -141,7 +141,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "ERROR AL MOSTRAR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception(e.Message);
 
             }
             finally
@@ -190,8 +190,8 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "ERROR AL MOSTRAR CLIENTES", MessageBoxButtons.OK, MessageBoxIcon.Error);
-       
+                throw new Exception(e.Message);
+
             }
             finally
             {
@@ -223,7 +223,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Error al modificar Cliente procedimiento spActualizarCliente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception(e.Message);
             }
             finally { 
                 cmd.Connection.Close(); 
@@ -252,8 +252,8 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-               
-                MessageBox.Show(e.Message, "Error al deshabilitar el usuario con id "+id, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                throw new Exception(e.Message);
             }
             finally { cmd.Connection.Close(); }
             return eliminado;
@@ -278,7 +278,7 @@ namespace CapaAccesoDatos
             catch (Exception e)
             {
 
-                MessageBox.Show(e.Message, "Error al habilitar el usuario con id " + id, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception(e.Message);
             }
             finally { cmd.Connection.Close(); }
             return eliminado;
@@ -320,7 +320,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                throw new Exception(e.Message);
             }
             finally { 
                 cmd.Connection.Close(); 
@@ -368,7 +368,7 @@ namespace CapaAccesoDatos
             catch (Exception e)
             {
 
-                MessageBox.Show(e.Message, "No se pudo buscar al usuario", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception(e.Message);
             }
             finally
             {
@@ -416,7 +416,7 @@ namespace CapaAccesoDatos
             catch (Exception e)
             {
 
-                MessageBox.Show(e.Message, "Error al buscar Clientes procedimiento spBuscarCliente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception(e.Message);
             }
             finally
             {
@@ -486,7 +486,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "ERROR AL buscaar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception(e.Message);
 
             }
             finally

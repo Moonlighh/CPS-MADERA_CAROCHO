@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
-using System.Windows.Forms;
+
 
 namespace CapaAccesoDatos
 {
@@ -23,11 +23,18 @@ namespace CapaAccesoDatos
         public int CrearCompra(entCompra comp)
         {
             SqlCommand cmd = null;
+            SqlTransaction tran = null;
             int idCompra = -1;
+
             try
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spCrearCompra", cn)
+                cn.Open();
+
+                // Iniciar la transacción
+                tran = cn.BeginTransaction();
+
+                cmd = new SqlCommand("spCrearCompra", cn, tran)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -38,27 +45,37 @@ namespace CapaAccesoDatos
                 id.Direction = ParameterDirection.Output;
                 cmd.Parameters.Add(id);
 
-                cn.Open();
                 int i = cmd.ExecuteNonQuery();
+
                 if (i >= 1)
                 {
                     idCompra = Convert.ToInt32(cmd.Parameters["@id"].Value);
                 }
+
                 if (idCompra == -1)
                 {
-                    MessageBox.Show("Id INVALIDO");
+                    throw new ApplicationException("ID COMPRA INVALIDO");
                 }
 
+                // Si no hay errores, confirmar la transacción
+                tran.Commit();
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Error al insertar una compra procedimiento spCrearCompra", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Si hay errores, deshacer la transacción
+                tran.Rollback();
+                throw new ApplicationException("Error al crear la compra - AD");
             }
             finally
             {
-                cmd.Connection.Close();
+                if (cmd != null)
+                {
+                    cmd.Connection.Close();
+                }
             }
+
             return idCompra;
+
         }
         //Leer
         public List<entCompra> ListarCompra()
@@ -91,7 +108,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "spCrearCompra", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new ApplicationException("No se pudo mostrar las compras - AD");
             }
             finally
             {
@@ -120,7 +137,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                throw new ApplicationException("Error al eliminar la compra - AD");
             }
             finally { cmd.Connection.Close(); }
             return eliminado;
@@ -146,7 +163,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                throw new ApplicationException("Error al generar el id de la compra - AD");
             }
             finally
             {
@@ -180,7 +197,7 @@ namespace CapaAccesoDatos
             catch (Exception e)
             {
 
-                MessageBox.Show(e.Message);
+                throw new Exception(e.Message);
             }
             finally
             {

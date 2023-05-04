@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
+
 
 namespace CapaAccesoDatos
 {
@@ -43,7 +43,7 @@ namespace CapaAccesoDatos
             catch (Exception e)
             {
 
-                MessageBox.Show(e.Message);
+                throw new Exception(e.Message);
             }
             finally
             {
@@ -83,8 +83,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-
-                MessageBox.Show(e.Message+"aqui es el error");
+                throw new Exception(e.Message);
             }
             finally
             {
@@ -120,7 +119,7 @@ namespace CapaAccesoDatos
             catch (Exception e)
             {
 
-                MessageBox.Show(e.Message);
+                throw new Exception(e.Message);
             }
             finally
             {
@@ -149,7 +148,7 @@ namespace CapaAccesoDatos
             catch (Exception e)
             {
 
-                MessageBox.Show(e.Message);
+                throw new Exception(e.Message);
             }
             finally
             {
@@ -193,7 +192,7 @@ namespace CapaAccesoDatos
             catch (Exception e)
             {
 
-                MessageBox.Show(e.Message);
+                throw new Exception(e.Message);
             }
             finally
             {

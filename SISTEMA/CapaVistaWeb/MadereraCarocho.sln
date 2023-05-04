@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaAccesoDatos", "..\CapaA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaEntidad", "..\CapaEntidad\CapaEntidad.csproj", "{E96C4AC9-5D15-40C0-9AAB-6F35BC891362}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MadereraCarochoTest", "..\MadereraCarochoTest\MadereraCarochoTest.csproj", "{677EDF6C-5A5C-4B9D-81B9-5A5F82481CB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E96C4AC9-5D15-40C0-9AAB-6F35BC891362}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E96C4AC9-5D15-40C0-9AAB-6F35BC891362}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E96C4AC9-5D15-40C0-9AAB-6F35BC891362}.Release|Any CPU.Build.0 = Release|Any CPU
+		{677EDF6C-5A5C-4B9D-81B9-5A5F82481CB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{677EDF6C-5A5C-4B9D-81B9-5A5F82481CB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{677EDF6C-5A5C-4B9D-81B9-5A5F82481CB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{677EDF6C-5A5C-4B9D-81B9-5A5F82481CB6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

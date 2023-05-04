@@ -584,7 +584,7 @@ BEGIN
 	DELETE CARRITO WHERE @idProveedor_Producto = idProveedor_Producto and @idCliente = idCliente;
 END
 GO
-SELECT *FROM CARRITO
+
 -- PA - COMPRA
 -- *************************************
 CREATE OR ALTER PROCEDURE spCrearCompra(

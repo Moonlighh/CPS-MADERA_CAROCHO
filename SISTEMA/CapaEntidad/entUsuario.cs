@@ -15,8 +15,8 @@ namespace CapaEntidad
         public int IdUsuario { get; set; }
 
         [Required(ErrorMessage = "La razón social es requerida.")]
-        [StringLength(40, MinimumLength = 10, ErrorMessage = "La razón social debe tener entre 10 y 40 caracteres.")]
-        [RegularExpression("^[^0-9]*$", ErrorMessage = "La razón social no puede contener números.")]
+        //[StringLength(40, MinimumLength = 10, ErrorMessage = "La razón social debe tener entre 10 y 40 caracteres.")]
+        //[RegularExpression("^[^0-9]*$", ErrorMessage = "La razón social no puede contener números.")]
         public string RazonSocial { get; set; }
 
         [Required(ErrorMessage = "El DNI es requerido.")]

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+
 using System.ComponentModel.DataAnnotations;//Validaciones
 
 namespace CapaLogica
@@ -21,7 +21,7 @@ namespace CapaLogica
         #region CRUD
         public bool CrearCliente(entUsuario user, out List<string> lsErrores)
         {
-            bool isValid = ValidationHelper.TryValidateEntity(user, out lsErrores);
+            bool isValid = ValidationHelper.TryValidateEntityMsj(user, out lsErrores);
             if (!isValid)
             {
                 return false;
@@ -104,7 +104,7 @@ namespace CapaLogica
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                throw new ApplicationException(e.Message);
 
             }
             return u;

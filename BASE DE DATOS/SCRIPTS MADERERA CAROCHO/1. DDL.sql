@@ -16,12 +16,12 @@ GO
 CREATE TABLE PROVEEDOR(
 	idProveedor INT PRIMARY KEY IDENTITY,
 	razonSocial VARCHAR(40) not null,
-	dni VARCHAR(8) not null,
+	dni CHAR(8) not null,
 	correo VARCHAR(40),
-	telefono VARCHAR(9) DEFAULT null,
+	telefono CHAR(9),
 	descripcion VARCHAR (80),
 	estProveedor BIT DEFAULT 1,
-	idUbigeo VARCHAR(6) null
+	idUbigeo VARCHAR(6)
 
 	CONSTRAINT fk_Proveedor_Ubigeo FOREIGN KEY (idUbigeo) REFERENCES Ubigeo (idUbigeo)
 )
@@ -38,7 +38,7 @@ CREATE TABLE PRODUCTO(
 	nombre VARCHAR(40) not null,
 	longitud FLOAT not null,
 	diametro FLOAT not null,
-	precioVenta FLOAT not null,
+	precioVenta DECIMAL(10,2) not null,
 	stock INT DEFAULT 0,
 	idTipo_Producto INT not null
 
@@ -53,8 +53,13 @@ CREATE TABLE PROVEEDOR_PRODUCTO
   idProducto INT not null,
   precioCompra FLOAT not null,
  
-  CONSTRAINT fk_proveedor_producto_producto FOREIGN KEY (idProducto) REFERENCES PRODUCTO (idProducto),
-  CONSTRAINT fk_proveedor_producto_proveedor FOREIGN KEY (idProveedor) REFERENCES PROVEEDOR (idProveedor)
+  CONSTRAINT fk_proveedor_producto_producto 
+  FOREIGN KEY (idProducto) 
+  REFERENCES PRODUCTO (idProducto),
+  
+  CONSTRAINT fk_proveedor_producto_proveedor 
+  FOREIGN KEY (idProveedor) 
+  REFERENCES PROVEEDOR (idProveedor)
 )
 GO
 
@@ -64,19 +69,20 @@ CREATE TABLE TIPO_EMPLEADO(
 )
 GO
 
+
 CREATE TABLE EMPLEADO(
     idEmpleado INT PRIMARY KEY IDENTITY,
     nombres VARCHAR(50) not null,
     dni VARCHAR(8) not null,
-    telefono VARCHAR(9) DEFAULT null,
-    direccion VARCHAR(60) null,
+    telefono VARCHAR(9),
+    direccion VARCHAR(60),
     f_inicio DATETIME DEFAULT GETDATE(),
-    f_fin DATE DEFAULT GETDATE(),
+    f_fin DATE,
     salario FLOAT,
     descripcion VARCHAR(50),
     estEmpleado BIT DEFAULT 1,
-    idTipo_Empleado INT null,
-    idUbigeo VARCHAR(6) null
+    idTipo_Empleado INT,
+    idUbigeo VARCHAR(6),
 
 
     CONSTRAINT fk_EMPLEADO_TIPO FOREIGN KEY (idTipo_Empleado) REFERENCES TIPO_EMPLEADO (idTipo_Empleado),
@@ -100,7 +106,16 @@ CREATE TABLE USUARIO(
 	fecCreacion DATETIME DEFAULT GETDATE(),
 	correo VARCHAR(40),
 	userName VARCHAR (20) not null,
-	pass VARCHAR(200) null,
+	pass VARCHAR(200) null, -- usar hashed password para mayor seguridad
+	--Es importante tener en cuenta que la implementación correcta de contraseñas 
+	--hash requiere precauciones adicionales, como la sal (un valor aleatorio 
+	--agregado al inicio o final de la contraseña antes de hacer el hash) y la 
+	--iteración (aplicar el algoritmo hash varias veces). También se deben evitar 
+	--prácticas inseguras, como el almacenamiento de la sal en la misma tabla que 
+	--la contraseña hash. En resumen, la seguridad de las contraseñas en una 
+	--aplicación depende de múltiples factores y debe ser implementada de forma 
+	--decuada para garantizar la protección de los datos y la privacidad de los 
+	--usuarios
 	idRol INT,
 	activo BIT DEFAULT 1,
 
@@ -123,7 +138,7 @@ GO
 CREATE TABLE COMPRA(
 	idCompra INT PRIMARY KEY IDENTITY,
 	fecha DATETIME DEFAULT GETDATE(),
-	total FLOAT not null,
+	total DECIMAL (10,2) not null,
 	estado BIT DEFAULT 0,-- 0 En espera 1 Pagado
 	idUsuario INT not null
 
@@ -136,7 +151,7 @@ CREATE TABLE DETALLE_COMPRA(
 	idCompra INT not null,
 	idProducto INT not null,
 	cantidad INT not null,
-	subTotal FLOAT not null
+	subTotal DECIMAL (8,2) not null
 
 	CONSTRAINT pk_detCompra PRIMARY KEY (idDetCompra),
 	CONSTRAINT fk_detCompra_Compra FOREIGN KEY (idCompra) REFERENCES COMPRA (idCompra),
@@ -147,7 +162,7 @@ GO
 CREATE TABLE VENTA(
 	idVenta INT PRIMARY KEY IDENTITY,
 	fecha DATETIME DEFAULT GETDATE(),
-	total FLOAT not null,
+	total DECIMAL (10,2) not null,
 	estado BIT DEFAULT 1,-- 0 En espera 1 Pagado
 	idUsuario INT not null
 
@@ -160,7 +175,7 @@ CREATE TABLE DETALLE_VENTA(
 	idVenta INT not null,
 	idProducto INT not null,
 	cantidad INT not null,
-	subTotal FLOAT not null
+	subTotal DECIMAL (8,2) not null
 	
 	CONSTRAINT pk_detVenta PRIMARY KEY (idDetVenta), 
 	CONSTRAINT fk_detVenta_Venta FOREIGN KEY (idVenta) REFERENCES VENTA (idVenta),
