@@ -77,7 +77,7 @@ namespace CapaAccesoDatos
                     producto.Longitud = Convert.ToDouble(dr["longitud"]);
                     producto.Diametro = Convert.ToDouble(dr["diametro"]);
                     rpCompra.Cantidad = Convert.ToInt32(dr["cantidad"]);
-                    rpCompra.Subtotal = Convert.ToDouble(dr["subtotal"]);
+                    rpCompra.Subtotal = Convert.ToDecimal(dr["subtotal"]);
 
                     rpCompra.Producto = producto;
                     rpCompra.Compra = compra;

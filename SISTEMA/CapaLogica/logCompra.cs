@@ -18,9 +18,15 @@ namespace CapaLogica
         }
 
         #region CRUD
-        public int CrearCompra(entCompra comp)
+        public bool CrearCompra(entCompra comp, out int idGenerado)
         {
-            return datCompra.Instancia.CrearCompra(comp);
+            bool isValid = ValidationHelper.TryValidateEntity(comp);
+            if (!isValid || comp.Total <=0)
+            {
+                idGenerado = -1;
+                return false;
+            }
+            return datCompra.Instancia.CrearCompra(comp, out idGenerado);
         }
         public List<entCompra> ListarCompra()
         {

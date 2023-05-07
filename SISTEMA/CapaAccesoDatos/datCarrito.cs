@@ -47,7 +47,8 @@ namespace CapaAccesoDatos
             }
             catch (Exception e) // si se produce una excepción, se muestra un mensaje de error
             {
-                throw new Exception(e.Message);
+                //return creado = false;
+                //throw new Exception(e.Message);
             }
 
             return creado; // se retorna el valor de la variable creado
@@ -100,7 +101,7 @@ namespace CapaAccesoDatos
                     {
                         IdCarrito = Convert.ToInt32(dr["idCarrito"]),
                         Cantidad = Convert.ToInt32(dr["cantidad"]),
-                        Subtotal = Convert.ToDouble(dr["subtotal"]),
+                        Subtotal = Convert.ToDecimal(dr["subtotal"]),
                         ProveedorProducto = pro
                     };
                     // Agregar el carrito a la lista de carritos

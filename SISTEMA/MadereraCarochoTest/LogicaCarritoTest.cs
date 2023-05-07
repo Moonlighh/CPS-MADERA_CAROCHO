@@ -4,7 +4,7 @@ using Xunit;
 
 namespace MadereraCarochoTest
 {
-    public class CapaLogicaTest
+    public class LogicaCarritoTest
     {
         /*
             Para que la prueba tenga éxito, es importante que sigas los siguientes puntos:
@@ -17,7 +17,11 @@ namespace MadereraCarochoTest
         [Fact]
         public void AgregarProductoCarritoTest()
         {
-            // Arrange
+            /*
+             * Setup:
+                La configuración se encarga de establecer el ambiente necesario para realizar la prueba, como instanciar 
+                objetos, inicializar variables, crear bases de datos de prueba, entre otros.
+             */
             entUsuario u = new entUsuario
             {
                 IdUsuario = 1
@@ -30,15 +34,48 @@ namespace MadereraCarochoTest
             {
                 Cliente = u,
                 ProveedorProducto = proveedorProducto,
-                Cantidad = 120,
-                Subtotal = 2133
+                Cantidad = 4,
+                Subtotal = 213
             };
-
-            // Act
+            /*
+             * Act:
+                La ejecución del método que se está probando es el acto de llamar al método que se quiere probar, con los argumentos necesarios.
+            */
             bool resultado = logCarrito.Instancia.AgregarProductoCarrito(c);
-
-            // Assert
+            /*
+             * Act:
+                Validación de los resultados se encarga de comparar los resultados esperados con los resultados reales que se obtuvieron al ejecutar 
+                el método probado. Si los resultados no coinciden, la prueba falla y se deben corregir los errores encontrados.
+            */
             Assert.True(resultado);
+        }
+
+        [Fact]
+        public void EditarProductoCarritoTest()
+        {
+            //Arrange
+            entCarrito c = new entCarrito
+            {
+                IdCarrito = 1,
+                Cantidad = 1,
+                Subtotal = 12345678.16M
+            };
+            //Act
+            bool isValid = logCarrito.Instancia.EditarProductoCarrito(c);
+            //Assert
+            Assert.True(isValid);
+        }
+
+        [Fact]
+        public void EliminarProductoCarritoTest()
+        {
+            //Arrange
+            int idProvProd = 0;
+            int idCliente = -896;
+            //Act
+            bool isValid = logCarrito.Instancia.EliminarProductoCarrito(idProvProd, idCliente);
+            //Assert
+            Assert.False(isValid);
         }
     }
 }

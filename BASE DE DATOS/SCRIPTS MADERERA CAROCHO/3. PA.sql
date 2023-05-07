@@ -540,7 +540,7 @@ CREATE OR ALTER PROCEDURE spAgregarProductoCarrito(
 	@idCliente INT,
 	@idProveedor_Producto INT,
 	@cantidad INT,
-	@subTotal FLOAT
+	@subTotal DECIMAL(10, 2)
 )
 AS
 BEGIN
@@ -566,7 +566,7 @@ GO
 CREATE OR ALTER PROCEDURE spEditarProductoCarrito(
 	@idCarrito INT,
 	@cantidad INT,
-	@subtotal INT
+	@subtotal DECIMAL(10, 2)
 )
 AS
 BEGIN
@@ -575,7 +575,7 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE spEliminarProductoCarrito(
+CREATE OR ALTER PROCEDURE spEliminarProductosCarrito(
 	@idProveedor_Producto INT,
 	@idCliente INT
 )
@@ -589,7 +589,7 @@ GO
 -- *************************************
 CREATE OR ALTER PROCEDURE spCrearCompra(
 	@id INT OUT,
-	@total FLOAT,
+	@total decimal(10,2),
 	@estado BIT,
 	@idUsuario INT
 )

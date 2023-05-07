@@ -129,7 +129,7 @@ CREATE TABLE CARRITO(
 	idCliente INT,
 	idProveedor_Producto INT,
 	cantidad INT,
-	subtotal FLOAT,
+	subtotal DECIMAL(10, 2),
 	CONSTRAINT fk_Carrito_Cliente FOREIGN KEY (idCliente) REFERENCES Usuario (idUsuario),
 	CONSTRAINT fk_Carrito_ProveedorProducto FOREIGN KEY (idProveedor_Producto) REFERENCES PROVEEDOR_PRODUCTO (idProveedor_Producto)
 )

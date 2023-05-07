@@ -13,7 +13,7 @@ namespace CapaEntidad
         private entCompra compra;
         private int cantidad;
         private Double preUnitario;
-        private Double subTotal;
+        private decimal subTotal = 0M;
 
         #region Get and Set
         public int IdDetCompra
@@ -36,7 +36,7 @@ namespace CapaEntidad
             get { return preUnitario; }
             set { preUnitario = value; }
         }
-        public Double Subtotal
+        public decimal Subtotal
         {
             get { return subTotal; }
             set { subTotal = value; }

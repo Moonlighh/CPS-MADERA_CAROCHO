@@ -20,12 +20,12 @@ namespace CapaAccesoDatos
         }
 
         //Crear
-        public int CrearCompra(entCompra comp)
+        public bool CrearCompra(entCompra comp, out int idCompra)
         {
             SqlCommand cmd = null;
             SqlTransaction tran = null;
-            int idCompra = -1;
-
+            idCompra = -1;
+            bool creado = false;
             try
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
@@ -50,6 +50,7 @@ namespace CapaAccesoDatos
                 if (i >= 1)
                 {
                     idCompra = Convert.ToInt32(cmd.Parameters["@id"].Value);
+                    creado = true;
                 }
 
                 if (idCompra == -1)
@@ -64,6 +65,7 @@ namespace CapaAccesoDatos
             {
                 // Si hay errores, deshacer la transacción
                 tran.Rollback();
+                creado = false;
                 throw new ApplicationException("Error al crear la compra - AD");
             }
             finally
@@ -74,7 +76,7 @@ namespace CapaAccesoDatos
                 }
             }
 
-            return idCompra;
+            return creado;
 
         }
         //Leer
@@ -99,7 +101,7 @@ namespace CapaAccesoDatos
                     entCompra objCompra = new entCompra();
                     objCompra.IdCompra = Convert.ToInt32(dr["idCompra"]);
                     objCompra.Fecha = Convert.ToDateTime(dr["fecha"]);
-                    objCompra.Total = Convert.ToDouble(dr["total"]);
+                    objCompra.Total = Convert.ToDecimal(dr["total"]);
                     objCompra.Estado = Convert.ToBoolean(dr["estado"]);
                     objCompra.Usuario = user;
 
@@ -189,7 +191,7 @@ namespace CapaAccesoDatos
                     entCompra Prod = new entCompra();
                     Prod.IdCompra = Convert.ToInt32(dr["idCompra"]);
                     Prod.Fecha = Convert.ToDateTime(dr["fecha"]);
-                    Prod.Total = Convert.ToDouble(dr["total"]);
+                    Prod.Total = Convert.ToDecimal(dr["total"]);
                     //Prod.IdProveedor = Convert.ToInt32(dr["idProveedor"]);
                     lista.Add(Prod);
                 }

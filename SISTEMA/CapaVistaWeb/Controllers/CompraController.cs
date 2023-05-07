@@ -44,7 +44,7 @@ namespace MadereraCarocho.Controllers
                 entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.Producto.IdProducto == prod.IdProducto).FirstOrDefault();
                 carrito.ProveedorProducto = detalle;
                 carrito.Cantidad = pvCantidad;
-                carrito.Subtotal = (pvCantidad * detalle.PrecioCompra);
+                carrito.Subtotal = ((decimal)(pvCantidad * detalle.PrecioCompra));
                 logCarrito.Instancia.AgregarProductoCarrito(carrito);
 
                 return RedirectToAction("DetalleCarrito");
@@ -89,45 +89,49 @@ namespace MadereraCarocho.Controllers
                 }
 
                 //Calculamos el total de toda la compra
-                double totalCompra = carrito.Sum(detalle => detalle.Subtotal);
+                double totalCompra = (double)carrito.Sum(detalle => detalle.Subtotal);
 
                 // Crear una nueva compra
                 var compra = new entCompra
                 {
                     Usuario = cliente,
                     Estado = true,
-                    Total = totalCompra
+                    Total = (decimal)totalCompra
                 };
 
                 // Obtener el ID de la compra creada
-                int idCompra = logCompra.Instancia.CrearCompra(compra);
-                compra.IdCompra = idCompra;
-                try
+                int idGenerado = -1;
+                bool creado = logCompra.Instancia.CrearCompra(compra, out idGenerado);
+                if (creado)
                 {
-                    var det = new entDetCompra();
+                    compra.IdCompra = idGenerado;
+                    try
+                    {
+                        var det = new entDetCompra();
 
-                    // Agregar detalles de la compra
-                    for (int i = 0; i < carrito.Count; i++)
-                    {
-                        det.Producto = carrito[i].ProveedorProducto.Producto;
-                        det.Cantidad = carrito[i].Cantidad;
-                        det.Subtotal = carrito[i].Subtotal;
-                        det.Compra = compra;
-                        logDetCompra.Instancia.CrearDetCompra(det);
+                        // Agregar detalles de la compra
+                        for (int i = 0; i < carrito.Count; i++)
+                        {
+                            det.Producto = carrito[i].ProveedorProducto.Producto;
+                            det.Cantidad = carrito[i].Cantidad;
+                            det.Subtotal = (decimal)carrito[i].Subtotal;
+                            det.Compra = compra;
+                            logDetCompra.Instancia.CrearDetCompra(det);
+                        }
                     }
-                }
-                catch (Exception)
-                {
-                    // Si no se pueden agregar los detalles de la compra, eliminar la compra creada anteriormente
-                    if (!logCompra.Instancia.EliminarCompra(idCompra))
+                    catch (Exception)
                     {
-                        TempData["Error"] = "No se pudo cancelar la transacción. Comuniquese de inmediato con soporte e informele del problema";
-                    }
-                    else
-                    {
-                        TempData["Error"] = "No se pudo agregar los productos a la compra";
-                    }
-                    return RedirectToAction("Error", "Home");
+                        // Si no se pueden agregar los detalles de la compra, eliminar la compra creada anteriormente
+                        if (!logCompra.Instancia.EliminarCompra(idGenerado))
+                        {
+                            TempData["Error"] = "No se pudo cancelar la transacción. Comuniquese de inmediato con soporte e informele del problema";
+                        }
+                        else
+                        {
+                            TempData["Error"] = "No se pudo agregar los productos a la compra";
+                        }
+                        return RedirectToAction("Error", "Home");
+                    } 
                 }
                 // Limpiar el carrito de compras del cliente
                 carrito.Clear();
@@ -179,7 +183,7 @@ namespace MadereraCarocho.Controllers
                 entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.IdProveedorProducto == carrito.ProveedorProducto.IdProveedorProducto).FirstOrDefault();
 
                 // Calculamos el subtotal del producto editado
-                c.Subtotal = c.Cantidad * detalle.PrecioCompra;
+                c.Subtotal = (decimal)(c.Cantidad * detalle.PrecioCompra);
 
                 // Actualizamos la cantidad y subtotal del producto en el carrito
                 bool edita = logCarrito.Instancia.EditarProductoCarrito(c);

@@ -22,30 +22,20 @@ namespace CapaLogica
         {
             bool isValid = ValidationHelper.TryValidateEntity(carrito);
             if (!isValid)
-            {
                 return false;
-            }
            return datCarrito.Instancia.AgregarProductoCarrito(carrito);
-        }
-        public List<entCarrito> MostrarDetCarrito(int idUsuario)
-        {
-            try
-            {
-                return datCarrito.Instancia.MostrarDetCarrito(idUsuario);
-            }
-            catch {
-                throw new Exception ("No se pudo mostrar sus productos");
-            }
         }
         public bool EditarProductoCarrito(entCarrito car)
         {
-            logProveedorProducto obj = new logProveedorProducto();
-            //double subTotal 
-
+            bool isValid = ValidationHelper.TryValidateEntity(car);
+            if (!isValid)
+                return false;
             return datCarrito.Instancia.EditarProductoCarrito(car);
         }
         public bool EliminarProductoCarrito(int idProvProd, int idCliente)
         {
+            if (idProvProd <= 0 || idCliente <= 0)
+                return false;
             return datCarrito.Instancia.EliminarProductosCarrito(idProvProd, idCliente);
         }
         #endregion Carrito de Compras
