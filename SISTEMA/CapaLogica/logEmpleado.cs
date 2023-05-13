@@ -22,9 +22,23 @@ namespace CapaLogica
         {
             return datEmpleado.Instancia.CrearEmpleado(pro);
         }
-        public List<entEmpleado> ListarEmpleado()
+        public List<entEmpleado> ListarEmpleado(string busqueda, string orden)
         {
-            return datEmpleado.Instancia.ListarEmpleado();
+            switch (orden)
+            {
+                case "asc": return datEmpleado.Instancia.Ordenar(1);
+                case "desc": return datEmpleado.Instancia.Ordenar(0);
+                default:
+                    break;
+            }
+            if (string.IsNullOrWhiteSpace(busqueda))
+            {
+                return datEmpleado.Instancia.ListarEmpleado();
+            }
+            else
+            {
+                return datEmpleado.Instancia.BuscarEmpleado(busqueda);
+            }
         }
         public bool ActualizarEmpleado(entEmpleado pro)
         {
@@ -36,10 +50,6 @@ namespace CapaLogica
         }
         #endregion CRUD
 
-        public List<entEmpleado> BuscarEmpleado(string busqueda)
-        {
-            return datEmpleado.Instancia.BuscarEmpleado(busqueda);
-        }
         public entEmpleado BuscarIdEmpleado(int idEmpleado)
         {
             return datEmpleado.Instancia.BuscarIdEmpleado(idEmpleado);

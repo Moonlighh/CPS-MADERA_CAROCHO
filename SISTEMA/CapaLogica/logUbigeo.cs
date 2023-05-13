@@ -38,7 +38,14 @@ namespace CapaLogica
         #region Otros
         public List<entUbigeo> ListarDistrito()
         {
-            return datUbigeo.Instancia.ListarDistrito();
+            try
+            {
+                return datUbigeo.Instancia.ListarDistrito();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("No se pudo listar los distritos: " + e.Message);
+            }
         }
         public List<entUbigeo> BuscarUbigeo(string busqueda)
         {

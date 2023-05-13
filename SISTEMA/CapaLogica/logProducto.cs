@@ -21,13 +21,30 @@ namespace CapaLogica
         {
             return datProducto.Instancia.CrearProducto(prod);
         }
-        public List<entProducto> ListarProducto()
+        public List<entProducto> ListarProductos(string busqueda, string orden)
         {
-            return datProducto.Instancia.ListarProducto();
-        }
-        public List<entProducto>Ordenar(int dato)
-        {
-            return datProducto.Instancia.Ordenar(dato);
+            try
+            {
+                switch (orden)
+                {
+                    case "asc": return datProducto.Instancia.Ordenar(1);
+                    case "desc": return datProducto.Instancia.Ordenar(2);
+                    default:
+                        break;
+                }
+                if (string.IsNullOrWhiteSpace(busqueda))
+                {
+                    return datProducto.Instancia.ListarProductos();
+                }
+                else
+                {
+                    return datProducto.Instancia.BuscarProducto(busqueda);
+                }
+            }
+            catch
+            {
+                throw new Exception("Algo salio mal durante el proceso");
+            }
         }
         public bool ActualizarProducto(entProducto prod)
         {
@@ -45,11 +62,6 @@ namespace CapaLogica
             }
         }
         #endregion CRUD
-
-        public List<entProducto> BuscarProducto(string busqueda)
-        {
-            return datProducto.Instancia.BuscarProducto(busqueda);
-        }
 
         public entProducto BuscarProductoId(int prod)
         {

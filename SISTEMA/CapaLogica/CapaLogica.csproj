@@ -57,7 +57,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ILogUsuario.cs" />
     <Compile Include="logCarrito.cs" />
+    <Compile Include="logContactForm.cs" />
     <Compile Include="logUsuario.cs" />
     <Compile Include="logCompra.cs" />
     <Compile Include="logDetCompra.cs" />

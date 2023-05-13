@@ -3,6 +3,7 @@ using CapaEntidad;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,22 @@ namespace CapaLogica
                 return false;
            return datCarrito.Instancia.AgregarProductoCarrito(carrito);
         }
+        public List<entCarrito> MostrarCarrito(int idUsuario, string orden)
+        {
+            if (idUsuario <=0)
+                return null;
+            else
+            {
+                switch (orden)
+                {
+                    case "asc": return datCarrito.Instancia.Ordenar(idUsuario, 1);
+                    case "desc": return datCarrito.Instancia.Ordenar(idUsuario, 0);
+                    default:
+                        ;break;
+                }
+                return datCarrito.Instancia.MostrarCarrito(idUsuario);
+            }
+        }
         public bool EditarProductoCarrito(entCarrito car)
         {
             bool isValid = ValidationHelper.TryValidateEntity(car);
@@ -37,6 +54,10 @@ namespace CapaLogica
             if (idProvProd <= 0 || idCliente <= 0)
                 return false;
             return datCarrito.Instancia.EliminarProductosCarrito(idProvProd, idCliente);
+        }
+        public List<entCarrito> OrdenarCarrito(int orden, int idUsuario)
+        {
+            return datCarrito.Instancia.Ordenar(orden, idUsuario);
         }
         #endregion Carrito de Compras
 

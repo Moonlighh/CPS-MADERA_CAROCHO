@@ -23,12 +23,12 @@ namespace CapaLogica
             return datProveedorProducto.Instancia.ListarProveedorProducto();
         }
         #endregion
-        public List<entProveedorProducto> ListarProductoAdmin()
+        public List<entProveedorProducto> ListarProductoAdmin(string dato)
         {
-            return datProveedorProducto.Instancia.ListarProductoAdmin();
-        }
-        public List<entProveedorProducto> BuscarProductoAdmin(string dato)
-        {
+            if (string.IsNullOrWhiteSpace(dato))
+            {
+                return datProveedorProducto.Instancia.ListarProductoAdmin();
+            }
             return datProveedorProducto.Instancia.BuscarProductoAdmin(dato);
         }
 
