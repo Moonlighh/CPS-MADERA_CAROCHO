@@ -115,6 +115,24 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spOrdenarProveedor(@orden INT)
+AS
+BEGIN
+	if(@orden = 1)
+		SELECT p.idProveedor, p.razonSocial, p.dni, p.correo, p.telefono, p.descripcion, p.estProveedor,
+		u.departamento,u.provincia, u.distrito FROM  PROVEEDOR p 
+		inner join ubigeo u ON p.idUbigeo = u.idUbigeo
+		WHERE p.estProveedor = 1
+		ORDER BY p.razonSocial;
+	else
+		SELECT p.idProveedor, p.razonSocial, p.dni, p.correo, p.telefono, p.descripcion, p.estProveedor,
+		u.departamento,u.provincia, u.distrito FROM  PROVEEDOR p 
+		inner join ubigeo u ON p.idUbigeo = u.idUbigeo
+		WHERE p.estProveedor = 1
+		ORDER BY p.razonSocial DESC;
+
+END
+GO
 
 -- PA - TIPO_PRODUCTO
 -- *************************************
@@ -224,7 +242,7 @@ CREATE OR ALTER PROCEDURE spBuscarProductoId(
 AS
 BEGIN
 	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.tipo FROM PRODUCTO p
-	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto WHERE p.idProducto = 1;
+	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto WHERE p.idProducto = @idProducto;
 END
 GO
 
@@ -233,16 +251,16 @@ CREATE OR ALTER PROCEDURE spBuscarProductoByProveedorProducto(
 )
 AS
 BEGIN
-SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.tipo FROM PRODUCTO p
-	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto WHERE p.idProducto = @idProducto;
+	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.tipo FROM PRODUCTO p
+		inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto WHERE p.idProducto = @idProducto;
 END
 GO
 
-CREATE OR ALTER PROCEDURE spOrdenarProducto(@dato INT)
+CREATE OR ALTER PROCEDURE spOrdenarProducto(@tipo INT)
 AS
 BEGIN
 
-IF(@dato=1)
+IF(@tipo=1)
 SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.idTipo_Producto, t.tipo FROM PRODUCTO p
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto ORDER BY p.nombre ASC;
 else
@@ -352,11 +370,11 @@ CREATE OR ALTER PROCEDURE spBuscarEmpleado(
 )
 AS
 BEGIN
-    SELECT e.idEmpleado, e.nombres, e.dni, e.telefono, e.direccion, e.salario, e.descripcion, t.nombre AS tipo, u.distrito AS distrito FROM EMPLEADO e 
+    SELECT e.idEmpleado, e.nombres, e.dni, e.telefono, e.direccion, e.salario, e.descripcion, t.nombre AS tipo, u.distrito AS distrito, e.f_inicio, e.f_fin FROM EMPLEADO e 
     inner join Ubigeo u ON e.idUbigeo = u.idUbigeo
     inner join TIPO_EMPLEADO t ON e.idTipo_Empleado = t.idTipo_Empleado
 	WHERE NOMBRES like @Campo+'%'
-	or dni like @Campo+'%'	
+	or dni like @Campo+'%'
 END
 GO
 
@@ -372,6 +390,26 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spOrdenarEmpleado
+(
+	@orden INT
+)
+AS
+BEGIN
+		IF(@orden = 1)
+		SELECT e.idEmpleado, e.nombres, e.dni, e.telefono, e.direccion, e.salario, e.descripcion, t.nombre AS tipo, u.distrito AS distrito, e.f_inicio, e.f_fin FROM EMPLEADO e 
+		inner join Ubigeo u ON e.idUbigeo = u.idUbigeo
+		inner join TIPO_EMPLEADO t ON e.idTipo_Empleado = t.idTipo_Empleado
+		WHERE estEmpleado = 1
+		ORDER BY e.salario;
+	ELSE
+		SELECT e.idEmpleado, e.nombres, e.dni, e.telefono, e.direccion, e.salario, e.descripcion, t.nombre AS tipo, u.distrito AS distrito, e.f_inicio, e.f_fin FROM EMPLEADO e 
+		inner join Ubigeo u ON e.idUbigeo = u.idUbigeo
+		inner join TIPO_EMPLEADO t ON e.idTipo_Empleado = t.idTipo_Empleado
+		WHERE estEmpleado = 1
+		ORDER BY e.salario DESC
+END
+GO
 
 -- PA - ROL
 -- *************************************
@@ -402,12 +440,24 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spCrearSesionUsuario(
+	@userName VARCHAR(20),
+	@correo VARCHAR(40),
+	@pass VARCHAR(200),
+	@idRol INT
+)
+AS
+BEGIN
+    INSERT INTO USUARIO (userName, correo, pass, idRol) VALUES (@userName, @correo, @pass, @idRol);
+END
+GO
+
 CREATE OR ALTER PROCEDURE spListarUsuarios
 AS
 BEGIN
-	SELECT c.idUsuario,c.razonSocial, c.dni,c.telefono,c.direccion, c.correo,
+	SELECT c.idUsuario,c.razonSocial, c.dni,c.telefono,c.direccion, c.userName, c.correo,
 	c.activo, c.fecCreacion, u.distrito, r.descripcion FROM 
-	Usuario c inner join UBIGEO u ON c.idUbigeo= u.idUbigeo inner join
+	Usuario c left join UBIGEO u ON c.idUbigeo= u.idUbigeo inner join
 	Rol r ON r.idRol = c.idRol
 END
 GO
@@ -428,6 +478,24 @@ BEGIN
 	Usuario c inner join UBIGEO u ON c.idUbigeo= u.idUbigeo inner join
 	Rol r ON r.idRol = c.idRol 
 	WHERE c.idRol = 2 and c.activo = 1
+END
+GO
+
+CREATE OR ALTER PROCEDURE spOrdenarClientes(@orden INT)
+AS
+BEGIN
+	IF(@orden = 1)
+		SELECT c.idUsuario,c.razonSocial, c.dni,c.telefono,c.direccion, c.correo, c.userName, c.activo, u.distrito, r.descripcion FROM 
+		Usuario c inner join UBIGEO u ON c.idUbigeo= u.idUbigeo inner join
+		Rol r ON r.idRol = c.idRol 
+		WHERE c.idRol = 2 and c.activo = 1
+		ORDER BY c.razonSocial
+	ELSE
+		SELECT c.idUsuario,c.razonSocial, c.dni,c.telefono,c.direccion, c.correo, c.userName, c.activo, u.distrito, r.descripcion FROM 
+		Usuario c inner join UBIGEO u ON c.idUbigeo= u.idUbigeo inner join
+		Rol r ON r.idRol = c.idRol 
+		WHERE c.idRol = 2 and c.activo = 1
+		ORDER BY c.razonSocial DESC
 END
 GO
 
@@ -491,9 +559,9 @@ AS
 BEGIN
 	SELECT *FROM Usuario a
 	inner join ROL r ON r.idRol = a.idRol
-	inner join UBIGEO u ON u.idUbigeo = a.idUbigeo
+	left join UBIGEO u ON u.idUbigeo = a.idUbigeo
 	WHERE razonSocial like @Campo+'%'
-	or dni like @Campo+'%';
+	or dni like @Campo+'%' or correo like @Campo+'%';
 END
 GO
 
@@ -510,6 +578,24 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spOrdenarAdministrador(@orden INT)
+AS
+BEGIN
+	if(@orden = 1)
+		SELECT *FROM Usuario a
+		inner join ROL r ON r.idRol = a.idRol
+		inner join UBIGEO u ON u.idUbigeo = a.idUbigeo
+		WHERE a.idRol = 1 and a.activo = 1
+		ORDER BY a.razonSocial
+	else
+		SELECT *FROM Usuario a
+		inner join ROL r ON r.idRol = a.idRol
+		inner join UBIGEO u ON u.idUbigeo = a.idUbigeo
+		WHERE a.idRol = 1 and a.activo = 1
+		ORDER BY a.razonSocial DESC
+END
+GO
+
 CREATE OR ALTER PROCEDURE spBuscarCliente(
 	@Campo VARCHAR(40)
 )
@@ -518,7 +604,8 @@ BEGIN
 	SELECT *FROM Usuario c
 	inner join ROL r on r.idRol = c.idRol
 	inner join UBIGEO u on u.idUbigeo = c.idUbigeo
-	WHERE razonSocial like @Campo+'%'
+	WHERE razonSocial like @Campo+'%' or c.correo like @Campo+'%'
+	or c.dni like @Campo+'%' or c.userName like @Campo+'%'
 	or dni like @Campo+'%' and c.activo = 1 and c.idRol = 2 ;
 	
 END
@@ -585,6 +672,28 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spOrdenarCarrito(@IdUsuario INT, @Orden INT)
+AS
+BEGIN
+	IF (@Orden = 1)
+		SELECT c.idCarrito, pro.nombre, pro.longitud, pro.Diametro, tP.Tipo, c.cantidad, p_P.precioCompra, c.subtotal, p.razonSocial FROM CARRITO c 
+		INNER JOIN PROVEEDOR_PRODUCTO p_P ON p_P.idProveedor_Producto = c.idProveedor_Producto
+		INNER JOIN PROVEEDOR p ON P.idProveedor = p_P.idProveedor
+		INNER JOIN PRODUCTO pro ON pro.idProducto = p_P.idProducto
+		INNER JOIN TIPO_PRODUCTO tP ON tP.idTipo_Producto = pro.idTipo_Producto
+		WHERE c.idCliente = @IdUsuario
+		ORDER BY c.subtotal;
+	ELSE
+		SELECT c.idCarrito, pro.nombre, pro.longitud, pro.Diametro, tP.Tipo, c.cantidad, p_P.precioCompra, c.subtotal, p.razonSocial FROM CARRITO c 
+		INNER JOIN PROVEEDOR_PRODUCTO p_P ON p_P.idProveedor_Producto = c.idProveedor_Producto
+		INNER JOIN PROVEEDOR p ON P.idProveedor = p_P.idProveedor
+		INNER JOIN PRODUCTO pro ON pro.idProducto = p_P.idProducto
+		INNER JOIN TIPO_PRODUCTO tP ON tP.idTipo_Producto = pro.idTipo_Producto
+		WHERE c.idCliente = @IdUsuario
+		ORDER BY c.subtotal DESC;
+
+END
+GO
 -- PA - COMPRA
 -- *************************************
 CREATE OR ALTER PROCEDURE spCrearCompra(
@@ -765,8 +874,22 @@ BEGIN
 END
 GO
 
-
-
+-- PA - CONTACT_FORM
+CREATE OR ALTER PROCEDURE spCrearFormulario(
+	@nombre VARCHAR(60),
+	@email VARCHAR(40),
+	@asunto VARCHAR(30),
+	@mensaje VARCHAR(255),
+	@ip_remitente VARCHAR(20)
+)
+AS
+BEGIN
+	INSERT INTO CONTACT_FORM (nombre, email, asunto, mensaje, ip_remitente)
+	VALUES(@nombre, @email, @asunto, @mensaje, @ip_remitente);
+END
+GO
+select *from CONTACT_FORM
+select *from usuario
 
 
 

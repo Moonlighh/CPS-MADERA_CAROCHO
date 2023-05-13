@@ -77,7 +77,7 @@ CREATE TABLE EMPLEADO(
     telefono VARCHAR(9),
     direccion VARCHAR(60),
     f_inicio DATETIME DEFAULT GETDATE(),
-    f_fin DATE,
+    f_fin DATE DEFAULT '9999-12-31',
     salario FLOAT,
     descripcion VARCHAR(50),
     estEmpleado BIT DEFAULT 1,
@@ -98,15 +98,15 @@ GO
 
 CREATE TABLE USUARIO(
 	idUsuario INT PRIMARY KEY IDENTITY,
-	razonSocial VARCHAR(40) not null,
-	dni VARCHAR(8) not null,
+	razonSocial VARCHAR(40),
+	dni VARCHAR(8),
 	telefono VARCHAR(9),
 	direccion VARCHAR(60),
 	idUbigeo VARCHAR(6),
 	fecCreacion DATETIME DEFAULT GETDATE(),
-	correo VARCHAR(40),
+	correo VARCHAR(40) not null,
 	userName VARCHAR (20) not null,
-	pass VARCHAR(200) null, -- usar hashed password para mayor seguridad
+	pass VARCHAR(200) not null, -- usar hashed password para mayor seguridad
 	--Es importante tener en cuenta que la implementación correcta de contraseñas 
 	--hash requiere precauciones adicionales, como la sal (un valor aleatorio 
 	--agregado al inicio o final de la contraseña antes de hacer el hash) y la 
@@ -116,14 +116,14 @@ CREATE TABLE USUARIO(
 	--aplicación depende de múltiples factores y debe ser implementada de forma 
 	--decuada para garantizar la protección de los datos y la privacidad de los 
 	--usuarios
-	idRol INT,
+	idRol INT not null,
 	activo BIT DEFAULT 1,
 
 	CONSTRAINT fk_Usuario_Ubigeo FOREIGN KEY (idUbigeo) REFERENCES Ubigeo (idUbigeo),
 	CONSTRAINT fk_Usuario_rol FOREIGN KEY(idRol) REFERENCES Rol (idRol)
 )
 GO
-
+select *from usuario
 CREATE TABLE CARRITO(
 	idCarrito INT PRIMARY KEY IDENTITY,
 	idCliente INT,
@@ -183,6 +183,17 @@ CREATE TABLE DETALLE_VENTA(
 )
 GO
 
+CREATE TABLE CONTACT_FORM(
+	id INT PRIMARY KEY IDENTITY,
+	nombre VARCHAR(60),
+	email VARCHAR(40),
+	asunto VARCHAR(30),
+	mensaje VARCHAR(255),
+	fecha_creacion DATETIME DEFAULT GETDATE(),
+	ip_remitente VARCHAR(20)
+)
+GO
+
 --------------------------------------------RESTRICCIONES---------------------------------------------
 --USUARIO
 ALTER TABLE USUARIO ADD CONSTRAINT UQ_USUARIO_dni UNIQUE(dni);
@@ -199,5 +210,8 @@ ALTER TABLE PROVEEDOR ADD CONSTRAINT CHK_PROVEEDOR_estProveedor CHECK(estProveed
 ALTER TABLE EMPLEADO ADD CONSTRAINT UQ_EMPLEADO_dni UNIQUE(dni);
 ALTER TABLE EMPLEADO ADD CONSTRAINT CHK_EMPLEADO_dni CHECK(dni LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
 ALTER TABLE EMPLEADO ADD CONSTRAINT CHK_EMPLEADO_telefono CHECK(telefono LIKE '9[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]' or telefono = '' or telefono LIKE '0[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
+
+--CONTACT FORM
+ALTER TABLE CONTACT_FORM ADD CONSTRAINT CK_CONTACT_FORM_EMAIL CHECK (email LIKE '%@%.%');
 GO
 
