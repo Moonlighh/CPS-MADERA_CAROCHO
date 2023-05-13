@@ -37,11 +37,11 @@ namespace CapaEntidad
         [EmailAddress(ErrorMessage = "El correo electrónico no es válido")]
         public string Correo { get; set; }
 
-        [RegularExpression("^[a-zA-Z0-9._-]{3,20}$", ErrorMessage = "El nombre de usuario debe tener entre 3 y 20 caracteres y solo puede contener letras, números y algunos caracteres especiales.")]
+        [RegularExpression("^[a-zA-ZÑñ]{6,20}$", ErrorMessage = "El nombre de usuario debe tener entre 6 y 20 caracteres y solo puede contener letras")]
         public string UserName { get; set; }
 
-        //[RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$",
-        //ErrorMessage = "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una letra minúscula y un número")]
+        [RegularExpression(@"^.{6,}$",
+        ErrorMessage = "La contraseña debe tener al menos 6 caracteres")]
         public string Pass { get; set; }
 
         public entRol Rol { get; set; }
@@ -49,5 +49,17 @@ namespace CapaEntidad
         public entRoll Roll { get; set; }
 
         public bool Activo { get; set; }
+
+        public entUsuario()
+        {
+        }
+
+        public entUsuario(string userName, string correo, string pass, entRoll roll)
+        {
+            UserName = userName;
+            Correo = correo;
+            Pass = pass;
+            Roll = roll;
+        }
     }
 }
