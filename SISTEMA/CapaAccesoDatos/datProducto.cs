@@ -54,7 +54,7 @@ namespace CapaAccesoDatos
 
         }
         //Leer
-        public List<entProducto> ListarProducto()
+        public List<entProducto> ListarProductos()
         {
             SqlCommand cmd = null;
             List<entProducto> lista = new List<entProducto>();
@@ -200,7 +200,8 @@ namespace CapaAccesoDatos
             return lista;
         }
 
-        public List<entProducto> Ordenar(int dato)
+        // Actualmente solo se puede ordenar por nombre de forma asc = 1 y desc = 0
+        public List<entProducto> Ordenar(int tipoOrden)
         {
             List<entProducto> lista = new List<entProducto>();
             SqlCommand cmd = null;
@@ -209,7 +210,7 @@ namespace CapaAccesoDatos
                 SqlConnection cn = Conexion.Instancia.Conectar();
                 cmd = new SqlCommand("spOrdenarProducto", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@dato", dato);
+                cmd.Parameters.AddWithValue("@tipo", tipoOrden);
                 cn.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Conexion.cs" />
     <Compile Include="datCarrito.cs" />
+    <Compile Include="datContactForm.cs" />
     <Compile Include="datUsuario.cs" />
     <Compile Include="datCompra.cs" />
     <Compile Include="datDetCompra.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="datTipoProducto.cs" />
     <Compile Include="datUbigeo.cs" />
     <Compile Include="datVenta.cs" />
+    <Compile Include="IDatUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

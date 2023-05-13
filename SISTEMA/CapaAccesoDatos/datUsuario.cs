@@ -11,14 +11,9 @@ using System.Collections;
 
 namespace CapaAccesoDatos
 {
-    public class datUsuario
+    public class datUsuario: IDatUsuario
     {
-        private static readonly datUsuario _instancia = new datUsuario();
 
-        public static datUsuario Instancia
-        {
-            get { return _instancia; }
-        }
         #region CRUD
         //Crear
         public bool CrearCliente(entUsuario Cli)
@@ -78,6 +73,7 @@ namespace CapaAccesoDatos
                         Dni = dr["dni"].ToString(),
                         Telefono = dr["telefono"].ToString(),
                         Direccion = dr["direccion"].ToString(),
+                        UserName = dr["userName"].ToString(),
                         Correo = dr["correo"].ToString(),
                         Activo = Convert.ToBoolean(dr["activo"]),
                         FechaCreacion =  Convert.ToDateTime(dr["fecCreacion"]),
@@ -494,6 +490,123 @@ namespace CapaAccesoDatos
                 cmd.Connection.Close();
             }
             return lista;
+        }
+
+        public List<entUsuario> OrdenarAdministradores(int orden)
+        {
+            SqlCommand cmd = null;
+            List<entUsuario> lista = new List<entUsuario>();
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spOrdenarAdministrador", cn);
+                cmd.Parameters.AddWithValue("@orden", orden);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    entRoll rol = new entRoll()
+                    {
+                        Descripcion = dr["descripcion"].ToString(),
+                    };
+                    entUsuario cli = new entUsuario
+                    {
+                        IdUsuario = Convert.ToInt32(dr["idUsuario"]),
+                        RazonSocial = dr["razonsocial"].ToString(),
+                        Dni = dr["dni"].ToString(),
+                        Telefono = dr["telefono"].ToString(),
+                        Direccion = dr["direccion"].ToString(),
+                        UserName = dr["userName"].ToString(),
+                        Correo = dr["correo"].ToString(),
+                        Activo = Convert.ToBoolean(dr["activo"]),
+                        Roll = rol
+                    };
+                    lista.Add(cli);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+            return lista;
+        }
+
+        public List<entUsuario> OrdenarClientes(int orden)
+        {
+            SqlCommand cmd = null;
+            List<entUsuario> lista = new List<entUsuario>();
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spOrdenarClientes", cn);
+                cmd.Parameters.AddWithValue("@orden", orden);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    entRoll rol = new entRoll()
+                    {
+                        Descripcion = dr["descripcion"].ToString(),
+                    };
+                    entUsuario cli = new entUsuario
+                    {
+                        IdUsuario = Convert.ToInt32(dr["idUsuario"]),
+                        RazonSocial = dr["razonsocial"].ToString(),
+                        Dni = dr["dni"].ToString(),
+                        Telefono = dr["telefono"].ToString(),
+                        Direccion = dr["direccion"].ToString(),
+                        UserName = dr["userName"].ToString(),
+                        Correo = dr["correo"].ToString(),
+                        Activo = Convert.ToBoolean(dr["activo"]),
+                        Roll = rol
+                    };
+                    lista.Add(cli);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+            return lista;
+        }
+        public bool CrearSesionUsuario(entUsuario u)
+        {
+            bool creado = false;
+
+            try
+            {
+                using (SqlConnection cn = Conexion.Instancia.Conectar())
+                {
+                    using (SqlCommand cmd = new SqlCommand("spCrearSesionUsuario", cn))
+                    {
+                        cmd.Parameters.AddWithValue("@userName", u.UserName);
+                        cmd.Parameters.AddWithValue("@correo", u.Correo);
+                        cmd.Parameters.AddWithValue("@pass", u.Pass);
+                        cmd.Parameters.AddWithValue("@idRol", u.Roll.IdRoll);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cn.Open();
+                        creado = cmd.ExecuteNonQuery() > 0;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception("Se produjo un error: " + e.Message);
+            }
+            return creado;
         }
     }
     #endregion OTROS

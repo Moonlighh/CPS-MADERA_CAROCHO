@@ -232,6 +232,46 @@ namespace CapaAccesoDatos
             finally { cmd.Connection.Close(); }
             return pro;
         }
+        public List<entProveedor> OrdenarProveedores(int orden)
+        {
+            SqlCommand cmd = null;
+            List<entProveedor> list = new List<entProveedor>();
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spOrdenarProveedor", cn);
+                cmd.Parameters.AddWithValue("@orden", orden);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    entProveedor pro = new entProveedor();
+                    entUbigeo ubi = new entUbigeo();
+                    pro.IdProveedor = Convert.ToInt32(dr["idProveedor"]);
+                    pro.RazonSocial = dr["razonSocial"].ToString();
+                    pro.Dni = dr["dni"].ToString();
+                    pro.Correo = dr["correo"].ToString();
+                    pro.Telefono = dr["telefono"].ToString();
+                    pro.Descripcion = dr["descripcion"].ToString();
+                    pro.EstProveedor = Convert.ToBoolean(dr["estProveedor"]);
+                    ubi.Departamento = dr["departamento"].ToString();
+                    ubi.Provincia = dr["provincia"].ToString();
+                    ubi.Distrito = dr["distrito"].ToString();
+                    pro.Ubigeo = ubi;
+                    list.Add(pro);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+            return list;
+        }
         #endregion
     }
 }

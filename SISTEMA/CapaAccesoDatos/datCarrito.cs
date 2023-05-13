@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
+using System.ComponentModel;
 
 namespace CapaAccesoDatos
 {
@@ -54,7 +55,7 @@ namespace CapaAccesoDatos
             return creado; // se retorna el valor de la variable creado
         }
 
-        public List<entCarrito> MostrarDetCarrito(int idCliente)
+        public List<entCarrito> MostrarCarrito(int idUsuario)
         {
             // Esta función muestra los productos que un cliente tiene en su carrito de compras
 
@@ -66,7 +67,7 @@ namespace CapaAccesoDatos
                 SqlConnection cn = Conexion.Instancia.Conectar();
                 // Crear el comando para ejecutar el procedimiento almacenado
                 cmd = new SqlCommand("spMostrarCarrito", cn);
-                cmd.Parameters.AddWithValue("@idUsuario", idCliente);
+                cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cn.Open();
                 // Ejecutar el comando y leer los datos obtenidos
@@ -197,6 +198,68 @@ namespace CapaAccesoDatos
             // Devolvemos el valor de la variable eliminar
             return eliminar;
         }
+        
+        public List<entCarrito> Ordenar(int idUsuario, int orden)
+        {
+            try
+            {
+                using (var cn = Conexion.Instancia.Conectar())
+                {
+                    using (var cmd = new SqlCommand("spOrdenarCarrito", cn))
+                    {
+                        cmd.Parameters.AddWithValue("@orden", orden);
+                        cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+                        cmd.CommandType= CommandType.StoredProcedure;
+                        cn.Open();
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        List<entCarrito> lista = new List<entCarrito>();
+                        while (dr.Read())
+                        {
+                            // Crear los objetos necesarios para almacenar los datos obtenidos
+                            entTipoProducto tipoProducto = new entTipoProducto
+                            {
+                                Tipo = dr["tipo"].ToString(),                            
+                            };
+                            entProveedor proveedor = new entProveedor
+                            {
+                                RazonSocial = dr["razonSocial"].ToString()
+                            };
+                            entProducto p = new entProducto
+                            {
+                                //IdProducto = Convert.ToInt32(dr["idProducto"]),
+                                Nombre = dr["nombre"].ToString().ToUpper(),
+                                Longitud = Convert.ToDouble(dr["longitud"]),
+                                Diametro = Convert.ToDouble(dr["diametro"]),
+                                Tipo = tipoProducto
+                            };
+                            entProveedorProducto pro = new entProveedorProducto
+                            {
+                                //IdProveedorProducto = Convert.ToInt32(dr["idProveedor_Producto"]),
+                                PrecioCompra = Convert.ToDouble(dr["precioCompra"]),
+                                Producto = p,
+                                Proveedor = proveedor
+                            };
+                            entCarrito c = new entCarrito
+                            {
+                                IdCarrito = Convert.ToInt32(dr["idCarrito"]),
+                                Cantidad = Convert.ToInt32(dr["cantidad"]),
+                                Subtotal = Convert.ToDecimal(dr["subtotal"]),
+                                ProveedorProducto = pro
+                            };
+                            // Agregar el carrito a la lista de carritos
+                            lista.Add(c);
+                        }
+                        return lista;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // Así no se pueda listar hay que volver a listar
+                return MostrarCarrito(idUsuario);
+            }
+        }
+        
         #endregion CarritoCompra
     }
 }

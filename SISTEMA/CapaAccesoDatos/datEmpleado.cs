@@ -199,6 +199,8 @@ namespace CapaAccesoDatos
                         Direccion = dr["direccion"].ToString(),
                         Salario = Convert.ToDouble(dr["salario"]),
                         Descripcion = dr["descripcion"].ToString(),
+                        F_inicio = Convert.ToDateTime(dr["f_inicio"]),
+                        F_fin = Convert.ToDateTime(dr["f_fin"]),
                         Tipo = tipo,
                         Ubigeo = ubi
                     };
@@ -253,6 +255,55 @@ namespace CapaAccesoDatos
             { throw e; }
             finally { cmd.Connection.Close(); }
             return emp;
+        }
+        public List<entEmpleado> Ordenar(int orden)
+        {
+            SqlCommand cmd = null;
+            List<entEmpleado> lista = new List<entEmpleado>();
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spOrdenarEmpleado", cn);
+                cmd.Parameters.AddWithValue("orden", orden);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    entUbigeo ubi = new entUbigeo
+                    {
+                        Distrito = dr["distrito"].ToString()
+                    };
+                    entTipoEmpleado tipo = new entTipoEmpleado
+                    {
+                        Nombre = dr["tipo"].ToString()
+                    };
+                    entEmpleado emp = new entEmpleado
+                    {
+                        IdEmpleado = Convert.ToInt32(dr["idEmpleado"]),
+                        Nombres = dr["nombres"].ToString(),
+                        Dni = dr["dni"].ToString(),
+                        Telefono = dr["telefono"].ToString(),
+                        Direccion = dr["direccion"].ToString(),
+                        Salario = Convert.ToDouble(dr["salario"]),
+                        Descripcion = dr["descripcion"].ToString(),
+                        F_inicio = Convert.ToDateTime(dr["f_inicio"]),
+                        F_fin = Convert.ToDateTime(dr["f_fin"]),
+                        Tipo = tipo,
+                        Ubigeo = ubi
+                    };
+                    lista.Add(emp);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+            return lista;
         }
         #endregion OTROS
     }
