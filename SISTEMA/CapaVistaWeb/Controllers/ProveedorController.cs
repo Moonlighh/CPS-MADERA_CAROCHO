@@ -15,18 +15,9 @@ namespace MadereraCarocho.Controllers
     {
         // GET: Proveedor
         //[HttpGet]
-        public ActionResult Listar( string dato)//listar y buscar 
+        public ActionResult Listar(string dato, string orden)//listar y buscar 
         {
-            List<entProveedor> lista;
-            if (!string.IsNullOrEmpty(dato))
-            {
-                 lista = logProveedor.Instancia.BuscarProveedor(dato);
-            }
-            else
-            {
-                lista = logProveedor.Instancia.ListarProveedor();
-
-            }
+            var lista = logProveedor.Instancia.ListarProveedor(dato, orden);
             List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
             var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
             ViewBag.lista = lista;

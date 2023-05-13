@@ -14,25 +14,25 @@ namespace MadereraCarocho.Controllers
     public class EmpleadoController : Controller
     {
         // GET: Empleado
-        public ActionResult Listar(string busqueda)
+        public ActionResult Listar(string busqueda, string orden)
         {
-            List<entEmpleado> lista;
-            if (!String.IsNullOrEmpty(busqueda))
+            try
             {
-                lista = logEmpleado.Instancia.BuscarEmpleado(busqueda);
+                var lista = logEmpleado.Instancia.ListarEmpleado(busqueda, orden);
+                List<entTipoEmpleado> listaTipoEmpleado = logTipoEmpleado.Instancia.ListarTipoEmpleado();
+                var lsTipoEmpleado = new SelectList(listaTipoEmpleado, "idTipo_Empleado", "nombre");
+                List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
+                var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
+                ViewBag.lista = lista;
+                ViewBag.listaTipo = lsTipoEmpleado;
+                ViewBag.listaUbigeo = lsUbigeo;
+                return View(lista);
             }
-            else
+            catch (Exception e)
             {
-                lista = logEmpleado.Instancia.ListarEmpleado();
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
             }
-            List<entTipoEmpleado> listaTipoEmpleado = logTipoEmpleado.Instancia.ListarTipoEmpleado();
-            var lsTipoEmpleado = new SelectList(listaTipoEmpleado, "idTipo_Empleado", "nombre");
-            List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
-            var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
-            ViewBag.lista = lista;
-            ViewBag.listaTipo = lsTipoEmpleado;
-            ViewBag.listaUbigeo = lsUbigeo;
-            return View(lista);
         }
 
 

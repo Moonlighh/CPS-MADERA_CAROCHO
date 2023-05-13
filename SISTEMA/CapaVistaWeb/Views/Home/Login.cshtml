@@ -1,17 +1,27 @@
 ﻿
 <style>
-    .login-container {
-        width: 30%;
+/*    .login-container {
+        width: 35%;
         margin: auto;
         margin-top: 100px;
         padding: 20px;
         border: 1px solid #ccc;
         border-radius: 5px;
         text-align: center;
+    }*/
+    .login-container {
+        width: 100%; /* Ancho máximo */
+        max-width: 400px; /* Ancho fijo para pantallas más grandes */
+        margin: auto;
+        margin-top: 50px; /* Reducción del margen superior para dispositivos móviles */
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 16px; /* Tamaño de fuente ajustado para dispositivos móviles */
     }
-
         .login-container h1 {
-            font-size: 24px;
+            font-size: 30px;
             margin-bottom: 20px;
         }
 
@@ -49,17 +59,17 @@
     <form method="post" id="idLogin" action="/Home/VerificarAcceso" class="row g-3 needs-validation" novalidate>
         <div>
             <label for="validationCustom01" class="form-label">Username</label>
-            <input type="text" id="validationCustom02" name="user" placeholder="Enter your username" class="form-control" required>
+            <input type="text" id="validationCustom02" name="user" placeholder="Ingrese usuario o correo" class="form-control" required>
             <div class="invalid-feedback">
-                Please choose a username.
+                Por favor ingrese su usuario o correo.
             </div>
         </div>
 
         <div>
             <label for="validationCustom01" class="form-label">Password</label>
-            <input type="text" id="validationCustom03" name="pass" placeholder="Enter your username" class="form-control" required>
+            <input type="password" id="validationCustom03" name="pass" placeholder="Ingrese su contraseña" class="form-control" required>
             <div class="invalid-feedback">
-                Please choose a password.
+                Por favor ingrese su contraseña.
             </div>
         </div>
         <button class="btn btn-dark" type="submit">Login</button>

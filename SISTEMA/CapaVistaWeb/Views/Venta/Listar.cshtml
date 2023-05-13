@@ -45,8 +45,8 @@
     <br><h2 style="text-align: center">MIS COMPRAS</h2>
     
     <!-- Ordenar -->
-    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" th:href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
-    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" href="ListarProveedores?orden=asc"><i class="bi bi-sort-up"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" href="ListarProveedores?orden=desc"><i class="bi bi-sort-down"></i></a>
     <hr>
     <!-- Buscar -->
     <form class="d-flex mb-4" role="search" action="#" method="POST" id="Bproveedor">

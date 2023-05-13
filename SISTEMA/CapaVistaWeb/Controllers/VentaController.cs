@@ -26,7 +26,7 @@ namespace MadereraCarocho.Controllers
         {
             //Lista los productos agregados al carrito
             List<entDetVenta> detalle = logDetVenta.Instancia.Mostrardetventa();
-            List<entProducto> listaproducto = logProducto.Instancia.ListarProducto();
+            List<entProducto> listaproducto = logProducto.Instancia.ListarProductos(null, null);
             var lsproducto = new SelectList(listaproducto, "idProducto", "nombre");
             ViewBag.listaproducto = lsproducto;
             return View(detalle);

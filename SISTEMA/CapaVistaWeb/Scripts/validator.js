@@ -1,25 +1,3 @@
-/*function validateLogin(idLogin) {
-    var username = document.getElementById("username").value;
-    var password = document.getElementById("password").value;
-    const dUsername = document.getElementById("username_alert");
-    const dPassword = document.getElementById("password_alert");
-    dUsername.style.display = "none";
-    dPassword.style.display = "none";
-    debugger
-    if (username == "") {
-        dUsername.innerText = "Username is required"
-        dUsername.style.display = "block";
-    }
-    if (password == "") {
-        dPassword.innerText = "Password is required"
-        dPassword.style.display = "block";
-    }
-    if (username != "" && password != "") {
-        const formulario = document.getElementById(idLogin);
-        formulario.submit();
-    }
-}*/
-
 (() => {
     'use strict'
 

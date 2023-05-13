@@ -45,7 +45,7 @@
     <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#ModInsertarDetalle"> agregar al carrito<i class="bi bi-dropbox"></i></button>
     <hr>
     <!-- Ordenar -->
-    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" th:href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" href="Listar?orden=asc"><i class="bi bi-sort-up"></i></a>
     <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
     <hr>
 
@@ -89,9 +89,9 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Producto.PrecioVenta)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.Producto.Tipo.Nombre)
-                    </td>
+                    </td>*@
                     <td>
                         @Html.DisplayFor(modelItem => item.SubTotal)
                     </td>

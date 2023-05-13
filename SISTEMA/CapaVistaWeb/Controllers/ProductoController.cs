@@ -45,39 +45,32 @@ namespace MadereraCarocho.Controllers
             return RedirectToAction("ListarProductos");
         }
 
+        // Esta funcion se encarga de listar todos los productos en donde el stock se acerca a 0
         [PermisosRol(entRol.Administrador)]
-        public ActionResult ListarProductos(string dato)//listar y buscar
+        public ActionResult ListarProductos(string dato, string orden)//listar y buscar
         {
-            List<entProducto> lista;
-            if (!String.IsNullOrEmpty(dato))
+            try
             {
-                lista = logProducto.Instancia.BuscarProducto(dato);
-            }
-            else
-            {
-                lista = logProducto.Instancia.ListarProducto();
-            }
-            List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
-            var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
+                var lista = logProducto.Instancia.ListarProductos(dato, orden);
+                List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
+                var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
 
-            ViewBag.lista = lista;
-            ViewBag.listaTipo = lsTipoProducto;
-            return View(lista);
+                ViewBag.lista = lista;
+                ViewBag.listaTipo = lsTipoProducto;
+                return View(lista);
+            }
+            catch (Exception e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
+            }
         }
 
-
+        // Esta funcion se encarga de listar todos los productos disponibles para ser agregados al carrito de compras
         [PermisosRol(entRol.Administrador)]
         public ActionResult ListarProductosDisponibles(string dato)//listar y buscar
         {
-            List<entProveedorProducto> lista;
-            if (!String.IsNullOrEmpty(dato))
-            {
-                lista = logProveedorProducto.Instancia.BuscarProductoAdmin(dato);
-            }
-            else
-            {
-                lista = logProveedorProducto.Instancia.ListarProductoAdmin();
-            }
+            var lista = logProveedorProducto.Instancia.ListarProductoAdmin(dato);
             List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
             var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
 
@@ -150,25 +143,13 @@ namespace MadereraCarocho.Controllers
         }
 
         [HttpGet]
-        public ActionResult Ordenar(int dato)
-        {
-            List<entProducto> lista = logProducto.Instancia.Ordenar(dato);
-            List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
-            var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
-
-            ViewBag.listaTipo = lsTipoProducto;
-            ViewBag.lista = lista;
-            return RedirectToAction("ListarProductos");
-        }
-
-        [HttpGet]
         public ActionResult AgregarCarrito(int idProveedorProducto)
         {
             try
             {
                 entUsuario admin = Session["Usuario"] as entUsuario;
 
-                entCarrito carrito = logCarrito.Instancia.MostrarDetCarrito(admin.IdUsuario).Where(car => car.ProveedorProducto.IdProveedorProducto == idProveedorProducto).FirstOrDefault();
+                entCarrito carrito = logCarrito.Instancia.MostrarCarrito(admin.IdUsuario, null).Where(car => car.ProveedorProducto.IdProveedorProducto == idProveedorProducto).FirstOrDefault();
 
                 if (carrito != null)
                 {
@@ -185,7 +166,7 @@ namespace MadereraCarocho.Controllers
                             Cliente = admin,
                             ProveedorProducto = detalle,
                             Cantidad = 1,
-                            Subtotal = detalle.PrecioCompra
+                            Subtotal = (decimal)detalle.PrecioCompra
                         };
                         logCarrito.Instancia.AgregarProductoCarrito(car);
                         return RedirectToAction("ListarProductosDisponibles");

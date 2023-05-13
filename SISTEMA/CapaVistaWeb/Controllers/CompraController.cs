@@ -21,17 +21,26 @@ namespace MadereraCarocho.Controllers
             ViewBag.lista = lista;
             return View(lista);
         }
-        public ActionResult DetalleCarrito()
+        //Lista los productos agregados al carrito
+        public ActionResult DetalleCarrito(string orden)
         {
-            //Lista los productos agregados al carrito
-            entUsuario cliente = Session["Usuario"] as entUsuario;
-            List<entCarrito> detCompra = logCarrito.Instancia.MostrarDetCarrito(cliente.IdUsuario);
-            List<entProducto> listProducto = logProducto.Instancia.ListarProducto();
-            var lsproducto = new SelectList(listProducto, "idProducto", "nombre");
-            ViewBag.ListaProducto = lsproducto;
-            ViewBag.Lista = detCompra;
-
-            return View(detCompra);
+            try
+            {
+                entUsuario cliente = Session["Usuario"] as entUsuario;
+                var detCompra = logCarrito.Instancia.MostrarCarrito(cliente.IdUsuario, orden);
+                ViewBag.Lista = detCompra;
+                ViewBag.Cantidad = detCompra.Count;
+                // Calcula el total de la compra
+                decimal total = detCompra.Sum(detalle => detalle.Subtotal);
+                // Agrega el total a la ViewBag
+                ViewBag.Total = total;
+                ViewBag.Usuario = cliente.RazonSocial;
+                return View(detCompra);
+            }
+            catch (Exception e)
+            {
+                return RedirectToAction("Error", "Home", new { mesjExeption = e.Message });
+            } 
         }
         [HttpPost]
         public ActionResult AgregarDetCarrito(int pvCantidad, FormCollection frm)
@@ -79,7 +88,7 @@ namespace MadereraCarocho.Controllers
                 entUsuario cliente = Session["Usuario"] as entUsuario;
 
                 // Obtener los detalles del carrito de compras del cliente
-                var carrito = logCarrito.Instancia.MostrarDetCarrito(cliente.IdUsuario);
+                var carrito = logCarrito.Instancia.MostrarCarrito(cliente.IdUsuario, null);
 
                 if (carrito.Count == 0)
                 {
@@ -159,7 +168,7 @@ namespace MadereraCarocho.Controllers
             try
             {
                 entUsuario u = Session["Usuario"] as entUsuario;
-                entCarrito carrito = logCarrito.Instancia.MostrarDetCarrito(u.IdUsuario).Where(c => c.IdCarrito == idCarrito).FirstOrDefault();        
+                entCarrito carrito = logCarrito.Instancia.MostrarCarrito(u.IdUsuario, null).Where(c => c.IdCarrito == idCarrito).FirstOrDefault();        
                 return View(carrito);
             }
             catch (Exception e)
@@ -177,7 +186,7 @@ namespace MadereraCarocho.Controllers
                 entUsuario u = Session["Usuario"] as entUsuario;
 
                 // Obtenemos el producto del carrito que se va a editar
-                entCarrito carrito = logCarrito.Instancia.MostrarDetCarrito(u.IdUsuario).Where(x => x.IdCarrito == c.IdCarrito).FirstOrDefault();
+                entCarrito carrito = logCarrito.Instancia.MostrarCarrito(u.IdUsuario, null).Where(x => x.IdCarrito == c.IdCarrito).FirstOrDefault();
 
                 // Obtenemos los detalles del proveedor del producto
                 entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.IdProveedorProducto == carrito.ProveedorProducto.IdProveedorProducto).FirstOrDefault();

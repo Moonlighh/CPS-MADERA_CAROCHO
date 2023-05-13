@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;//Para ActionFilterAttribute
+using Newtonsoft.Json.Linq;// Validar correos validos
+using System.Net.Http;// Validar correos validos
+using System.Threading.Tasks;// Validar correos validos
 
 namespace MadereraCarocho.Permisos
 {

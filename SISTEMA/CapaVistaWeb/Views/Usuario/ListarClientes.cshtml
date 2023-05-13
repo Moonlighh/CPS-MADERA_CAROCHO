@@ -24,15 +24,15 @@
                         <li><a href="/Usuario/Administradores">Administradores</a></li>
                         <li><a href="/Usuario/Clientes">Clientes</a></li>
                         <li><a href="/Usuario/ListarUsuarios">Usuarios</a></li>
-                        <li><a href="/Producto/productos-disponibles">Productos Disponibles</a></li>
                         <li><a href="/Producto/mostrar-productos">Productos</a></li>
                         <li><a href="/Proveedor/Listar">Proveedores</a></li>
                         <li><a href="/ProveedorProducto/Listar">Proveedores - Productos</a></li>
                         <li><a href="/Empleado/Listar">Empleados</a></li>
-                        <li><a href="/Compra/Index">Ver compras</a></li>
+                        <li><a href="/Compra/Index">Mis compras</a></li>
                         <li><a onclick="cerrarSesion('@Url.Action("CerrarSesion", "Home")')">Cerrar Sesión</a></li>
                     </ul>
                 </li>
+                <li><a class="nav-link scrollto" href="/Producto/productos-disponibles">Comprar</a></li>
                 <li><a class="nav-link scrollto" href="/Compra/DetalleCarrito"><i class="bi bi-cart4"></i>Carrito de compra</a></li>
             </ul>
             <i class="bi bi-list mobile-nav-toggle"></i>
@@ -50,11 +50,11 @@
 <div class="container">
     <h2 style="text-align: center">CLIENTES</h2>
     <!-- Ordenar -->
-    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" th:href="@*@{productoAsc}*@#"><i class="bi bi-sort-up"></i></a>
-    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" th:href="@*@{productoDesc}*@#"><i class="bi bi-sort-down"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" href="ListarClientes?orden=asc"><i class="bi bi-sort-up"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" href="ListarClientes?orden=desc"><i class="bi bi-sort-down"></i></a>
     <hr>
     <!-- Buscar -->
-    <form class="d-flex mb-4" role="search" action="/Usuario/ListarClientes" method="POST" id="bCliente">
+    <form class="d-flex mb-4" role="search" action="/Usuario/ListarClientes" method="get" id="bCliente">
         <input class="form-control me-2" type="search" placeholder="Buscar" name="dato" aria-label="Search">
         <button onclick="return Buscar('bCliente')" class="btn btn-outline-success" type="submit">Buscar</button>
     </form>

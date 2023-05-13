@@ -23,7 +23,7 @@ function Registrar(op1, op2, op3, idForm) {
         }).then((result) => {
             if (result.isConfirmed) {
                 Swal.fire({
-                    title: 'Guardado!',
+                    title: 'Guardando!',
                     text: '',
                     icon: 'Exito',
                     allowOutsideClick: false,
@@ -55,7 +55,7 @@ function ActualizarAlert(op) {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
             Swal.fire({
-                title: 'Guardado!',
+                title: 'Guardando!',
                 text: '',
                 icon: 'exito',
                 allowOutsideClick: false,
@@ -88,7 +88,7 @@ function Eliminar(opc) {
         if (result.isConfirmed) {
             Swal.fire({
                 title: 'Eliminado!',
-                text: 'Su registro fue eliminado',
+                text: 'Su registro será eliminado',
                 icon: 'success',
                 allowOutsideClick: true,
                 allowEscapeKey: true
@@ -152,7 +152,7 @@ function Deshabilitar(opc) {
         if (result.isConfirmed) {
             Swal.fire({
                 title: 'Deshabilitar!',
-                text: 'Su registro fue deshabilitado',
+                text: 'Su registro será deshabilitado',
                 icon: 'success',
                 allowOutsideClick: false,
                 allowEscapeKey: false
@@ -180,7 +180,7 @@ function Habilitar(opc) {
         if (result.isConfirmed) {
             Swal.fire({
                 title: 'Habilitar!',
-                text: 'Su registro fue Habilitado',
+                text: 'Su registro será Habilitado',
                 icon: 'success',
                 allowOutsideClick: false,
                 allowEscapeKey: false
