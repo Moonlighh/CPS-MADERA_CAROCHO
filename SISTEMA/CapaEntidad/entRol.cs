@@ -15,7 +15,7 @@ namespace CapaEntidad
     public class entRoll
     {
         private int idRoll;
-        private String descripcion;
+        private string descripcion;
 
         public int IdRoll { get => idRoll; set => idRoll = value; }
         public string Descripcion { get => descripcion; set => descripcion = value; }

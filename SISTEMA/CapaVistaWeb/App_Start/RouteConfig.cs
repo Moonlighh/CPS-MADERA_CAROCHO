@@ -16,6 +16,12 @@ namespace MadereraCarocho
              */
 
             //Ruta especifica
+            routes.MapRoute(
+                name: "Compras",
+                url: "Compras",
+                defaults: new { controller = "Compra", action = "Index" }
+            );
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
                 routes.MapRoute(
                 name: "ListarProductosDisponibles",

@@ -22,26 +22,21 @@ namespace MadereraCarochoTest
                 La configuración se encarga de establecer el ambiente necesario para realizar la prueba, como instanciar 
                 objetos, inicializar variables, crear bases de datos de prueba, entre otros.
              */
+            entRoll rol = new entRoll
+            {
+                IdRoll = 1
+            };
             entUsuario u = new entUsuario
             {
-                IdUsuario = 1
-            };
-            entProveedorProducto proveedorProducto = new entProveedorProducto
-            {
-                IdProveedorProducto = 1
-            };
-            entCarrito c = new entCarrito
-            {
-                Cliente = u,
-                ProveedorProducto = proveedorProducto,
-                Cantidad = 4,
-                Subtotal = 213
+                IdUsuario = 1,
+                Activo = false,
+                Roll = rol
             };
             /*
              * Act:
                 La ejecución del método que se está probando es el acto de llamar al método que se quiere probar, con los argumentos necesarios.
             */
-            bool resultado = logCarrito.Instancia.AgregarProductoCarrito(c);
+            bool resultado = logCarrito.Instancia.AgregarProductoCarrito(u, 1, -78);
             /*
              * Act:
                 Validación de los resultados se encarga de comparar los resultados esperados con los resultados reales que se obtuvieron al ejecutar 
@@ -56,7 +51,7 @@ namespace MadereraCarochoTest
             //Arrange
             entCarrito c = new entCarrito
             {
-                IdCarrito = 1,
+                IdCarrito = 4,
                 Cantidad = 1,
                 Subtotal = 12345678.16M
             };
@@ -74,6 +69,25 @@ namespace MadereraCarochoTest
             int idCliente = -896;
             //Act
             bool isValid = logCarrito.Instancia.EliminarProductoCarrito(idProvProd, idCliente);
+            //Assert
+            Assert.False(isValid);
+        }
+
+        [Fact]
+        public void CrearCompraTest()
+        {
+            entUsuario u = new entUsuario();
+            u.IdUsuario = -90;
+            int idGenerado = -1;
+            //Arrange
+            var compra = new entCompra
+            {
+                Usuario = u,
+                Estado = true,
+                Total = -5435534
+            };
+            //Act
+            bool isValid = logCompra.Instancia.CrearCompra(compra, out idGenerado);
             //Assert
             Assert.False(isValid);
         }

@@ -134,29 +134,25 @@ namespace CapaAccesoDatos
                     cmd.Parameters.AddWithValue("@idCarrito", car.IdCarrito);
                     cmd.Parameters.AddWithValue("@cantidad", car.Cantidad);
                     cmd.Parameters.AddWithValue("@subtotal", car.Subtotal);
-
                     try
                     {
                         cn.Open();
                         int i = cmd.ExecuteNonQuery();
                         if (i > 0)
-                        {
-                            return true;
-                        }
+                            editar = true;
                         else
-                        {
-                            return false;
-                        }
+                            editar = false;
                     }
                     catch (Exception e)
                     {
-                        return editar;
-                        throw new Exception ("No se pudo editar el producto del carrito");
+                        throw new Exception ("No se pudo editar el producto del carrito: " + e.Message);
                     }
                 }
             }
+            return editar;
         }
-        public bool EliminarProductosCarrito(int idProveedor_Producto, int idCliente)
+        
+        public bool EliminarProductoCarrito(int idProveedor_Producto, int idCliente)
         {
             // Esta función elimina un producto del carrito de compras
 

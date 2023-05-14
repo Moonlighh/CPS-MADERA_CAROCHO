@@ -16,7 +16,7 @@
     <RootNamespace>MadereraCarocho</RootNamespace>
     <AssemblyName>MadereraCarocho</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-	  <LangVersion>8.0</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
@@ -179,6 +179,7 @@
     <Compile Include="Permisos\PermisosRolAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recursos\Service.cs" />
+    <Compile Include="ViewModels\MensajeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\assets\css\style.css" />
@@ -345,7 +346,6 @@
     <Content Include="Views\Empleado\Listar.cshtml" />
     <Content Include="Views\Home\SinPermisos.cshtml" />
     <Content Include="Views\Proveedor\EditarProveedor.cshtml" />
-    <Content Include="Views\Home\Empleado.cshtml" />
     <Content Include="Views\Usuario\ListarAdministradores.cshtml" />
     <Content Include="Views\Venta\Detalle.cshtml" />
     <Content Include="Views\Venta\Listar.cshtml" />

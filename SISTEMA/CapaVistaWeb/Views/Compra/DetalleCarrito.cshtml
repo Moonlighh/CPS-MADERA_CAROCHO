@@ -28,7 +28,7 @@
                         <li><a href="/Proveedor/Listar">Proveedores</a></li>
                         <li><a href="/ProveedorProducto/Listar">Proveedores - Productos</a></li>
                         <li><a href="/Empleado/Listar">Empleados</a></li>
-                        <li><a href="/Compra/Index">Mis compras</a></li>
+                        <li><a href="/Compras">Mis compras</a></li>
                         <li><a onclick="cerrarSesion('@Url.Action("CerrarSesion", "Home")')">Cerrar Sesión</a></li>
                     </ul>
                 </li>
@@ -61,7 +61,7 @@
             <div class="p-3 mb-2 bg-dark text-white rounded float-right">
                 <h4>Resumen de la compra</h4>
                 <p>Cliente: <strong>@ViewBag.Usuario</strong></p>
-                <p>Cantidad: <strong>@ViewBag.Cantidad</strong></p>
+                <p>Cantidad de Productos: <strong>@ViewBag.Cantidad</strong></p>
                 <p>Total: <strong>@ViewBag.Total</strong></p>
             </div>
         </div>

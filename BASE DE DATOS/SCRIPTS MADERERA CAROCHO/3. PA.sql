@@ -177,7 +177,7 @@ BEGIN
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto
 	inner join PROVEEDOR_PRODUCTO pro on p.idProducto = pro.idProducto
 	inner join PROVEEDOR prov on prov.idProveedor = pro.idProveedor
-	ORDER BY p.idProducto desc;
+	ORDER BY p.stock asc;
 END
 GO
 
@@ -276,13 +276,12 @@ CREATE OR ALTER PROCEDURE spListarProveedorProducto
 AS
 BEGIN
 	SELECT p.idProveedor_Producto, p.idProveedor AS id, pro.razonSocial AS proveedor, prod.nombre AS madera, prod.longitud, prod.diametro,
-	prod.stock, p.precioCompra AS precio, pro.idProveedor, prod.idProducto FROM PROVEEDOR_PRODUCTO p
+	prod.stock, p.precioCompra AS precio, pro.idProveedor, prod.idProducto, pro.estProveedor FROM PROVEEDOR_PRODUCTO p
 	inner join PROVEEDOR pro ON p.idProveedor = pro.idProveedor
 	inner join PRODUCTO prod ON p.idProducto = prod.idProducto
-	WHERE pro.estProveedor = 1;
 END
 GO
-
+select *from COMPRA
 -- PA - TIPO_EMPLEADO
 -- *************************************
 CREATE OR ALTER PROCEDURE spListarTipoEmpleado
@@ -833,8 +832,6 @@ BEGIN
 	 ON v.idUsuario=c.idUsuario WHERE v.idUsuario=@id;	
 END
 GO
-
-
 
 CREATE OR ALTER TRIGGER tgUPDATECompra
 ON compra

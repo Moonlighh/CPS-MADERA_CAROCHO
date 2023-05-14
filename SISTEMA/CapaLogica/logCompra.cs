@@ -21,9 +21,9 @@ namespace CapaLogica
         public bool CrearCompra(entCompra comp, out int idGenerado)
         {
             bool isValid = ValidationHelper.TryValidateEntity(comp);
-            if (!isValid || comp.Total <=0)
+            if (!isValid || comp.Total <=0 || (comp.Usuario.Activo == false))
             {
-                idGenerado = -1;
+                idGenerado = -1; //Asegurarnos que idGenerado conserve su valor
                 return false;
             }
             return datCompra.Instancia.CrearCompra(comp, out idGenerado);

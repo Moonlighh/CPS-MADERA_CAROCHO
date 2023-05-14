@@ -37,7 +37,9 @@ namespace CapaAccesoDatos
                 cmd.Parameters.AddWithValue("@cantidad", Det.Cantidad);
                 cmd.Parameters.AddWithValue("@subTotal", Det.Subtotal);
                 cn.Open();
-                int i = cmd.ExecuteNonQuery();
+
+                // Al ejecutar el procedimiento se inserta el detalle y se actualiza el stock del producto
+                int i = cmd.ExecuteNonQuery();// Debe dar 2 filas afectadas
                 if (i != 0)
                 {
                     creado = true;

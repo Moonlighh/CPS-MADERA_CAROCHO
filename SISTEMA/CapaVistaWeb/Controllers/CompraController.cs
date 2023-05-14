@@ -10,75 +10,13 @@ using System.Web.Mvc;
 
 namespace MadereraCarocho.Controllers
 {
+    // Solo se podrá ingresar a los controladores si estas autorizado
+    // y si eres administrador.
     [Authorize]
     [PermisosRol(entRol.Administrador)]
     public class CompraController : Controller
     {
-        public ActionResult Index()
-        {
-            //Lista todas las compras realizadas
-            List<entCompra> lista = logCompra.Instancia.ListarCompra();
-            ViewBag.lista = lista;
-            return View(lista);
-        }
-        //Lista los productos agregados al carrito
-        public ActionResult DetalleCarrito(string orden)
-        {
-            try
-            {
-                entUsuario cliente = Session["Usuario"] as entUsuario;
-                var detCompra = logCarrito.Instancia.MostrarCarrito(cliente.IdUsuario, orden);
-                ViewBag.Lista = detCompra;
-                ViewBag.Cantidad = detCompra.Count;
-                // Calcula el total de la compra
-                decimal total = detCompra.Sum(detalle => detalle.Subtotal);
-                // Agrega el total a la ViewBag
-                ViewBag.Total = total;
-                ViewBag.Usuario = cliente.RazonSocial;
-                return View(detCompra);
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", "Home", new { mesjExeption = e.Message });
-            } 
-        }
-        [HttpPost]
-        public ActionResult AgregarDetCarrito(int pvCantidad, FormCollection frm)
-        {
-            try
-            {
-                //Agrega productos al carrito y finalmente manda a listarlos
-                entCarrito carrito = new entCarrito();
-                entProducto prod = logProducto.Instancia.BuscarProductoId(Convert.ToInt32(frm["Prd"]));
-                entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.Producto.IdProducto == prod.IdProducto).FirstOrDefault();
-                carrito.ProveedorProducto = detalle;
-                carrito.Cantidad = pvCantidad;
-                carrito.Subtotal = ((decimal)(pvCantidad * detalle.PrecioCompra));
-                logCarrito.Instancia.AgregarProductoCarrito(carrito);
-
-                return RedirectToAction("DetalleCarrito");
-            }
-            catch
-            {
-                return RedirectToAction("DetalleCarrito");
-            }
-        }
-        public ActionResult EliminarDetalleCarrito(int idProveedorProducto)
-        {
-            try
-            {
-                //Elimina un producto
-                var user = Session["Usuario"] as entUsuario;
-                logCarrito.Instancia.EliminarProductoCarrito(idProveedorProducto, user.IdUsuario);
-                return RedirectToAction("DetalleCarrito");
-            }
-            catch (Exception e)
-            {
-                return RedirectToAction("Error", "Home", new { mesjExeption = e.Message });
-            }
-
-        }
-
+        #region Compra
         [HttpPost]
         public ActionResult ConfirmarCompra()
         {
@@ -111,7 +49,7 @@ namespace MadereraCarocho.Controllers
                 // Obtener el ID de la compra creada
                 int idGenerado = -1;
                 bool creado = logCompra.Instancia.CrearCompra(compra, out idGenerado);
-                if (creado)
+                if (creado && idGenerado!= -1)
                 {
                     compra.IdCompra = idGenerado;
                     try
@@ -140,7 +78,7 @@ namespace MadereraCarocho.Controllers
                             TempData["Error"] = "No se pudo agregar los productos a la compra";
                         }
                         return RedirectToAction("Error", "Home");
-                    } 
+                    }
                 }
                 // Limpiar el carrito de compras del cliente
                 carrito.Clear();
@@ -155,28 +93,81 @@ namespace MadereraCarocho.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
-        [HttpGet]
+
+        // Listar todas las compras realizadas
+        public ActionResult Index()
+        {
+            var compras = logCompra.Instancia.ListarCompra();
+            return View(compras);
+        }
+
         public ActionResult DetalleCompra(int idCompra)
         {
             List<entDetCompra> lista = logDetCompra.Instancia.MostrarDetalleCompra(idCompra);
             ViewBag.lista = lista;
             return View(lista);
         }
-        [HttpGet]
+        #endregion
+
+        #region Carrito Compra
+
+        // Este método muestra los productos agregados al carrito de compras del usuario.
+        // Toma como parámetro una cadena de caracteres que indica el orden de los productos agregados.
+        public ActionResult DetalleCarrito(string orden)
+        {
+            try
+            {
+                // Obtiene el usuario actual de la sesión.
+                entUsuario cliente = Session["Usuario"] as entUsuario;
+
+                // Obtiene los detalles de compra del usuario actual y los ordena según el parámetro indicado.
+                var detCompra = logCarrito.Instancia.MostrarCarrito(cliente.IdUsuario, orden);
+
+                // Agrega los detalles de compra a la ViewBag para que puedan ser accedidos en la vista.
+                ViewBag.Lista = detCompra;
+
+                // Obtiene y agrega la cantidad total de productos en el carrito a la ViewBag.
+                ViewBag.Cantidad = detCompra.Count;
+
+                // Calcula el total de la compra sumando los subtotales de todos los productos.
+                decimal total = detCompra.Sum(detalle => detalle.Subtotal);
+
+                // Agrega el total de la compra a la ViewBag.
+                ViewBag.Total = total;
+
+                // Agrega el nombre del usuario a la ViewBag.
+                ViewBag.Usuario = cliente.RazonSocial;
+
+                // Muestra la vista con los detalles de la compra.
+                return View(detCompra);
+            }
+            catch (Exception e)
+            {
+                // En caso de error, guarda el mensaje de error en TempData y redirige a la página de Error.
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        // Este método muestra la vista de edición de un producto en el carrito de compras del usuario.
+        // Toma como parámetro el id del producto en el carrito.
+        // Recupera el usuario de la sesión y busca el producto en el carrito a partir de su id.
+        // Devuelve la vista de edición con el objeto del carrito encontrado.
+        // En caso de error, redirige a la acción de error del controlador "Home".
         public ActionResult EditarProductoCarrito(int idCarrito)
         {
             try
             {
                 entUsuario u = Session["Usuario"] as entUsuario;
-                entCarrito carrito = logCarrito.Instancia.MostrarCarrito(u.IdUsuario, null).Where(c => c.IdCarrito == idCarrito).FirstOrDefault();        
+                entCarrito carrito = logCarrito.Instancia.MostrarCarrito(u.IdUsuario, null).Where(c => c.IdCarrito == idCarrito).FirstOrDefault();
                 return View(carrito);
             }
             catch (Exception e)
             {
+                TempData["Error"] = e.Message;
                 return RedirectToAction("Error", "Home");
             }
         }
-
         [HttpPost]
         public ActionResult EditarProductoCarrito(entCarrito c)
         {
@@ -208,12 +199,35 @@ namespace MadereraCarocho.Controllers
                     return RedirectToAction("Error", "Home");
                 }
             }
-            catch (ApplicationException ex)
+            catch (Exception e)
             {
                 // Redirigimos a la página de error con el mensaje de la excepción si hubo un error
-                return RedirectToAction("Error", "Home", new { mesjExceptio = ex.Message });
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
             }
 
         }
+
+        // Elimina un producto del carrito de compras del usuario actual utilizando el id del proveedor del producto como parámetro.
+        public ActionResult EliminarDetalleCarrito(int idProveedorProducto)
+        {
+            try
+            {
+                // Obtiene el usuario actual de la sesión.
+                var user = Session["Usuario"] as entUsuario;
+
+                // Llama al método EliminarProductoCarrito del objeto logCarrito para eliminar un producto del carrito de compras del usuario.
+                logCarrito.Instancia.EliminarProductoCarrito(idProveedorProducto, user.IdUsuario);
+
+                // Redirige a la acción DetalleCarrito para mostrar los productos actualizados en el carrito de compras del usuario.
+                return RedirectToAction("DetalleCarrito");
+            }
+            catch (Exception e)
+            {
+                // Si hay algún error, redirige a la acción Error del controlador Home con el mensaje de error.
+                return RedirectToAction("Error", "Home", new { mesjExeption = e.Message });
+            }
+        }
+        #endregion
     }
 }

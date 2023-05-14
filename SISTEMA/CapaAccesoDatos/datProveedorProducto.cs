@@ -36,6 +36,7 @@ namespace CapaAccesoDatos
                     {
                         IdProveedor = Convert.ToInt32(dr["idProveedor"]),
                         RazonSocial = dr["proveedor"].ToString(),
+                        EstProveedor = Convert.ToBoolean(dr["estProveedor"])
                     };
                     entProducto prod = new entProducto
                     {

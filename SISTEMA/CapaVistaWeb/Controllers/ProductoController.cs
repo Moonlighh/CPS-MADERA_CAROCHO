@@ -1,6 +1,7 @@
 ﻿using CapaEntidad;
 using CapaLogica;
 using MadereraCarocho.Permisos;
+using MadereraCarocho.ViewModels;
 using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections;
@@ -15,9 +16,10 @@ namespace MadereraCarocho.Controllers
 {
 
     [Authorize]// No puede si es que no esta autorizado
+    [PermisosRol(entRol.Administrador)]
     public class ProductoController : Controller
     {
-        [PermisosRol(entRol.Administrador)]
+        #region Producto
         [HttpPost]
         public ActionResult CrearProducto(string cNombreP, string cLongitudP, string cDiametro, string cPreVentaP, FormCollection frm)
         {
@@ -46,8 +48,7 @@ namespace MadereraCarocho.Controllers
         }
 
         // Esta funcion se encarga de listar todos los productos en donde el stock se acerca a 0
-        [PermisosRol(entRol.Administrador)]
-        public ActionResult ListarProductos(string dato, string orden)//listar y buscar
+        public ActionResult ListarProductos(string dato, string orden)
         {
             try
             {
@@ -66,22 +67,6 @@ namespace MadereraCarocho.Controllers
             }
         }
 
-        // Esta funcion se encarga de listar todos los productos disponibles para ser agregados al carrito de compras
-        [PermisosRol(entRol.Administrador)]
-        public ActionResult ListarProductosDisponibles(string dato)//listar y buscar
-        {
-            var lista = logProveedorProducto.Instancia.ListarProductoAdmin(dato);
-            List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
-            var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
-
-            ViewBag.lista = lista;
-            ViewBag.listaTipo = lsTipoProducto;
-            return View(lista);
-        }
-
-
-        [PermisosRol(entRol.Administrador)]
-        [HttpGet]
         public ActionResult EditarProducto(int idProd)
         {
             entProducto prod = new entProducto();
@@ -92,8 +77,6 @@ namespace MadereraCarocho.Controllers
             ViewBag.listaTipo = lsTipoProducto;
             return View(prod);
         }
-        [PermisosRol(entRol.Administrador)]
-
 
         [HttpPost]
         public ActionResult EditarProducto(entProducto p, FormCollection frm)
@@ -123,8 +106,6 @@ namespace MadereraCarocho.Controllers
             }
         }
 
-
-        [HttpGet]
         public ActionResult EliminarProducto(int idProd)
         {
             try
@@ -141,49 +122,50 @@ namespace MadereraCarocho.Controllers
             }
             return View();
         }
+        #endregion
 
-        [HttpGet]
+        #region Carrito Compra
         public ActionResult AgregarCarrito(int idProveedorProducto)
         {
+            MensajeViewModel mensaje = new MensajeViewModel();
             try
             {
                 entUsuario admin = Session["Usuario"] as entUsuario;
-
-                entCarrito carrito = logCarrito.Instancia.MostrarCarrito(admin.IdUsuario, null).Where(car => car.ProveedorProducto.IdProveedorProducto == idProveedorProducto).FirstOrDefault();
-
-                if (carrito != null)
+                bool agregado = logCarrito.Instancia.AgregarProductoCarrito(admin, idProveedorProducto, 1);
+                if (agregado)
                 {
-                    TempData["Error"] = "No puedes agregar el mismo producto dos veces";
-                    return RedirectToAction("Error", "Home");
+                    mensaje.Tipo = "exito";
+                    mensaje.Titulo = "Éxito";
+                    mensaje.Mensaje = "El producto fue agregado con éxito.";
                 }
                 else
                 {
-                    entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.IdProveedorProducto == idProveedorProducto).FirstOrDefault();
-                    if (detalle != null)
-                    {
-                        entCarrito car = new entCarrito
-                        {
-                            Cliente = admin,
-                            ProveedorProducto = detalle,
-                            Cantidad = 1,
-                            Subtotal = (decimal)detalle.PrecioCompra
-                        };
-                        logCarrito.Instancia.AgregarProductoCarrito(car);
-                        return RedirectToAction("ListarProductosDisponibles");
-                    }
-                    else
-                    {
-                        TempData["Error"] = "Ocurrio un error inesperado. Porfavor intentelo de nuevo o mas tarde";
-                        return RedirectToAction("Error", "Home");
-                    }
+                    mensaje.Tipo = "error";
+                    mensaje.Titulo = "Error";
+                    mensaje.Mensaje = "No se pudo agregar el producto.";
                 }
-
             }
-            catch
+            catch (Exception e)
             {
-                TempData["Error"] = "No se pudo agregar el producto";
-                return RedirectToAction("Error", "Home");
+                mensaje.Tipo = "error";
+                mensaje.Titulo = "Error";
+                mensaje.Mensaje = e.Message;
+                return RedirectToAction("Error", "Home", mensaje);
             }
+            return RedirectToAction("ListarProductosDisponibles", new { mensaje = mensaje });
         }
+
+        // Esta funcion se encarga de listar todos los productos disponibles para ser agregados al carrito de compras
+        public ActionResult ListarProductosDisponibles(string dato)
+        {
+            var lista = logProveedorProducto.Instancia.ListarProductoAdmin(dato);
+            List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
+            var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
+
+            ViewBag.lista = lista;
+            ViewBag.listaTipo = lsTipoProducto;
+            return View(lista);
+        }
+        #endregion
     }
 }
