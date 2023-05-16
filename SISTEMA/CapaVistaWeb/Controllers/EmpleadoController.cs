@@ -13,7 +13,44 @@ namespace MadereraCarocho.Controllers
     [Authorize]// No puede si es que no esta autorizado
     public class EmpleadoController : Controller
     {
-        // GET: Empleado
+
+        [HttpPost]
+        public ActionResult CrearEmpleado(string cNombreE, string cDniE, string cTelefonoE, string cDireccionE, double cSalarioE, string cDescripcionE, FormCollection frm)
+        {
+            try
+            {
+                entEmpleado e = new entEmpleado
+                {
+                    Nombres = cNombreE,
+                    Dni = cDniE,
+                    Telefono = cTelefonoE,
+                    Direccion = cDireccionE,
+                    Salario = cSalarioE,
+                    Descripcion = cDescripcionE,
+                    Tipo = new entTipoEmpleado()
+                };
+                e.Tipo.IdTipo_Empleado = Convert.ToInt32(frm["cTipo"]);
+                e.Tipo.Nombre = frm["cTipoE"];
+                e.Ubigeo = new entUbigeo
+                {
+                    IdUbigeo = frm["cDistrito"],
+                    Distrito = frm["cDistritoE"]
+                };
+                bool inserta = logEmpleado.Instancia.CrearEmpleado(e);
+                if (!inserta)
+                {
+                    TempData["Error"] = "Empleado no se pudo crear";
+                    return RedirectToAction("Error", "Home");
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["Error"] = "Se produjo el siguiente error: " + e.Message;
+                return RedirectToAction("Error", "Home");
+            }
+            return RedirectToAction("Listar");
+        }
+
         public ActionResult Listar(string busqueda, string orden)
         {
             try
@@ -35,78 +72,57 @@ namespace MadereraCarocho.Controllers
             }
         }
 
-
-        [HttpPost]
-        public ActionResult CrearEmpleado(string cNombreE, string cDniE, string cTelefonoE, string cDireccionE, 
-            /*DateTime cF_inicioE, DateTime cf_finE,*/ double cSalarioE, string cDescripcionE, 
-            /*bool cEstEmpleadoE,*/ FormCollection frm)
-        {
-            try
-            {
-                entEmpleado e = new entEmpleado();
-                e.Nombres = cNombreE;
-                e.Dni = cDniE;
-                e.Telefono = cTelefonoE;
-                e.Direccion = cDireccionE;
-                //e.F_inicio = Convert.ToDateTime(cF_inicioE);
-                //e.F_fin = Convert.ToDateTime(cf_finE);
-                e.Salario = cSalarioE;
-                e.Descripcion = cDescripcionE;
-                //e.EstEmpleado = cEstEmpleadoE;
-                e.Tipo = new entTipoEmpleado();
-                e.Tipo.IdTipo_Empleado = Convert.ToInt32(frm["cTipo"]);
-                e.Tipo.Nombre = frm["cTipoE"];
-                e.Ubigeo = new entUbigeo();
-                e.Ubigeo.IdUbigeo = frm["cDistrito"];
-                e.Ubigeo.Distrito = frm["cDistritoE"];
-                bool inserta = logEmpleado.Instancia.CrearEmpleado(e);
-                if (inserta)
-                {
-                    return RedirectToAction("Listar");
-                }
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Listar", new { mesjExeption = ex.Message });
-            }
-            return RedirectToAction("Listar");
-        }
-
         [HttpGet]
         public ActionResult EditarEmpleado(int idemp)
         {
             entEmpleado emp = new entEmpleado();
-            emp = logEmpleado.Instancia.BuscarIdEmpleado(idemp);
 
-            List<entTipoEmpleado> listaTipoEmpleado = logTipoEmpleado.Instancia.ListarTipoEmpleado();
-            var lsTipoEmpleado = new SelectList(listaTipoEmpleado, "idTipo_Empleado", "nombre");
-            List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
-            var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
-            ViewBag.listaTipo = lsTipoEmpleado;
-            ViewBag.listaUbigeo = lsUbigeo;
+            try
+            {
+                emp = logEmpleado.Instancia.BuscarIdEmpleado(idemp);
+
+                List<entTipoEmpleado> listaTipoEmpleado = logTipoEmpleado.Instancia.ListarTipoEmpleado();
+                var lsTipoEmpleado = new SelectList(listaTipoEmpleado, "idTipo_Empleado", "nombre");
+                List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
+                var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
+                ViewBag.listaTipo = lsTipoEmpleado;
+                ViewBag.listaUbigeo = lsUbigeo;
+            }
+            catch (Exception e)
+            {
+                TempData["Error"] = "Se produjo el siguiente error: " + e.Message;
+                return RedirectToAction("Error", "Home");
+            }
             return View(emp);
         }
+        
         [HttpPost]
         public ActionResult EditarEmpleado(entEmpleado e, FormCollection frm)
         {
-            e.Tipo = new entTipoEmpleado();
-            e.Tipo.IdTipo_Empleado = Convert.ToInt32(frm["cTipoE"]);
-            e.Ubigeo = new entUbigeo();
-            e.Ubigeo.IdUbigeo = frm["cDistrito"];
-            e.Ubigeo.Distrito = frm["cDistritoE"];
             try
             {
-                Boolean edita = logEmpleado.Instancia.ActualizarEmpleado(e);
-                if (edita)
+                e.Tipo = new entTipoEmpleado
                 {
-                    return RedirectToAction("Listar");
+                    IdTipo_Empleado = Convert.ToInt32(frm["cTipoE"])
+                };
+                e.Ubigeo = new entUbigeo
+                {
+                    IdUbigeo = frm["cDistrito"],
+                    Distrito = frm["cDistritoE"]
+                };
+                bool edita = logEmpleado.Instancia.ActualizarEmpleado(e);
+                if (!edita)
+                {
+                    TempData["Error"] = "Empleado no se pudo editar";
+                    return RedirectToAction("Error", "Home");
                 }
             }
-            catch (ApplicationException ex)
+            catch (Exception ex)
             {
-                return RedirectToAction("Error", "Home", new { mesjExceptio = ex.Message });
+                TempData["Error"] = "Empleado no se pudo editar: " + ex.Message;
+                return RedirectToAction("Error", "Home");
             }
-            return RedirectToAction("Error", "Home");
+            return RedirectToAction("Listar");
         }
 
         [HttpGet]
@@ -115,14 +131,16 @@ namespace MadereraCarocho.Controllers
             try
             {
                 bool elimina = logEmpleado.Instancia.DeshabilitarEmpleado(idE);
-                if (elimina)
+                if (!elimina)
                 {
-                    return RedirectToAction("Listar");
+                    TempData["Error"] = "Empleado no se pudo deshabilitar";
+                    return RedirectToAction("Error", "Home");
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return RedirectToAction("Listar", new { mesjExeption = ex.Message });
+                TempData["Error"] = "Empleado no se pudo deshabilitar: " + e.Message;
+                return RedirectToAction("Error", "Home");
             }
             return RedirectToAction("Listar");
         }

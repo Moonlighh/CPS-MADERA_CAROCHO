@@ -8,6 +8,7 @@ namespace CapaEntidad
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Nombres son obligatorios")]
+        [RegularExpression(@"^[a-zA-Z\s]{5,60}$", ErrorMessage = "El nombre debe tener entre 5 y 60 caracteres y solo puede contener letras")]
         public string Nombre { get; set; }
 
         [Required(ErrorMessage = "Correo electrónico es obligatorio")]
@@ -15,6 +16,7 @@ namespace CapaEntidad
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Asunto es obligatorio")]
+        [RegularExpression(@"^[A-Za-z0-9\s\-\.\,\:\;\!\?]{5,30}$", ErrorMessage = "El asunto debe tener entre 5 y 30 caracteres y solo puede contener letras, números y algunos símbolos de puntuación como - . , : ; ! ?")]
         public string Asunto { get; set; }
 
         [RegularExpression(@"^[a-zA-ZñÑ ]{15,}$", ErrorMessage = "El contenido del mensaje no puede tener simbolos y debe tener una logitud minima de 15 caracteres")]

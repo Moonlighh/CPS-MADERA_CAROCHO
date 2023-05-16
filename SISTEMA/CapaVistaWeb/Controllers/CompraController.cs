@@ -1,4 +1,5 @@
-﻿using CapaEntidad;
+﻿using CapaAccesoDatos;
+using CapaEntidad;
 using CapaLogica;
 using MadereraCarocho.Permisos;
 using System;
@@ -16,17 +17,24 @@ namespace MadereraCarocho.Controllers
     [PermisosRol(entRol.Administrador)]
     public class CompraController : Controller
     {
+        private readonly ILogCompra _logCompra;
+
+        public CompraController()
+        {
+            _logCompra = new logCompra(new datCompra());
+        }
+
         #region Compra
         [HttpPost]
         public ActionResult ConfirmarCompra()
         {
             try
             {
-                // Obtener el cliente actual
-                entUsuario cliente = Session["Usuario"] as entUsuario;
+                // Obtener el usuario actual
+                entUsuario usuario = Session["Usuario"] as entUsuario;
 
-                // Obtener los detalles del carrito de compras del cliente
-                var carrito = logCarrito.Instancia.MostrarCarrito(cliente.IdUsuario, null);
+                // Obtener los detalles del carrito de compras del usuario
+                var carrito = logCarrito.Instancia.MostrarCarrito(usuario.IdUsuario, null);
 
                 if (carrito.Count == 0)
                 {
@@ -34,78 +42,56 @@ namespace MadereraCarocho.Controllers
                     TempData["Error"] = "No tiene productos, por favor asegurese de contar con productos antes de intentar comprar";
                     return RedirectToAction("Error", "Home");
                 }
-
-                //Calculamos el total de toda la compra
-                double totalCompra = (double)carrito.Sum(detalle => detalle.Subtotal);
-
-                // Crear una nueva compra
-                var compra = new entCompra
+                else
                 {
-                    Usuario = cliente,
-                    Estado = true,
-                    Total = (decimal)totalCompra
-                };
-
-                // Obtener el ID de la compra creada
-                int idGenerado = -1;
-                bool creado = logCompra.Instancia.CrearCompra(compra, out idGenerado);
-                if (creado && idGenerado!= -1)
-                {
-                    compra.IdCompra = idGenerado;
-                    try
+                    bool exito = _logCompra.CrearCompra(usuario, carrito);
+                    if (!exito)
                     {
-                        var det = new entDetCompra();
-
-                        // Agregar detalles de la compra
-                        for (int i = 0; i < carrito.Count; i++)
-                        {
-                            det.Producto = carrito[i].ProveedorProducto.Producto;
-                            det.Cantidad = carrito[i].Cantidad;
-                            det.Subtotal = (decimal)carrito[i].Subtotal;
-                            det.Compra = compra;
-                            logDetCompra.Instancia.CrearDetCompra(det);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        // Si no se pueden agregar los detalles de la compra, eliminar la compra creada anteriormente
-                        if (!logCompra.Instancia.EliminarCompra(idGenerado))
-                        {
-                            TempData["Error"] = "No se pudo cancelar la transacción. Comuniquese de inmediato con soporte e informele del problema";
-                        }
-                        else
-                        {
-                            TempData["Error"] = "No se pudo agregar los productos a la compra";
-                        }
+                        TempData["Error"] = "No se pudo crear la compra";
                         return RedirectToAction("Error", "Home");
                     }
                 }
-                // Limpiar el carrito de compras del cliente
-                carrito.Clear();
-                return RedirectToAction("Index");
             }
 
             // Manejo de excepciones
-            catch
+            catch(Exception e)
             {
-                // No se pudo crear la compra, redirigir a la página de error
-                TempData["Error"] = "No se pudo crear la compra";
+                TempData["Error"] = e.Message;
                 return RedirectToAction("Error", "Home");
             }
+            return RedirectToAction("DetalleCarrito");
         }
 
         // Listar todas las compras realizadas
-        public ActionResult Index()
+        public ActionResult ComprasRealizadas()
         {
-            var compras = logCompra.Instancia.ListarCompra();
+            var compras = new List<entCompra>();
+            try
+            {
+                compras = _logCompra.ListarCompras();
+            }
+            catch (Exception e)
+            {
+                TempData[""] = e.Message;
+                return RedirectToAction("Error", "Home");
+            }
             return View(compras);
         }
 
         public ActionResult DetalleCompra(int idCompra)
         {
-            List<entDetCompra> lista = logDetCompra.Instancia.MostrarDetalleCompra(idCompra);
-            ViewBag.lista = lista;
-            return View(lista);
+            try
+            {
+                entUsuario u = Session["Usuario"] as entUsuario;
+                List<entDetCompra> lista = logDetCompra.Instancia.MostrarDetalleCompra(idCompra, u.IdUsuario);
+                ViewBag.lista = lista;
+                return View(lista);
+            }
+            catch (Exception e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
+            }
         }
         #endregion
 
@@ -159,7 +145,7 @@ namespace MadereraCarocho.Controllers
             try
             {
                 entUsuario u = Session["Usuario"] as entUsuario;
-                entCarrito carrito = logCarrito.Instancia.MostrarCarrito(u.IdUsuario, null).Where(c => c.IdCarrito == idCarrito).FirstOrDefault();
+                entCarrito carrito = logCarrito.Instancia.MostrarCarrito(u.IdUsuario, null).Where(c => c.IdCarrito == idCarrito).SingleOrDefault();
                 return View(carrito);
             }
             catch (Exception e)
@@ -168,6 +154,7 @@ namespace MadereraCarocho.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
+        
         [HttpPost]
         public ActionResult EditarProductoCarrito(entCarrito c)
         {
@@ -176,11 +163,11 @@ namespace MadereraCarocho.Controllers
                 // Obtenemos el usuario de la sesión actual
                 entUsuario u = Session["Usuario"] as entUsuario;
 
-                // Obtenemos el producto del carrito que se va a editar
-                entCarrito carrito = logCarrito.Instancia.MostrarCarrito(u.IdUsuario, null).Where(x => x.IdCarrito == c.IdCarrito).FirstOrDefault();
+                //// Obtenemos el producto del carrito que se va a editar
+                entCarrito carrito = logCarrito.Instancia.MostrarCarrito(u.IdUsuario, null).Where(x => x.IdCarrito == c.IdCarrito).SingleOrDefault();
 
                 // Obtenemos los detalles del proveedor del producto
-                entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.IdProveedorProducto == carrito.ProveedorProducto.IdProveedorProducto).FirstOrDefault();
+                entProveedorProducto detalle = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.IdProveedorProducto == carrito.ProveedorProducto.IdProveedorProducto).SingleOrDefault();
 
                 // Calculamos el subtotal del producto editado
                 c.Subtotal = (decimal)(c.Cantidad * detalle.PrecioCompra);
@@ -188,14 +175,10 @@ namespace MadereraCarocho.Controllers
                 // Actualizamos la cantidad y subtotal del producto en el carrito
                 bool edita = logCarrito.Instancia.EditarProductoCarrito(c);
 
-                // Redirigimos al detalle del carrito si la edición fue exitosa
-                if (edita)
+                // Redirigimos a la página de error si la edición falló
+                if (!edita)
                 {
-                    return RedirectToAction("DetalleCarrito", "Compra");
-                }
-                else
-                {
-                    // Redirigimos a la página de error si la edición falló
+                    TempData["Error"] = "No se pudo editar el producto asegurese de proporcionar datos coherentes";
                     return RedirectToAction("Error", "Home");
                 }
             }
@@ -205,6 +188,7 @@ namespace MadereraCarocho.Controllers
                 TempData["Error"] = e.Message;
                 return RedirectToAction("Error", "Home");
             }
+            return RedirectToAction("DetalleCarrito", "Compra");
 
         }
 
@@ -225,7 +209,8 @@ namespace MadereraCarocho.Controllers
             catch (Exception e)
             {
                 // Si hay algún error, redirige a la acción Error del controlador Home con el mensaje de error.
-                return RedirectToAction("Error", "Home", new { mesjExeption = e.Message });
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
             }
         }
         #endregion

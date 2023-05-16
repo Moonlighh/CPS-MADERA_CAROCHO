@@ -99,7 +99,7 @@ GO
 CREATE TABLE USUARIO(
 	idUsuario INT PRIMARY KEY IDENTITY,
 	razonSocial VARCHAR(40),
-	dni VARCHAR(8),
+	dni VARCHAR(8) NULL,
 	telefono VARCHAR(9),
 	direccion VARCHAR(60),
 	idUbigeo VARCHAR(6),
@@ -123,7 +123,7 @@ CREATE TABLE USUARIO(
 	CONSTRAINT fk_Usuario_rol FOREIGN KEY(idRol) REFERENCES Rol (idRol)
 )
 GO
-select *from usuario
+
 CREATE TABLE CARRITO(
 	idCarrito INT PRIMARY KEY IDENTITY,
 	idCliente INT,
@@ -196,7 +196,9 @@ GO
 
 --------------------------------------------RESTRICCIONES---------------------------------------------
 --USUARIO
-ALTER TABLE USUARIO ADD CONSTRAINT UQ_USUARIO_dni UNIQUE(dni);
+ALTER TABLE USUARIO
+ADD CONSTRAINT UQ_USUARIO_dni UNIQUE (dni) WITH (IGNORE_DUP_KEY = OFF);
+
 ALTER TABLE USUARIO ADD	CONSTRAINT CHK_USUARIO_telefono CHECK(telefono LIKE '9[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]' or telefono = '' or telefono LIKE '0[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
 ALTER TABLE USUARIO ADD	CONSTRAINT CHK_USUARIO_dni CHECK(dni LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]');
 ALTER TABLE USUARIO ADD CONSTRAINT uq_USUARIO_userName UNIQUE(userName)

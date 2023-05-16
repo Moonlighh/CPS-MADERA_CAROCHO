@@ -25,24 +25,28 @@ namespace MadereraCarocho.Controllers
         {
             try
             {
-                entProducto p = new entProducto();
-                p.Nombre = cNombreP;
-                p.Longitud = Double.Parse(cLongitudP);
-                p.Diametro = Double.Parse(cDiametro);
-                p.PrecioVenta = Double.Parse(cPreVentaP);
-                p.Stock = 0;
-                p.Tipo = new entTipoProducto();
+                entProducto p = new entProducto
+                {
+                    Nombre = cNombreP,
+                    Longitud = double.Parse(cLongitudP),
+                    Diametro = double.Parse(cDiametro),
+                    PrecioVenta = double.Parse(cPreVentaP),
+                    Stock = 0,
+                    Tipo = new entTipoProducto()
+                };
                 p.Tipo.IdTipo_producto = Convert.ToInt32(frm["cTipo"]);
 
                 bool inserta = logProducto.Instancia.CrearProducto(p);
-                if (inserta)
+                if (!inserta)
                 {
-                    return RedirectToAction("ListarProductos");
+                    TempData["Error"] = "El producto " + cNombreP + "no pudo ser agregado";
+                    return RedirectToAction("Error", "Home");
                 }
             }
             catch (Exception ex)
             {
-                return RedirectToAction("ListarProductos", new { mesjExeption = ex.Message });
+                TempData["Error"] = ex.Message;
+                return RedirectToAction("Error", "Home");
             }
             return RedirectToAction("ListarProductos");
         }
@@ -70,11 +74,19 @@ namespace MadereraCarocho.Controllers
         public ActionResult EditarProducto(int idProd)
         {
             entProducto prod = new entProducto();
-            prod = logProducto.Instancia.BuscarProductoId(idProd);
+            try
+            {
+                prod = logProducto.Instancia.BuscarProductoId(idProd);
 
-            List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
-            var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
-            ViewBag.listaTipo = lsTipoProducto;
+                List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
+                var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
+                ViewBag.listaTipo = lsTipoProducto;
+            }
+            catch (Exception e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
+            }
             return View(prod);
         }
 
@@ -87,12 +99,8 @@ namespace MadereraCarocho.Controllers
                 p.Tipo.IdTipo_producto = Convert.ToInt32(frm["cTipoU"]);
 
 
-                Boolean edita = logProducto.Instancia.ActualizarProducto(p);
-                if (edita)
-                {
-                    return RedirectToAction("ListarProductos");
-                }
-                else
+                bool edita = logProducto.Instancia.ActualizarProducto(p);
+                if(!edita)
                 {
                     TempData["Error"] = "Asegurate de haber ingresado todos los datos";
                     return RedirectToAction("Error", "Home");
@@ -104,6 +112,7 @@ namespace MadereraCarocho.Controllers
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home");
             }
+            return RedirectToAction("ListarProductos");
         }
 
         public ActionResult EliminarProducto(int idProd)
@@ -111,8 +120,11 @@ namespace MadereraCarocho.Controllers
             try
             {
                 if (logProducto.Instancia.EliminarProducto(idProd))
-                {
                     return RedirectToAction("ListarProductos");
+                else
+                {
+                    TempData["Error"] = "Error al eliminar el producto";
+                    return RedirectToAction("Error", "Home");
                 }
             }
             catch (Exception ex)
@@ -120,7 +132,6 @@ namespace MadereraCarocho.Controllers
                 TempData["Error"] = ex.Message;
                 return RedirectToAction("Error", "Home");
             }
-            return View();
         }
         #endregion
 
@@ -152,18 +163,27 @@ namespace MadereraCarocho.Controllers
                 mensaje.Mensaje = e.Message;
                 return RedirectToAction("Error", "Home", mensaje);
             }
-            return RedirectToAction("ListarProductosDisponibles", new { mensaje = mensaje });
+            return RedirectToAction("ListarProductosDisponibles");
         }
 
         // Esta funcion se encarga de listar todos los productos disponibles para ser agregados al carrito de compras
-        public ActionResult ListarProductosDisponibles(string dato)
+        public ActionResult ListarProductosDisponibles(string dato, string orden)
         {
-            var lista = logProveedorProducto.Instancia.ListarProductoAdmin(dato);
-            List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
-            var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
+            List<entProveedorProducto> lista = new List<entProveedorProducto>();
+            try
+            {
+                lista = logProveedorProducto.Instancia.ListarProductoAdmin(dato, orden);
+                List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
+                var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
 
-            ViewBag.lista = lista;
-            ViewBag.listaTipo = lsTipoProducto;
+                ViewBag.lista = lista;
+                ViewBag.listaTipo = lsTipoProducto;
+            }
+            catch (Exception e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
+            }
             return View(lista);
         }
         #endregion

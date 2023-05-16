@@ -2,50 +2,101 @@
 using CapaEntidad;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CapaLogica
 {
-    public class logCompra
+    public class logCompra: ILogCompra
     {
-        private static readonly logCompra _instancia = new logCompra();
+        private readonly IDatCompra _datCompra;
 
-        public static logCompra Instancia
+        public logCompra(IDatCompra datCompra)
         {
-            get { return _instancia; }
+            _datCompra = datCompra;
         }
 
-        #region CRUD
-        public bool CrearCompra(entCompra comp, out int idGenerado)
+        #region Compra
+        public bool CrearCompra(entUsuario user, List<entCarrito> listaProductos)
         {
-            bool isValid = ValidationHelper.TryValidateEntity(comp);
-            if (!isValid || comp.Total <=0 || (comp.Usuario.Activo == false))
+            bool compraCreada = false;
+            bool detalleCreado = false;
+
+            try
             {
-                idGenerado = -1; //Asegurarnos que idGenerado conserve su valor
-                return false;
+                // Verificar que el usuario exista, que este activo y que cuente con productos en su carrito.
+                if (user != null && user.Activo && listaProductos.Count > 0)
+                {
+                    /* 
+                     * CREAMOS LA COMPRA             
+                     */
+
+                    //Calculamos el total de toda la compra
+                    decimal totalCompra = listaProductos.Sum(detalle => detalle.Subtotal);
+
+                    // Crear una nueva compra
+                    var compra = new entCompra
+                    {
+                        Usuario = user,
+                        Estado = true,
+                        Total = totalCompra
+                    };
+
+                    // Obtener el ID de la compra creada
+                    int idCompra = -1;
+                    compraCreada = _datCompra.CrearCompra(compra, out idCompra);
+                    /* 
+                     * CREAMOS EL DETALLE DE LA COMPRA             
+                     */
+
+                    // Verificar que la compra esta creada y que el idGenerado es un valor logico
+                    if (compraCreada && idCompra >= 1)
+                    {
+                        // Creamos un detalle 
+                        var detailCompra = new entDetCompra();
+
+                        // Agregar detalles de la compra
+                        for (int i = 0; i < listaProductos.Count; i++)
+                        {
+                            detailCompra.Producto = listaProductos[i].ProveedorProducto.Producto;
+                            detailCompra.Cantidad = listaProductos[i].Cantidad;
+                            detailCompra.Subtotal = listaProductos[i].Subtotal;
+
+                            detalleCreado = logDetCompra.Instancia.CrearDetCompra(detailCompra, idCompra);
+
+                            // Verificar que cada detalle sea creado correctamente
+                            if (detalleCreado == false)
+                                throw new Exception("No se pudieron agregar los productos a su compra");
+                        }
+                    }
+                    else
+                        throw new Exception("La compra no pudo ser creada, intentelo de nuevo o mas tarde");
+                }
             }
-            return datCompra.Instancia.CrearCompra(comp, out idGenerado);
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return compraCreada && detalleCreado;
         }
-        public List<entCompra> ListarCompra()
+        
+        public List<entCompra> ListarCompras()
         {
-            return datCompra.Instancia.ListarCompra();
+            return _datCompra.ListarCompra();
         }
+        
         public bool EliminarCompra(int comp)
         {
-            return datCompra.Instancia.EliminarCompra(comp);
+            return _datCompra.EliminarCompra(comp);
         }
         #endregion
 
         #region Otros
-        public int DevolverID(string tipo)
-        {
-            return datCompra.Instancia.GenerarID(tipo);
-        }
         public List<entCompra> BuscarCompra(string busqueda)
         {
-            return datCompra.Instancia.BuscarCompra(busqueda);
+            return _datCompra.BuscarCompra(busqueda);
         }
         #endregion
     }

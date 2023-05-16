@@ -11,14 +11,8 @@ using System.Security.Cryptography;
 
 namespace CapaAccesoDatos
 {
-    public class datCompra
+    public class datCompra: IDatCompra
     {
-        private static readonly datCompra _instancia = new datCompra();
-        public static datCompra Instancia
-        {
-            get { return _instancia; }
-        }
-
         //Crear
         public bool CrearCompra(entCompra comp, out int idCompra)
         {
@@ -146,34 +140,6 @@ namespace CapaAccesoDatos
         }
 
         #region OTROS
-        public int GenerarID(string tipo)
-        {
-            SqlCommand cmd = null;
-            int id = 0;
-            try
-            {
-                SqlConnection cn = Conexion.Instancia.Conectar();
-
-                cmd = new SqlCommand("spReturnID", cn)
-                {
-                    CommandType = CommandType.StoredProcedure
-                };
-                cmd.Parameters.AddWithValue("@tipo", tipo);
-                cn.Open();
-                cmd.ExecuteNonQuery();
-                id = Convert.ToInt16(cmd.ExecuteScalar());
-            }
-            catch (Exception e)
-            {
-                throw new ApplicationException("Error al generar el id de la compra - AD");
-            }
-            finally
-            {
-                cmd.Connection.Close();
-            }
-            return id;
-
-        }
         public List<entCompra> BuscarCompra(string busqueda)
         {
             List<entCompra> lista = new List<entCompra>();

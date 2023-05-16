@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.ComponentModel.DataAnnotations;//Validaciones
+using System.Text.RegularExpressions;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Windows.Forms;
 
 namespace CapaLogica
 {
@@ -30,12 +33,18 @@ namespace CapaLogica
         #region CRUD
         public bool CrearCliente(entUsuario user, out List<string> lsErrores)
         {
-            bool isValid = ValidationHelper.TryValidateEntityMsj(user, out lsErrores);
-            if (!isValid)
+            try
             {
-                return false;
+                bool isValid = ValidationHelper.TryValidateEntityMsj(user, out lsErrores);
+                if (!isValid)
+                    return false;
+                
+                user.Pass = logRecursos.GetSHA256(user.Pass);
             }
-            user.Pass = logRecursos.GetSHA256(user.Pass);
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
             return _datUsuario.CrearCliente(user);
         }
         public List<entUsuario> ListarUsuarios()
@@ -93,39 +102,37 @@ namespace CapaLogica
         {
             return _datUsuario.BuscarAdministrador(dato);
         }
-
-
-
         public entUsuario BuscarIdCliente(int idUsuario)
         {
             return _datUsuario.BuscarIdCliente(idUsuario);
         }
-
         public entUsuario IniciarSesion(string dato, string contra)
         {
             entUsuario u = null;
             try
             {
-                if (DateTime.Now.Hour > 24)
+                if (!(string.IsNullOrEmpty(dato) || string.IsNullOrEmpty(contra)))
                 {
-                    throw new Exception("No puede ingresar a esta hora");
-                }
-                else
-                {
-                    contra = logRecursos.GetSHA256(contra);
-                    u = _datUsuario.IniciarSesion(dato, contra);
-                    if (u != null)
+                    if (DateTime.Now.Hour > 24)
                     {
-                        if (!u.Activo)
+                        throw new Exception("No se puede ingresar despues de las 22:00 horas");
+                    }
+                    else
+                    {
+                        contra = logRecursos.GetSHA256(contra);
+                        u = _datUsuario.IniciarSesion(dato, contra);
+                        if (u != null)
                         {
-                            return u = null;
-                            throw new Exception("Usuario ha sido dado de baja");
+                            if (!u.Activo)
+                            {
+                                return u = null;
+                                throw new Exception("Usted ya no puede ingresar al sistema");
+                            }
+
                         }
 
                     }
-
                 }
-
             }
             catch (Exception e)
             {
@@ -150,24 +157,72 @@ namespace CapaLogica
                     return _datUsuario.ListarAdministradores();
             }           
         }
-
         public bool CrearSesionUsuario(entUsuario u, out List<string> errores)
         {
+            bool creado = false;
+            errores = new List<string>();
+
             try
             {
-                bool isValid = ValidationHelper.TryValidateEntityMsj(u.Correo, out errores) && ValidationHelper.TryValidateEntityMsj(u.Pass, out errores) && ValidationHelper.TryValidateEntityMsj(u.UserName, out errores);
+                if (u == null)
+                {
+                    errores.Add("El usuario es nulo");
+                    return false;
+                }
+                bool isValid = ValidationHelper.TryValidateEntityMsj(u.Correo, out errores) &&
+                               ValidationHelper.TryValidateEntityMsj(u.Pass, out errores) &&
+                               ValidationHelper.TryValidateEntityMsj(u.UserName, out errores);
                 if (isValid)
                 {
                     u.Pass = logRecursos.GetSHA256(u.Pass);
-                    return _datUsuario.CrearSesionUsuario(u);
+                    creado = _datUsuario.CrearSesionUsuario(u);
                 }
             }
             catch
             {
-
                 throw new Exception("Se produjo un error al intentar crear su cuenta");
             }
-            return false;
+
+            return creado;
+        }
+        
+        public string EnviarCodigoRestablecerPass(string correo)
+        {
+            string codigo = string.Empty;
+            try
+            {
+                string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+                Regex regex = new Regex(pattern);
+                if (regex.IsMatch(correo))
+                {
+                    var existe = _datUsuario.ListarUsuarios().Where(u => u.Correo == correo).SingleOrDefault();
+                    if (existe != null)
+                    {
+                        codigo = logRecursos.GenerarClave();
+                        string asunto = "Restablecer contraseña";
+                        string mensaje = "Hola,\r\n\r\nRecibimos una solicitud para restablecer la contraseña de su cuenta." +
+                            " Para completar el proceso de restablecimiento, por favor utilice el siguiente código de seguridad:" +
+                            "\r\n\r\n"+codigo+ "\r\n\r\n. Ingrese este código en el formulario de restablecimiento de " +
+                            "contraseña en nuestro sitio web. Si usted no ha solicitado el restablecimiento de contraseña, por favor " +
+                            "ignore este correo electrónico.\nAtentamente, [Suport Maderera Carocho]";
+                        
+                       bool enviarCorreo = logRecursos.EnviarCorreo(correo, asunto, mensaje);
+                       if (!enviarCorreo) {
+                            throw new Exception("No se pudo enviar el correo electronico a la siguiente dirección: " + correo);
+                       }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return codigo;
+        }
+
+        public bool RestablecerPassword(string correo, string password, string codigo)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

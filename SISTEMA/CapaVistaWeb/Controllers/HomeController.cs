@@ -15,6 +15,8 @@ namespace MadereraCarocho.Controllers
     public class HomeController : Controller
     {
         private readonly ILogUsuario _logUsuario = new logUsuario(new datUsuario());
+
+        #region Vistas
         public ActionResult Index()
         {
             List<entUbigeo> listUbigeo = logUbigeo.Instancia.ListarDistrito();
@@ -22,12 +24,20 @@ namespace MadereraCarocho.Controllers
             ViewBag.listUbigeo = lsUbigeo;
             return View(listUbigeo);
         }
+
         [PermisosRol(entRol.Administrador)]
         [Authorize]// No puede si es que no esta autorizado //Almacena la info en la memoria del navegador
         public ActionResult Admin()
         {
-            return View();
+            if (Session["Usuario"] != null)
+            {
+                entUsuario cliente = Session["Usuario"] as entUsuario;
+                ViewBag.Usuario = cliente.RazonSocial;
+                return View();
+            }
+            return RedirectToAction("Index");
         }
+
         [PermisosRol(entRol.Cliente)]
         [Authorize]// No puede si es que no esta autorizado
         public ActionResult Cliente()
@@ -40,108 +50,58 @@ namespace MadereraCarocho.Controllers
             }
             return RedirectToAction("Index");
         }
+
         public ActionResult SinPermisos()
         {
             ViewBag.Message = "Usted no tiene permisos para acceder a esta pagina";
             return View();
         }
+
         public ActionResult Login()
         {
             return View();
         }
+
+        #endregion Vistas
+
+        #region Acceso, Crear cuenta
         [HttpPost]
         public ActionResult VerificarAcceso(string user, string pass)
         {
             try
             {
-                if (!(String.IsNullOrEmpty(user) || String.IsNullOrEmpty(pass)))
+                entUsuario objCliente = _logUsuario.IniciarSesion(user, pass);
+                if (objCliente != null)
                 {
-                    //entUsuario ousuario = logUsuario.Instancia.ObtenerUsuarios().Where(u => u.Correo == dato && u.Pass == Encriptar.GetSHA256(contra)).FirstOrDefault();
-                    entUsuario objCliente = _logUsuario.IniciarSesion(user, pass);
-                    if (objCliente != null)
+                    FormsAuthentication.SetAuthCookie(objCliente.Correo, false); //Almacenar autenticacion dentro de una cokkie (segundo parametro es que el obj no sera persistente)
+                    Session["Usuario"] = objCliente;// Una sesión puede almacenar cualquier tipo de dato
+                    if (objCliente.Rol == entRol.Administrador)
                     {
-                        FormsAuthentication.SetAuthCookie(objCliente.Correo, false); //Almacenar autenticacion dentro de una cokkie (segundo parametro es que el obj no sera persistente)
-                        Session["Usuario"] = objCliente;// Una sesión puede almacenar cualquier tipo de dato
-                        if (objCliente.Rol == entRol.Administrador)
-                        {
-                            return RedirectToAction("Admin");
-                        }
-                        else
-                        {
-                            if (objCliente.Rol == entRol.Cliente)
-                            {
-                                return RedirectToAction("Cliente");
-                            }
-                        }
+                        return RedirectToAction("Admin");
                     }
-                    else
+                    if (objCliente.Rol == entRol.Cliente)
                     {
-                        TempData["Mensaje"] = "Usuario o contraseña incorrectos";
-                        return RedirectToAction("Login");
+                        return RedirectToAction("Cliente");
                     }
-                }
-
-            }
-            catch (Exception)
-            {
-                TempData["Mensaje"] = "Usuario o contraseña incorrectos";
-                return RedirectToAction("Error");
-            }
-
-            return RedirectToAction("Login"); //Si es que hay otro tipo igual que te recargue la pagina
-        }
-        [HttpPost]
-        public ActionResult SingUp(string cNombre, string cdni, string ctelefono, string cdireccion, string cusername, string ccorreo, string cpassword, string cpassconfirm, FormCollection frmub, FormCollection frm)
-        {
-            try
-            {
-                if (cpassword == cpassconfirm)
-                {
-                    entRoll rol = new entRoll
-                    {
-                        IdRoll = 2
-                    };
-                    entUbigeo u = new entUbigeo { 
-                        IdUbigeo = frmub["cUbi"].ToString() 
-                    };
-                    entUsuario c = new entUsuario
-                    {
-                        RazonSocial = cNombre,
-                        Dni = cdni,
-                        Telefono = ctelefono,
-                        Direccion = cdireccion,
-                        UserName = cusername,
-                        Correo = ccorreo,
-                        Pass = cpassword,
-                        Roll = rol,
-                        Ubigeo = u
-                    };
-                    List<string> errores = new List<string>();
-                    bool creado = _logUsuario.CrearCliente(c, out errores);
-                    if (creado == true && errores.Count == 0)
-                    {
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        foreach (var error in errores)
-                        {
-                            TempData["Error"] += error;
-                        }
-                        return RedirectToAction("Error");
-                    } 
                 }
                 else
                 {
-                    return RedirectToAction("Error", "Home", new { Informacion = "Las contras no coinciden" });
+                    TempData["Restablecer"] = "¿Olvidaste tu contraseña?";
+                    TempData["Mensaje"] = "Usuario o contraseña incorrectos";
+                    return RedirectToAction("Login");
                 }
+
+
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return RedirectToAction("Error", "Home", new { mesjExeption = ex.Message });
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error");
             }
+            return RedirectToAction("Login"); //Si es que hay otro tipo igual que te recargue la pagina
         }
-        [HttpPost]
+        
+        [HttpPost]       
         public ActionResult CrearSesionUsuario(string cusername, string ccorreo, string cpassword, string cpassconfirm)
         {
             try
@@ -171,15 +131,18 @@ namespace MadereraCarocho.Controllers
                 else
                 {
                     TempData["Error"] = "Las contraseñas no coinciden";
-                    return RedirectToAction("Error", "Home");
+                    return RedirectToAction("Error");
                 }
             }
             catch (Exception e)
             {
                 TempData["Error"] = e.Message;
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Error");
             }
         }
+        #endregion
+
+        #region Otros
         [HttpPost]
         public async Task<ActionResult> ContactForm(string nombre, string email, string asunto, string mensaje)
         {
@@ -202,7 +165,7 @@ namespace MadereraCarocho.Controllers
                     {
                         // Si hay errores al crear el formulario, almacenarlos en TempData y redirigir a la página de inicio
                         TempData["MensajeError"] = errores;
-                        return RedirectToAction("Index", "Home");
+                        return Redirect(Url.Action("Index", "Home") + "#section-form");
                     }
                     else
                     {
@@ -216,17 +179,57 @@ namespace MadereraCarocho.Controllers
                     // Si el correo no es válido, mostrar un mensaje de error y redirigir a la página de inicio
                     errores.Add("No se pudo procesar la solicitud");
                     TempData["MensajeError"] = errores;
-                    return RedirectToAction("Index", "Home");
+                    return Redirect(Url.Action("Index", "Home") + "#section-form");
                 }
             }
             catch (Exception e)
-            {              
+            {
                 // Si se produce una excepción, mostrar un mensaje de error y redirigir a la página de error
                 TempData["Error"] = "Se produjo el siguiente error al procesar la solicitud: " + e.Message;
                 return RedirectToAction("Error");
             }
         }
 
+        [HttpGet]
+        public ActionResult RestablecerPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult RestablecerPassword(string correo, string password, string codGenerado)
+        {
+            string msjCorreoEnviado = "Se ha enviado un correo electrónico a la dirección que proporcionó con instrucciones para restablecer su contraseña. Por favor, revise su bandeja de entrada y siga los pasos indicados en el correo electrónico para completar el proceso de restablecimiento de contraseña. Si no encuentra el correo electrónico, revise su carpeta de correo no deseado o spam.";
+            string msjCodigoNoEnviado = "No se pudo enviar el codigo de verificacion a " + correo;
+            string codigo = string.Empty;
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(correo) && codigo == string.Empty)
+                {
+                    codigo = _logUsuario.EnviarCodigoRestablecerPass(correo);
+                    if (codigo == string.Empty)
+                    {
+                        TempData["TipoAlerta"] = "warning";
+                        TempData["ContenidoAlerta"] = msjCodigoNoEnviado;
+                    }
+                    else
+                    {
+                        TempData["TipoAlerta"] = "success";
+                        TempData["ContenidoAlerta"] = msjCorreoEnviado;
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(password) && !string.IsNullOrWhiteSpace(codGenerado) && !string.IsNullOrWhiteSpace(codigo))
+                {
+                    _logUsuario.RestablecerPassword(correo, password, codGenerado);
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["TipoAlerta"] = "danger";
+                TempData["Error"] = e.Message;
+            }
+            return View();
+        }
         // Una sesion almacena toda la informacion de un objeto en el lado del servidor
         public ActionResult Error()
         {
@@ -235,11 +238,13 @@ namespace MadereraCarocho.Controllers
             ViewBag.Error = mensaje;
             return View();
         }
+        
         public ActionResult CerrarSesion()
         {
             Session["Usuario"] = null;// Terminar la sesión
             FormsAuthentication.SignOut();// Que se cierre la autenticación
             return RedirectToAction("Index");
         }
+        #endregion
     }
 }

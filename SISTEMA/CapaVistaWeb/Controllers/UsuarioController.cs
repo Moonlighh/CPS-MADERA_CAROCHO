@@ -20,58 +20,10 @@ namespace MadereraCarocho.Controllers
         public UsuarioController() {
             _logUsuario = new logUsuario(new datUsuario());
         }
-        public ActionResult ListarUsuarios(string dato)//listar y buscar en el mismo
-        {
-            List<entUsuario> lista;
-            if (!String.IsNullOrEmpty(dato))
-            {
-                lista = _logUsuario.BuscarUsuario(dato);
-            }
-            else
-            {
-                lista = _logUsuario.ListarUsuarios();
-            }
-            List<entRoll> listaRol = logRoll.Instancia.ListarRol();
-            var lsRol = new SelectList(listaRol, "idRoll", "descripcion");
-            List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
-            var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
 
-            ViewBag.lista = lista;
-            ViewBag.listaUbigeo = lsUbigeo;
-            ViewBag.listaRoll = lsRol;
-            return View(lista);
-        }
-        // GET: Cliente
-        public ActionResult ListarClientes(string dato, string orden)//listar y buscar en el mismo
-        {
-            var lista = _logUsuario.ListarClientes(dato, orden);
-            List<entRoll> listaRol = logRoll.Instancia.ListarRol();
-            var lsRol = new SelectList(listaRol, "idRoll", "descripcion");
-            List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
-            var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
-
-            ViewBag.lista = lista;
-            ViewBag.listaUbigeo = lsUbigeo;
-            ViewBag.listaRoll = lsRol;
-            return View(lista);
-        }
-
-        public ActionResult ListarAdministradores(string dato, string orden)
-        {
-            var lista = _logUsuario.ListarAdministradores(dato, orden);
-            List<entRoll> listaRol = logRoll.Instancia.ListarRol();
-            var lsRol = new SelectList(listaRol, "idRoll", "descripcion");
-
-            List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
-            var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
-
-            ViewBag.lista = lista;
-            ViewBag.listaUbigeo = lsUbigeo;
-            ViewBag.listaRoll = lsRol;
-            return View(lista);
-        }
+        #region CRUD
         [HttpPost]
-        public ActionResult CrearCuenta(string cNombre, string cdni, string ctelefono, string cdireccion, string cusername, string ccorreo, string cpassword, string cpassconfirm, FormCollection frmub, FormCollection frm)
+        public ActionResult CrearCuenta(string cNombre, string cdni, string ctelefono, string cdireccion, string cusername, string ccorreo, string cpassword, string cpassconfirm, FormCollection frmub)
         {
             try
             {
@@ -113,15 +65,68 @@ namespace MadereraCarocho.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Error", "Home", new { Informacion = "Las contras no coinciden" });
-
+                    TempData["Error"] = "Las contras no coinciden";
+                    return RedirectToAction("Error", "Home");
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return RedirectToAction("Error", "Home", new { mesjExeption = ex.Message });
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
             }
         }
+
+        public ActionResult ListarUsuarios(string dato)
+        {
+            List<entUsuario> lista;
+            if (!String.IsNullOrEmpty(dato))
+            {
+                lista = _logUsuario.BuscarUsuario(dato);
+            }
+            else
+            {
+                lista = _logUsuario.ListarUsuarios();
+            }
+            List<entRoll> listaRol = logRoll.Instancia.ListarRol();
+            var lsRol = new SelectList(listaRol, "idRoll", "descripcion");
+            List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
+            var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
+
+            ViewBag.lista = lista;
+            ViewBag.listaUbigeo = lsUbigeo;
+            ViewBag.listaRoll = lsRol;
+            return View(lista);
+        }
+
+        public ActionResult ListarClientes(string dato, string orden)
+        {
+            var lista = _logUsuario.ListarClientes(dato, orden);
+            List<entRoll> listaRol = logRoll.Instancia.ListarRol();
+            var lsRol = new SelectList(listaRol, "idRoll", "descripcion");
+            List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
+            var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
+
+            ViewBag.lista = lista;
+            ViewBag.listaUbigeo = lsUbigeo;
+            ViewBag.listaRoll = lsRol;
+            return View(lista);
+        }
+
+        public ActionResult ListarAdministradores(string dato, string orden)
+        {
+            var lista = _logUsuario.ListarAdministradores(dato, orden);
+            List<entRoll> listaRol = logRoll.Instancia.ListarRol();
+            var lsRol = new SelectList(listaRol, "idRoll", "descripcion");
+
+            List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
+            var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
+
+            ViewBag.lista = lista;
+            ViewBag.listaUbigeo = lsUbigeo;
+            ViewBag.listaRoll = lsRol;
+            return View(lista);
+        }
+        
         [HttpGet]
         public ActionResult HabilitarUsuario(int idU)
         {
@@ -139,6 +144,7 @@ namespace MadereraCarocho.Controllers
             }
             return RedirectToAction("ListarUsuarios");
         }
+        
         [HttpGet]
         public ActionResult DeshabilitarCliente(int idC)
         {
@@ -156,6 +162,7 @@ namespace MadereraCarocho.Controllers
             }
             return RedirectToAction("Error", "Home");
         }
+        
         [HttpGet]
         public ActionResult DeshabilitarAdmin(int idA)
         {
@@ -173,5 +180,62 @@ namespace MadereraCarocho.Controllers
             }
             return RedirectToAction("Error", "Home");
         }
+        #endregion
+
+        //[HttpPost]
+        //public ActionResult SingUp(string cNombre, string cdni, string ctelefono, string cdireccion, string cusername, string ccorreo, string cpassword, string cpassconfirm, FormCollection frmub, FormCollection frm)
+        //{
+        //    try
+        //    {
+        //        if (cpassword == cpassconfirm)
+        //        {
+        //            entRoll rol = new entRoll
+        //            {
+        //                IdRoll = 2
+        //            };
+        //            entUbigeo u = new entUbigeo
+        //            {
+        //                IdUbigeo = frmub["cUbi"].ToString()
+        //            };
+        //            entUsuario c = new entUsuario
+        //            {
+        //                RazonSocial = cNombre,
+        //                Dni = cdni,
+        //                Telefono = ctelefono,
+        //                Direccion = cdireccion,
+        //                UserName = cusername,
+        //                Correo = ccorreo,
+        //                Pass = cpassword,
+        //                Roll = rol,
+        //                Ubigeo = u
+        //            };
+        //            List<string> errores = new List<string>();
+        //            bool creado = _logUsuario.CrearCliente(c, out errores);
+        //            if (creado == true && errores.Count == 0)
+        //            {
+        //                return RedirectToAction("Index");
+        //            }
+        //            else
+        //            {
+        //                foreach (var error in errores)
+        //                {
+        //                    TempData["Error"] += error;
+        //                }
+        //                return RedirectToAction("Error");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            TempData["Error"] = "Las contraseñas no coinciden";
+        //            return RedirectToAction("Error", "Home");
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        TempData["Error"] = e.Message;
+        //        return RedirectToAction("Error", "Home");
+        //    }
+        //}
+
     }
 }

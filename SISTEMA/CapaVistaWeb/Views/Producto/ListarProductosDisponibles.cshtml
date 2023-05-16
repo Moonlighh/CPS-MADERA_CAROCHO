@@ -28,7 +28,7 @@
                         <li><a href="/Proveedor/Listar">Proveedores</a></li>
                         <li><a href="/ProveedorProducto/Listar">Proveedores - Productos</a></li>
                         <li><a href="/Empleado/Listar">Empleados</a></li>
-                        <li><a href="/Compras">Mis compras</a></li>
+                        <li><a href="/compras-realizadas">Compras</a></li>
                         <li><a onclick="cerrarSesion('@Url.Action("CerrarSesion", "Home")')">Cerrar Sesión</a></li>
                     </ul>
                 </li>
@@ -48,8 +48,8 @@
 <div class="container">
     <br><h2 style="text-align: center">LISTADO DE PRODUCTOS DISPONIBLES</h2>
     <!-- Ordenar -->
-    <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-primary btn-lg" id="ASC" href="Ordenar?dato=asc"><i class="bi bi-sort-up"></i></a>
-    <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-secondary btn-lg" id="DESC" href="Ordenar?dato=desc"><i class="bi bi-sort-down"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-primary btn-lg" id="ASC" href="productos-disponibles?dato=asc"><i class="bi bi-sort-up"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-secondary btn-lg" id="DESC" href="productos-disponibles?dato=desc"><i class="bi bi-sort-down"></i></a>
     <hr>
     <!-- Buscar -->
     <form class="d-flex mb-4" role="search" action="productos-disponibles" method="get" id="Bproducto">

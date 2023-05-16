@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls.WebParts;
 
 namespace MadereraCarocho.Controllers
 {
@@ -30,23 +31,27 @@ namespace MadereraCarocho.Controllers
         {
             try
             {
-                entProveedor p = new entProveedor();
-                p.RazonSocial = uNombre;
-                p.Dni = uRuc;
-                p.Correo = uCorreo;
-                p.Telefono = uTelefono;
-                p.Descripcion = uDescripcion;
-                p.EstProveedor = true;
-                p.Ubigeo = new entUbigeo();
+                entProveedor p = new entProveedor
+                {
+                    RazonSocial = uNombre,
+                    Dni = uRuc,
+                    Correo = uCorreo,
+                    Telefono = uTelefono,
+                    Descripcion = uDescripcion,
+                    EstProveedor = true,
+                    Ubigeo = new entUbigeo()
+                };
                 p.Ubigeo.IdUbigeo =frm["Ubi"].ToString();
                 bool inserta = logProveedor.Instancia.CrearProveedor(p);
-                if (inserta)
+                if (!inserta)
                 {
-                    return RedirectToAction("Listar");
+                    TempData["Error"] = "Fallo al crear el detalle del proveedor";
+                    return RedirectToAction("Error", "Home");
                 }
             }
             catch (Exception ex)
             {
+                TempData["Error"] = ex.Message; 
                 return RedirectToAction("Listar", new { mesjExeption = ex.Message });
             }
             return RedirectToAction("Listar");
@@ -57,11 +62,18 @@ namespace MadereraCarocho.Controllers
         public ActionResult EditarProveedor(int idprov)
         {
             entProveedor prov = new entProveedor();
-            prov = logProveedor.Instancia.BuscarIdProveedor(idprov);
+            try
+            {
+                prov = logProveedor.Instancia.BuscarIdProveedor(idprov);
 
-            List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
-            var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
-            ViewBag.listaUbigeo = lsUbigeo;
+                List<entUbigeo> listaUbigeo = logUbigeo.Instancia.ListarDistrito();
+                var lsUbigeo = new SelectList(listaUbigeo, "idUbigeo", "distrito");
+                ViewBag.listaUbigeo = lsUbigeo;
+            }
+            catch(Exception e)
+            {
+                TempData["Error"] = e.Message;
+            }
 
             return View(prov);
         }

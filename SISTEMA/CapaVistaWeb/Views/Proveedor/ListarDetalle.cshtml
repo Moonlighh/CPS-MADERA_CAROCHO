@@ -65,88 +65,87 @@
     </form>
 
     <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="bg-dark text-light">
+        <table table class="table table-hover">
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    IdProducto
+                </th>
+                <th>
+                    Producto
+                </th>
+                <th>
+                    Longitud
+                </th>
+                <th>
+                    stock
+                </th>
+                <th>
+                    precioCompra
+                </th>
+                <th></th>
+            </tr>
+            @{
+                int count = 0;
+                int idProo = 0;
+            }
+
+            @*@foreach (var item in Model)
+            {
                 <tr>
-                    <th>ID</th>
-                    <th>NOMBRE</th>
-                    <th>RUC</th>
-                    <th>CORREO</th>
-                    <th>TELÉFONO</th>
-                    <th>UBIGEO</th>
-                    <th>DESCRIPCIÓN</th>
-                    <th>ESTADO</th>
-                    <th>ACCIONES</th>
+                    <td>
+                        @{
+                            count++;
+                            idProo = item.Proveedor.IdProveedor;
+                        }
+                        @count
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Producto.IdProducto)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Producto.Nombre)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Producto.Longitud)
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Producto.Stock)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PrecioCompra)</td>
+                    <td><a onclick="return Eliminar(this)" href="/Proveedor/EliminarDetalle?idprov=@item.Proveedor.IdProveedor&idprod=@item.Producto.IdProducto" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => item.IdProveedor)</td>
-                        <td>@Html.DisplayFor(modelItem => item.RazonSocial)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Dni)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Correo)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Telefono)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Ubigeo.Departamento), @Html.DisplayFor(modelItem => item.Ubigeo.Provincia), @Html.DisplayFor(modelItem => item.Ubigeo.Distrito)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
-                        <td>@Html.DisplayFor(modelItem => item.EstProveedor)</td>
-                        <td>
-                            <div class="btn-group" role="group" aria-label="Acciones">
-                                @Html.ActionLink("Editar", "EditarProveedor", new { idprov = item.IdProveedor }, new { @class = "btn btn-outline-secondary" })
-                                <a  class="btn btn-outline-danger" onclick="return Eliminar(this)" href="/Proveedor/DeshabilitarProveedor?idc=@item.IdProveedor" type="button">Eliminar</a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
+            }*@
         </table>
     </div>
 </div>
 <br>
 <br>
 <br>
-<!--Agregar Provedor-->
-<div class="modal" tabindex="-1" id="ModInsertarProveedor" aria-hidden="true">
+
+<!--Agregar Detalle Provedor Producto-->
+<div class="modal" tabindex="-1" id="ModElegirProducto" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="/Proveedor/CrearProveedor" method="POST" id="proveedor">
+            <form action="/Proveedor/ElegirProductos" method="POST" id="mdproveedor">
                 <div class="modal-header ">
                     <h5 class="modal-title">Ingresar Proveedor</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-floating mb-3">
-                        <div class="form-group">
-                            ubigeo:
-                            <div class="col-md-10">
-                                @Html.DropDownList("Ubi", (SelectList)ViewBag.listaUbigeo, "Seleccionar")
-                            </div>
-                        </div>
+                        @Html.DropDownList("Pr", (SelectList)ViewBag.producto, "Seleccionar", new { @class = "form-select", required = "required" })
+                        <label for="tipo" class="form-label">Producto: </label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="uNombre" id="uNombre" placeholder="Nombre" required>
-                        <label for="floatingInput">Nombre</label>
+                        <input type="text" class="form-control" name="precio" id="precio" placeholder="Precio de compra" required>
+                        <label for="floatingInput">PrecioDeCompra</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="uRuc" id="uRuc" placeholder="RUC" required>
-                        <label for="floatingInput">RUC</label>
+                        <input type="hidden" class="form-control" name="proveedor" id="proveedor" placeholder="proveedor" value=@idProo required>
                     </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="uCorreo" id="uCorreo" placeholder="Corrreo" required>
-                        <label for="floatingInput">Correo</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="uTelefono" placeholder="Telefono" required>
-                        <label for="floatingInput">Telefono</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="uDescripcion" id="uDescripcion" placeholder="uDescripcion" required>
-                        <label for="floatingInput">Descripcion</label>
+                    <div>
+                        <input type="hidden" id="llenarparametro" value="lleno" />
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="return Registrar('uNombre', 'uRuc', 'uDescripcion', 'proveedor')" type="submit" class="btn btn-dark">Registrar</button>
+                    <button onclick="return Registrar('precio', 'proveedor', 'llenarparametro', 'mdproveedor')" type="submit" class="btn btn-dark">Registrar</button>
                     <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </form>

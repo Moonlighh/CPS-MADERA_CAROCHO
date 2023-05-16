@@ -33,7 +33,7 @@
                         <li><a href="/Proveedor/Listar">Proveedores</a></li>
                         <li><a href="/ProveedorProducto/Listar">Proveedores - Productos</a></li>
                         <li><a href="/Empleado/Listar">Empleados</a></li>
-                        <li><a href="/Compras">Mis compras</a></li>
+                        <li><a href="/compras-realizadas">Compras</a></li>
                         <li><a onclick="cerrarSesion('@Url.Action("CerrarSesion", "Home")')">Cerrar Sesión</a></li>
                     </ul>
                 </li>
@@ -52,6 +52,13 @@
 <br>
 <div class="container">
     <center><h1>COMPRAS REALIZADAS</h1></center>
+
+    <div class="accordion">
+        <div class="alert alert-warning text-left" role="alert" style="max-width: 325px;">
+            Solo tienes permiso para ver el detalle de tus compras realizadas.
+        </div>
+    </div>
+
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
             <thead class="bg-dark text-light">

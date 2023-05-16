@@ -18,13 +18,25 @@ namespace CapaLogica
         }
 
         #region CR
-        public bool CrearDetCompra(entDetCompra comp)
+        public bool CrearDetCompra(entDetCompra comp, int idCompra)
         {
-            return datDetCompra.Instancia.CrearDetCompra(comp);
+            return datDetCompra.Instancia.CrearDetCompra(comp, idCompra);
         }
-        public List<entDetCompra> MostrarDetalleCompra(int idCompra)
+        public List<entDetCompra> MostrarDetalleCompra(int idCompra, int idUsuario)
         {
-            return datDetCompra.Instancia.MostrarDetalleCompra(idCompra);
+            try
+            {
+                if (idCompra <= 0 || idUsuario <= 0)
+                {
+                    return new List<entDetCompra>();
+                }
+                return datDetCompra.Instancia.MostrarDetalleCompra(idCompra, idUsuario);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
         #endregion
 

@@ -349,7 +349,7 @@
     <Content Include="Views\Usuario\ListarAdministradores.cshtml" />
     <Content Include="Views\Venta\Detalle.cshtml" />
     <Content Include="Views\Venta\Listar.cshtml" />
-    <Content Include="Views\Compra\Index.cshtml" />
+    <Content Include="Views\Compra\ComprasRealizadas.cshtml" />
     <Content Include="Views\Compra\DetalleCarrito.cshtml" />
     <Content Include="Views\Empleado\EditarEmpleado.cshtml" />
     <Content Include="Views\ProveedorProducto\Listar.cshtml" />
@@ -359,6 +359,8 @@
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\Compra\EditarProductoCarrito.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Proveedor\ListarDetalle.cshtml" />
+    <Content Include="Views\Home\RestablecerPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

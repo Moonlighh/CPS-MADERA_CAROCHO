@@ -22,7 +22,7 @@ namespace CapaAccesoDatos
         }
 
         //Cada Compra tiene su Detalle
-        public bool CrearDetCompra(entDetCompra Det)
+        public bool CrearDetCompra(entDetCompra Det, int idCompra)
         {
 
             SqlCommand cmd = null;
@@ -32,7 +32,7 @@ namespace CapaAccesoDatos
                 SqlConnection cn = Conexion.Instancia.Conectar();
                 cmd = new SqlCommand("spCrearDetCompra", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@idCompra", Det.Compra.IdCompra);
+                cmd.Parameters.AddWithValue("@idCompra", idCompra);
                 cmd.Parameters.AddWithValue("@idProducto", Det.Producto.IdProducto);//revisar si se llena el obj completo
                 cmd.Parameters.AddWithValue("@cantidad", Det.Cantidad);
                 cmd.Parameters.AddWithValue("@subTotal", Det.Subtotal);
@@ -56,7 +56,8 @@ namespace CapaAccesoDatos
             return creado;
         }
 
-        public List<entDetCompra> MostrarDetalleCompra(int idCompra)
+        // Mostrar el detalle por cada usuario
+        public List<entDetCompra> MostrarDetalleCompra(int idUsuario, int idCompra)
         {
 
             SqlCommand cmd = null;
@@ -66,6 +67,7 @@ namespace CapaAccesoDatos
                 SqlConnection cn = Conexion.Instancia.Conectar();
                 cmd = new SqlCommand("spMostrarDetalleCompra", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
                 cmd.Parameters.AddWithValue("@idCompra", idCompra);
                 cn.Open();
                 SqlDataReader dr = cmd.ExecuteReader();

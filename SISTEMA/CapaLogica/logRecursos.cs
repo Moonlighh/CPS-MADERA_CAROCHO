@@ -21,7 +21,6 @@ namespace CapaLogica
         }
         public static bool EnviarCorreo(string correo, string asunto, string mensaje)
         {
-            bool resultado = false;
             try
             {
                 MailMessage mail = new MailMessage();
@@ -40,14 +39,14 @@ namespace CapaLogica
                 };
 
                 smtp.Send(mail);//Enviamos el correo
-                resultado = true;//Caso en el que el correo se envio exitosamente
             }
-            catch (Exception ex)
+            catch
             {
-                resultado = false;
+                return false;
+                throw new Exception("No se pudo enviar su codigo de restablecimiento a su correo " + correo + " intentelo de nuevo o mas tarde");        
             }
 
-            return resultado;
+            return true;
         }
 
         public static string GetSHA256(string str)

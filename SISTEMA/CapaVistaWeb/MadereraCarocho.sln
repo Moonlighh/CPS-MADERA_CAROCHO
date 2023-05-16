@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaAccesoDatos", "..\CapaA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapaEntidad", "..\CapaEntidad\CapaEntidad.csproj", "{E96C4AC9-5D15-40C0-9AAB-6F35BC891362}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MadereraCarochoTest", "..\MadereraCarochoTest\MadereraCarochoTest.csproj", "{677EDF6C-5A5C-4B9D-81B9-5A5F82481CB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MadereraCarochoTest", "..\MadereraCarochoTest\MadereraCarochoTest.csproj", "{677EDF6C-5A5C-4B9D-81B9-5A5F82481CB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

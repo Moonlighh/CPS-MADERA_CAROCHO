@@ -87,7 +87,7 @@ namespace MadereraCarochoTest
                 Total = -5435534
             };
             //Act
-            bool isValid = logCompra.Instancia.CrearCompra(compra, out idGenerado);
+            bool isValid = _logCompra.CrearCompra(compra, out idGenerado);
             //Assert
             Assert.False(isValid);
         }

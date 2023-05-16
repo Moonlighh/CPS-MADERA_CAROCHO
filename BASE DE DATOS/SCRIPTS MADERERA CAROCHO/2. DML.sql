@@ -2048,8 +2048,10 @@ GO
 --INSERT CLIENTE
 INSERT INTO USUARIO(razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,pass,idRol) 
 VALUES 
-    ('Cesar Ruben', '74359211', '945613221','Mz20Lote34-Av. Ricardo Palma', '010109','cesar@gmail.com','Cesar','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1),
-    ('Omar Lujan', '70790019', '933423291', 'santiago mariños 1618', '010109','omar@gmail.com','Omar','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1),
+    ('Cesar Ruben', '74359211', '945613221','Mz20Lote34-Av. Ricardo Palma', '010109','reyesanticona25@gmail.com','Cesar','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1),
+    ('Alan Daniel', '70790019', '933423291', 'santiago mariños 1618', '010109','alan@gmail.com','Alan','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',1),
     ('Ximena Sandoval', '58791234', '999067966', 'MZA. 1-A LOTE. 3', '120102','ximena@gmail.com','Ximena','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',2),
     ('Daniel Solorzano', '74399141','913423491','Mz20Lote34-Av.5556',  '010109','daniel@gmail.com','Daniel','a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3',2);
 GO
+
+select *from DETALLE_COMPRA dc inner join COMPRA c on dc.idCompra = c.idCompra 

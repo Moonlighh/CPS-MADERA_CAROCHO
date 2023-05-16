@@ -281,7 +281,7 @@ BEGIN
 	inner join PRODUCTO prod ON p.idProducto = prod.idProducto
 END
 GO
-select *from COMPRA
+
 -- PA - TIPO_EMPLEADO
 -- *************************************
 CREATE OR ALTER PROCEDURE spListarTipoEmpleado
@@ -776,13 +776,16 @@ END
 GO
 
 CREATE OR ALTER PROCEDURE spMostrarDetalleCompra(
+	@idUsuario INT,
 	@idCompra INT	
+
 )
 AS
 BEGIN
 	SELECT dtC.idCompra, p.nombre, p.longitud, p.diametro, dtC.cantidad, dtC.subTotal FROM DETALLE_COMPRA dtC
 	inner join PRODUCTO p ON p.idProducto = dtC.idProducto
-	WHERE dtC.idCompra = @idCompra;
+	inner join COMPRA c ON dtC.idCompra = c.idCompra
+	WHERE dtC.idCompra = @idCompra AND c.idUsuario = @idUsuario;
 END
 GO
 
@@ -885,8 +888,6 @@ BEGIN
 	VALUES(@nombre, @email, @asunto, @mensaje, @ip_remitente);
 END
 GO
-select *from CONTACT_FORM
-select *from usuario
 
 
 

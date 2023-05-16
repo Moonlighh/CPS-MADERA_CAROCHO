@@ -20,18 +20,18 @@ namespace CapaLogica
             get { return _instancia; }
         }
 
-        #region Carrito de Compras
+        #region CRUD
         public bool AgregarProductoCarrito(entUsuario user, int idProveedorProducto, int pvCantidad)
         {
             bool agregado = false;
             try
             {
-                // Validar que el usuario no sea null y que sea administrador, el id del proveedor sea válido y la cantidad sea mayor a 0
-                if (user != null && idProveedorProducto >= 1 && user.Roll.IdRoll == 1 && pvCantidad >= 1)
+                // Validar que el usuario no sea null, que el id del proveedor sea válido y la cantidad sea mayor a 0
+                if (user != null && idProveedorProducto >= 1 && pvCantidad >= 1)
                 {
                     // Buscar si el producto ya existe en el carrito
-                    entCarrito carrito = Instancia.MostrarCarrito(user.IdUsuario, null).Where(car => car.ProveedorProducto.IdProveedorProducto == idProveedorProducto).SingleOrDefault();
-                    if (carrito != null)
+                    entCarrito car = Instancia.MostrarCarrito(user.IdUsuario, null).Where(c => c.ProveedorProducto.IdProveedorProducto == idProveedorProducto).SingleOrDefault();
+                    if (car != null)
                     {
                         // Si el producto ya existe en el carrito, lanzar una excepción
                         throw new Exception("El producto que intentas agregar ya se encuentra en el carrito de compras");
@@ -41,6 +41,7 @@ namespace CapaLogica
                     entProveedorProducto detalleProducto = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.IdProveedorProducto == idProveedorProducto).SingleOrDefault();
                     
                     // Si el producto existe y el proveedor está activo, crear un objeto entCarrito y agregarlo al carrito
+                    entCarrito carrito = new entCarrito();
                     if (detalleProducto != null && detalleProducto.Proveedor.EstProveedor)
                     {
                         // Si el producto existe y el proveedor está activo, modificar los datos del objeto carrito y agregarlo al carrito
@@ -102,11 +103,12 @@ namespace CapaLogica
                 return false;
             return datCarrito.Instancia.EliminarProductoCarrito(idProvProd, idCliente);
         }
+        #endregion Carrito de Compras
+        
         public List<entCarrito> OrdenarCarrito(int orden, int idUsuario)
         {
             return datCarrito.Instancia.Ordenar(orden, idUsuario);
         }
-        #endregion Carrito de Compras
 
     }
 }

@@ -55,6 +55,8 @@ namespace CapaAccesoDatos
             return creado; // se retorna el valor de la variable creado
         }
 
+        // Asegurarse de que siempre que se pida mostrar el carrito hay que recibir el id del usuario
+        // para que un usuario no pueda modificar datos de otros usuarios
         public List<entCarrito> MostrarCarrito(int idUsuario)
         {
             // Esta función muestra los productos que un cliente tiene en su carrito de compras
