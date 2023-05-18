@@ -185,10 +185,10 @@ GO
 
 CREATE TABLE CONTACT_FORM(
 	id INT PRIMARY KEY IDENTITY,
-	nombre VARCHAR(60),
-	email VARCHAR(40),
-	asunto VARCHAR(30),
-	mensaje VARCHAR(255),
+	nombre VARCHAR(60) not null,
+	email VARCHAR(40)not null,
+	asunto VARCHAR(30) not null,
+	mensaje VARCHAR(255) not null,
 	fecha_creacion DATETIME DEFAULT GETDATE(),
 	ip_remitente VARCHAR(20)
 )

@@ -24,12 +24,12 @@
                         <li><a href="/Usuario/Clientes">Clientes</a></li>
                         <li><a href="/Usuario/ListarUsuarios">Usuarios</a></li>
 
-                        <li><a href="/Producto/mostrar-productos">Productos</a></li>
+                        <li><a href="/Producto/mostrar-productos">Maderas</a></li>
                         <li><a href="/Proveedor/Listar">Proveedores</a></li>
-                        <li><a href="/ProveedorProducto/Listar">Proveedores - Productos</a></li>
+                        <li><a href="/ProveedorProducto/Listar">Proveedores - Maderas</a></li>
                         <li><a href="/Empleado/Listar">Empleados</a></li>
                         <li><a href="/compras-realizadas">Compras</a></li>
-                        <li><a onclick="cerrarSesion('@Url.Action("CerrarSesion", "Home")')">Cerrar Sesión</a></li>
+                        <li><a href="" onclick="cerrarSesion('@Url.Action("CerrarSesion", "Home")')">Cerrar Sesión</a></li>
                     </ul>
                 </li>
                 <li><a class="nav-link scrollto" href="/Producto/productos-disponibles">Comprar</a></li>
@@ -55,7 +55,7 @@
     <hr>  
     <div class="row">
         <div class="col-md-8">
-            <center><h1>PRODUCTOS AGREGADOS AL CARRITO DE COMPRAS</h1></center>
+            <center><h1>MADERAS AGREGADOS AL CARRITO DE COMPRAS</h1></center>
         </div>
         <div class="col-md-4">
             <div class="p-3 mb-2 bg-dark text-white rounded float-right">
@@ -127,7 +127,7 @@
         </table>
     </div>
     <br>
-    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Modcomprar">Confirmar compra <i class="bi bi-dropbox"></i></button>
+    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Modcomprar">Realizar compra <i class="bi bi-dropbox"></i></button>
 </div>
 
 <!--Agregar compra-->

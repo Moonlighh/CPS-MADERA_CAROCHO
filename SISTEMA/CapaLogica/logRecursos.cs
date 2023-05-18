@@ -48,7 +48,33 @@ namespace CapaLogica
 
             return true;
         }
+        public void SendResetPasswordEmail(string recipientEmail, string confirmationLink)
+        {
+            string senderEmail = "example@gmail.com";
+            string senderPassword = "password";
 
+            // Configurar el cliente SMTP
+            var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+            {
+                EnableSsl = true,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(senderEmail, senderPassword)
+            };
+
+            // Crear el correo electrónico
+            var mailMessage = new MailMessage(senderEmail, recipientEmail)
+            {
+                Subject = "Restablecer contraseña",
+                Body = $"Haga clic en el siguiente enlace para restablecer su contraseña: {confirmationLink}"
+            };
+
+            // Agregar el botón de confirmación al cuerpo del mensaje
+            mailMessage.IsBodyHtml = true;
+            mailMessage.Body += "<br/><br/><a href='" + confirmationLink + "'><button>Confirmar</button></a>";
+
+            // Enviar el correo electrónico
+            smtpClient.Send(mailMessage);
+        }
         public static string GetSHA256(string str)
         {
             SHA256 sha256 = SHA256Managed.Create();

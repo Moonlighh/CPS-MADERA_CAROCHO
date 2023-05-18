@@ -47,6 +47,7 @@ namespace CapaLogica
             }
             return _datUsuario.CrearCliente(user);
         }
+        
         public List<entUsuario> ListarUsuarios()
         {
             return _datUsuario.ListarUsuarios();
@@ -54,6 +55,7 @@ namespace CapaLogica
         // Método que devuelve una lista de entidades "Usuario" (clientes).
         // El parámetro "dato" se utiliza para buscar clientes por su nombre o correo electrónico.
         // El parámetro "orden" se utiliza para especificar la dirección de ordenamiento: "asc" para ascendente y "desc" para descendente.
+        
         public List<entUsuario> ListarClientes(string dato, string orden)
         {
             // Si el parámetro "dato" no está vacío, buscar clientes por su nombre o correo electrónico.
@@ -79,10 +81,12 @@ namespace CapaLogica
         {
             return _datUsuario.ActualizarCliente(c);
         }
+        
         public bool DeshabilitarUsuario(int id)
         {
             return _datUsuario.DeshabilitarUsuario(id);
         }
+        
         public bool HabilitarUsuario(int id)
         {
             return _datUsuario.HabilitarUsuario(id);
@@ -94,18 +98,22 @@ namespace CapaLogica
         {
             return _datUsuario.BuscarUsuario(dato);
         }
+        
         public List<entUsuario> BuscarCliente(string dato)
         {
             return _datUsuario.BuscarCliente(dato);
         }
+        
         public List<entUsuario> BuscarAdministrador(string dato)
         {
             return _datUsuario.BuscarAdministrador(dato);
         }
+        
         public entUsuario BuscarIdCliente(int idUsuario)
         {
             return _datUsuario.BuscarIdCliente(idUsuario);
         }
+        
         public entUsuario IniciarSesion(string dato, string contra)
         {
             entUsuario u = null;
@@ -130,7 +138,6 @@ namespace CapaLogica
                             }
 
                         }
-
                     }
                 }
             }

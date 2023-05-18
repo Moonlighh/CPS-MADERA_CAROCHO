@@ -144,7 +144,25 @@ namespace MadereraCarocho.Controllers
             }
             return RedirectToAction("ListarUsuarios");
         }
-        
+
+        [HttpGet]
+        public ActionResult DeshabilitarUsuario(int idU)
+        {
+            try
+            {
+                bool habilitar = _logUsuario.DeshabilitarUsuario(idU);
+                if (habilitar)
+                {
+                    return RedirectToAction("ListarUsuarios");
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home", new { mesjExeption = ex.Message });
+            }
+            return RedirectToAction("ListarUsuarios");
+        }
+
         [HttpGet]
         public ActionResult DeshabilitarCliente(int idC)
         {

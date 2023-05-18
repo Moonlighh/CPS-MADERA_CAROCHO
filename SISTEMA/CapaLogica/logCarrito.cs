@@ -87,14 +87,16 @@ namespace CapaLogica
                 return datCarrito.Instancia.MostrarCarrito(idUsuario);
             }
         }
-        public bool EditarProductoCarrito(entCarrito car)
+        public bool EditarProductoCarrito(entCarrito car, out List<string> errores)
         {
+            List<string> strings = new List<string>();
             if (car != null)
             {
-                bool isValid = ValidationHelper.TryValidateEntity(car);
+                bool isValid = ValidationHelper.TryValidateEntityMsj(car, out errores);
                 if (!isValid)
                     return false;
             }
+            errores = new List<string>();
             return datCarrito.Instancia.EditarProductoCarrito(car);
         }
         public bool EliminarProductoCarrito(int idProvProd, int idCliente)

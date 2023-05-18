@@ -221,7 +221,7 @@ BEGIN
 	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, pro.precioCompra, p.precioVenta, p.stock, t.tipo FROM PRODUCTO p
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto
 	inner join PROVEEDOR_PRODUCTO pro on pro.idProducto = p.idProducto
-	WHERE p.nombre like '%'+@campo+'%' or P.longitud like @Campo;
+	WHERE p.nombre like '%'+@campo+'%';
 END
 GO
 

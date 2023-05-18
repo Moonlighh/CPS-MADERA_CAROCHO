@@ -173,12 +173,13 @@ namespace MadereraCarocho.Controllers
                 c.Subtotal = (decimal)(c.Cantidad * detalle.PrecioCompra);
 
                 // Actualizamos la cantidad y subtotal del producto en el carrito
-                bool edita = logCarrito.Instancia.EditarProductoCarrito(c);
+                List<string> errores = new List<string>();
+                bool edita = logCarrito.Instancia.EditarProductoCarrito(c, out errores);
 
                 // Redirigimos a la página de error si la edición falló
                 if (!edita)
                 {
-                    TempData["Error"] = "No se pudo editar el producto asegurese de proporcionar datos coherentes";
+                    TempData["Error"] = "No se pudo editar el producto asegurese de proporcionar datos coherentes: " + errores;
                     return RedirectToAction("Error", "Home");
                 }
             }

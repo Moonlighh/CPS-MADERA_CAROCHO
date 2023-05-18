@@ -200,7 +200,7 @@ namespace MadereraCarocho.Controllers
         public ActionResult RestablecerPassword(string correo, string password, string codGenerado)
         {
             string msjCorreoEnviado = "Se ha enviado un correo electrónico a la dirección que proporcionó con instrucciones para restablecer su contraseña. Por favor, revise su bandeja de entrada y siga los pasos indicados en el correo electrónico para completar el proceso de restablecimiento de contraseña. Si no encuentra el correo electrónico, revise su carpeta de correo no deseado o spam.";
-            string msjCodigoNoEnviado = "No se pudo enviar el codigo de verificacion a " + correo;
+            string msjCodigoNoEnviado = "Formato de correo electronico invalido";
             string codigo = string.Empty;
             try
             {
