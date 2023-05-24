@@ -17,34 +17,30 @@ namespace CapaAccesoDatos
         {
             get { return _instancia; }
         }
+
         public bool CrearTipoProducto(entTipoProducto tip)
         {
-            SqlCommand cmd = null;
             bool creado = false;
             try
             {
-                SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spCrearTipoProducto", cn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@tipo", tip.Tipo);
-                cn.Open();
-                int i = cmd.ExecuteNonQuery();
-                if (i != 0)
+                using (SqlConnection cn = Conexion.Instancia.Conectar())
                 {
-                    creado = true;
+                    using (var cmd = new SqlCommand("spCrearTipoProducto", cn))
+                    {
+                        cmd.Parameters.AddWithValue("@tipo", tip.Tipo);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cn.Open();
+                        creado = cmd.ExecuteNonQuery() > 0;
+                    }
                 }
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            finally
-            {
-                cmd.Connection.Close();
-            }
             return creado;
-
         }
+        
         //Leer
         public List<entTipoProducto> ListarTipoProducto()
         {
@@ -76,8 +72,8 @@ namespace CapaAccesoDatos
             }
             return lista;
         }
+       
         //Actualizar
-
         public bool ActualizarTipoProducto(entTipoProducto tip)
         {
             SqlCommand cmd = null;
@@ -129,6 +125,5 @@ namespace CapaAccesoDatos
             finally { cmd.Connection.Close(); }
             return eliminado;
         }
-
     }
 }

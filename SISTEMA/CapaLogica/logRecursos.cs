@@ -13,14 +13,17 @@ namespace CapaLogica
 {
     public class logRecursos
     {
-        //Generamos una clave automatica que enviaremos al usuario - no se vuelve a repetir
+        // Generamos una clave automatica que enviaremos al usuario - no se vuelve a repetir
         public static string GenerarClave()
         {
             string clave = Guid.NewGuid().ToString("N").Substring(0, 6);//Retorna un codigo unico-solo caracteres alfanumericos-longitud de la clave
             return clave;
         }
+        
+        // Enviar correo para cualquier metodo
         public static bool EnviarCorreo(string correo, string asunto, string mensaje)
         {
+            bool enviado = false;
             try
             {
                 MailMessage mail = new MailMessage();
@@ -39,50 +42,43 @@ namespace CapaLogica
                 };
 
                 smtp.Send(mail);//Enviamos el correo
+                enviado = true;
             }
             catch
             {
-                return false;
-                throw new Exception("No se pudo enviar su codigo de restablecimiento a su correo " + correo + " intentelo de nuevo o mas tarde");        
+                throw new Exception("El correo no existe o la conexión fue rechazada");        
             }
 
-            return true;
+            return enviado;
         }
-        public void SendResetPasswordEmail(string recipientEmail, string confirmationLink)
-        {
-            string senderEmail = "example@gmail.com";
-            string senderPassword = "password";
 
-            // Configurar el cliente SMTP
-            var smtpClient = new SmtpClient("smtp.gmail.com", 587)
-            {
-                EnableSsl = true,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(senderEmail, senderPassword)
-            };
-
-            // Crear el correo electrónico
-            var mailMessage = new MailMessage(senderEmail, recipientEmail)
-            {
-                Subject = "Restablecer contraseña",
-                Body = $"Haga clic en el siguiente enlace para restablecer su contraseña: {confirmationLink}"
-            };
-
-            // Agregar el botón de confirmación al cuerpo del mensaje
-            mailMessage.IsBodyHtml = true;
-            mailMessage.Body += "<br/><br/><a href='" + confirmationLink + "'><button>Confirmar</button></a>";
-
-            // Enviar el correo electrónico
-            smtpClient.Send(mailMessage);
-        }
+        // Encriptar contenido
+        /// <summary>
+        /// Obtiene el hash SHA-256 de una cadena de texto.
+        /// </summary>
+        /// <param name="str">La cadena de texto a hashear.</param>
+        /// <returns>El hash SHA-256 en formato hexadecimal.</returns>
         public static string GetSHA256(string str)
         {
+            // Crea una instancia del algoritmo de hash SHA-256
             SHA256 sha256 = SHA256Managed.Create();
+
+            // Crea una instancia de la codificación ASCII para convertir la cadena en bytes
             ASCIIEncoding encoding = new ASCIIEncoding();
-            byte[] stream = null;
-            StringBuilder sb = new StringBuilder();
+
+            byte[] stream = null; // Variable para almacenar el resultado del hash
+            StringBuilder sb = new StringBuilder(); // StringBuilder para construir la representación hexadecimal del hash
+
+            // Calcula el hash SHA-256 de la cadena de texto
             stream = sha256.ComputeHash(encoding.GetBytes(str));
-            for (int i = 0; i < stream.Length; i++) sb.AppendFormat("{0:x2}", stream[i]);
+
+            // Convierte los bytes del hash en una representación hexadecimal y los agrega al StringBuilder
+            for (int i = 0; i < stream.Length; i++)
+            {
+                sb.AppendFormat("{0:x2}", stream[i]);
+            }
+
+            // Devuelve el hash SHA-256 en formato hexadecimal
             return sb.ToString();
         }
     }

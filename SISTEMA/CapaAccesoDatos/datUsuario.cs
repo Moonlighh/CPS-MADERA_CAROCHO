@@ -102,7 +102,7 @@ namespace CapaAccesoDatos
                 cmd.Connection.Close();
             }
             return lista;
-        }
+        }    
         public List<entUsuario> ListarAdministradores()
         {
             SqlCommand cmd = null;
@@ -195,8 +195,8 @@ namespace CapaAccesoDatos
             }
             return lista;
         }
+        
         //Actualizar
-
         public bool ActualizarCliente(entUsuario Cli)
         {
             SqlCommand cmd = null;
@@ -227,8 +227,7 @@ namespace CapaAccesoDatos
             return actualiza;
         }
 
-        //Eliminar - Deshabilitar
-
+        //Eliminar - Activo
         public bool DeshabilitarUsuario(int id)
         {
             SqlCommand cmd = null;
@@ -323,48 +322,43 @@ namespace CapaAccesoDatos
             }
             return c;
         }
-        public List<entUsuario> BuscarUsuario(string campo)
+        public List<entUsuario> BuscarAdministrador(string dato)
         {
-            List<entUsuario> lista = new List<entUsuario>();
             SqlCommand cmd = null;
+            List<entUsuario> lista = new List<entUsuario>();
             try
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spBuscarUsuario", cn);
+                cmd = new SqlCommand("spBuscarAdministrador", cn);
+                cmd.Parameters.AddWithValue("@Campo", dato);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@campo", campo);
                 cn.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    entUsuario user = new entUsuario
+                    entRoll rol = new entRoll()
                     {
-                        IdUsuario = Convert.ToInt16(dr["idUsuario"]),
+                        Descripcion = dr["descripcion"].ToString(),
+                    };
+                    entUsuario cli = new entUsuario
+                    {
+                        IdUsuario = Convert.ToInt32(dr["idUsuario"]),
                         RazonSocial = dr["razonsocial"].ToString(),
                         Dni = dr["dni"].ToString(),
                         Telefono = dr["telefono"].ToString(),
                         Direccion = dr["direccion"].ToString(),
+                        UserName = dr["userName"].ToString(),
                         Correo = dr["correo"].ToString(),
                         Activo = Convert.ToBoolean(dr["activo"]),
-                        FechaCreacion = Convert.ToDateTime(dr["fecCreacion"])
+                        Roll = rol
                     };
-                    entUbigeo u = new entUbigeo
-                    {
-                        Distrito = dr["distrito"].ToString(),
-                    };                                                                                                                          
-                    entRoll r = new entRoll
-                    {
-                        Descripcion = dr["descripcion"].ToString()
-                    };
-                    user.Roll = r;
-                    user.Ubigeo = u;
-                    lista.Add(user);
+                    lista.Add(cli);
                 }
             }
             catch (Exception e)
             {
-
                 throw new Exception(e.Message);
+
             }
             finally
             {
@@ -420,70 +414,48 @@ namespace CapaAccesoDatos
             }
             return lista;
         }
-
-        public entUsuario BuscarIdCliente(int busqueda)
+        public List<entUsuario> BuscarUsuario(string campo)
         {
-            SqlCommand cmd = null;
-            entUsuario c = new entUsuario();
-            try
-            {
-                SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spBuscarIdCliente", cn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@IdUsuario", busqueda);
-                cn.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    c.IdUsuario = Convert.ToInt32(dr["idUsuario"]);
-                    c.RazonSocial = dr["razonsocial"].ToString();
-                    c.Dni = dr["dni"].ToString();
-                    c.Telefono = dr["telefono"].ToString();
-                }
-            }
-            catch (Exception e)
-            { throw e; }
-            finally { cmd.Connection.Close(); }
-            return c;
-        }
-
-        public List<entUsuario> BuscarAdministrador(string dato)
-        {
-            SqlCommand cmd = null;
             List<entUsuario> lista = new List<entUsuario>();
+            SqlCommand cmd = null;
             try
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spBuscarAdministrador", cn);
-                cmd.Parameters.AddWithValue("@Campo", dato);
+                cmd = new SqlCommand("spBuscarUsuario", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@campo", campo);
                 cn.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    entRoll rol = new entRoll()
+                    entUsuario user = new entUsuario
                     {
-                        Descripcion = dr["descripcion"].ToString(),
-                    };
-                    entUsuario cli = new entUsuario
-                    {
-                        IdUsuario = Convert.ToInt32(dr["idUsuario"]),
+                        IdUsuario = Convert.ToInt16(dr["idUsuario"]),
                         RazonSocial = dr["razonsocial"].ToString(),
                         Dni = dr["dni"].ToString(),
                         Telefono = dr["telefono"].ToString(),
                         Direccion = dr["direccion"].ToString(),
-                        UserName = dr["userName"].ToString(),
                         Correo = dr["correo"].ToString(),
                         Activo = Convert.ToBoolean(dr["activo"]),
-                        Roll = rol
+                        FechaCreacion = Convert.ToDateTime(dr["fecCreacion"])
                     };
-                    lista.Add(cli);
+                    entUbigeo u = new entUbigeo
+                    {
+                        Distrito = dr["distrito"].ToString(),
+                    };                                                                                                                          
+                    entRoll r = new entRoll
+                    {
+                        Descripcion = dr["descripcion"].ToString()
+                    };
+                    user.Roll = r;
+                    user.Ubigeo = u;
+                    lista.Add(user);
                 }
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
 
+                throw new Exception(e.Message);
             }
             finally
             {
@@ -491,7 +463,6 @@ namespace CapaAccesoDatos
             }
             return lista;
         }
-
         public List<entUsuario> OrdenarAdministradores(int orden)
         {
             SqlCommand cmd = null;
@@ -536,7 +507,6 @@ namespace CapaAccesoDatos
             }
             return lista;
         }
-
         public List<entUsuario> OrdenarClientes(int orden)
         {
             SqlCommand cmd = null;
@@ -607,6 +577,32 @@ namespace CapaAccesoDatos
                 throw new Exception("Se produjo un error: " + e.Message);
             }
             return creado;
+        }
+        public bool RestablecerPassword(int idUsuario, string pass, string correo)
+        {
+            bool restablecer = false;
+            try
+            {
+                using (var cn = Conexion.Instancia.Conectar())
+                {
+                    using (var cmd = new SqlCommand("spRestablecerPassword", cn))
+                    {
+                        cmd.Parameters.AddWithValue("@idUsuario", idUsuario );
+                        cmd.Parameters.AddWithValue("@pass", pass);
+                        cmd.Parameters.AddWithValue("@correo", correo );
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cn.Open();
+                        int i = cmd.ExecuteNonQuery();
+                        restablecer = i> 0;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception($"Se produjo el siguiente error {e.Message}");
+            }
+            return restablecer;
         }
     }
     #endregion OTROS

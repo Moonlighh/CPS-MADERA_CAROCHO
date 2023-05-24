@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using CapaEntidad;
 using CapaAccesoDatos;
+using System.Text.RegularExpressions;
+
 namespace CapaLogica
 {
    public class logTipoEmpleado
@@ -19,7 +21,18 @@ namespace CapaLogica
         #region CRUD
         public bool CrearTipoEmpleado(entTipoEmpleado tip)
         {
-            return datTipoEmpleado.Instancia.crearTipoEmpleado(tip);
+            if (tip == null || string.IsNullOrWhiteSpace(tip.Nombre))
+            {
+                return false;
+            }
+
+            bool isValid = Regex.IsMatch(tip.Nombre, @"^[a-zA-ZñÑ\s]{10,30}$");
+            if (!isValid)
+            {
+                throw new ArgumentException("El tipo debe tener entre 10 y 30 caracteres (solo letras y espacios).", nameof(tip.Nombre));
+            }
+
+            return datTipoEmpleado.Instancia.CrearTipoEmpleado(tip);
         }
         public List<entTipoEmpleado> ListarTipoEmpleado()
         {

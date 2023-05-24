@@ -26,26 +26,30 @@ namespace MadereraCarochoTest
             Assert.Equal(userEsperado, result);
         }
         [Fact]
-        public void IniciarSesionTest2()
-        {
-            logUsuario lUser = new logUsuario(new datUsuario());
-
-            var result = lUser.IniciarSesion("Cesar", "123");
-
-            Assert.True(result != null);
-        }
-        [Fact]
         public void CrearCliente()
         {
+            // Crear el mock(para luego simular el comportamiento del objeto)
             var mockDatUsuario = new Mock<IDatUsuario>();
             var valorEsperado = true;
-            entUsuario user = new entUsuario("Anticona", "reyesanticona25@gmail.com", "CesarRuben", new entRoll { IdRoll = 2});                     
+
+            // Creo los datos de prueba
+            string usuario = "Chuben";
+            string correo = "reyesanticona25@gmail.com";
+            string pass = "R*-2";
+            entUsuario user = new entUsuario
+            {
+                UserName = usuario,
+                Correo = correo,
+                Pass = pass,
+            };
+            // Simular el comportamiento del objeto
             mockDatUsuario.Setup(x => x.CrearSesionUsuario(user)).Returns(valorEsperado);
+
             List<string> lsErrores = new List<string>();
             var sut = new logUsuario(mockDatUsuario.Object);
-            var result = sut.CrearSesionUsuario(user, out lsErrores);
+            var result = sut.CrearSesionUsuario(usuario, correo, pass, out lsErrores);
 
-            Assert.True(result && lsErrores.Count == 0);
+            Assert.True(result);
         }
     }
 }

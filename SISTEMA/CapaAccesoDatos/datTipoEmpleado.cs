@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,21 +19,22 @@ namespace CapaAccesoDatos
         }
         #region CRUD
         //Crear
-        public bool crearTipoEmpleado(entTipoEmpleado tip)
+        public bool CrearTipoEmpleado(entTipoEmpleado tip)
         {
-            SqlCommand cmd = null;
             bool creado = false;
             try
             {
-                SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spCrearTipoEmpleado", cn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@nombre", tip.Nombre);
-                cn.Open();
-                int i = cmd.ExecuteNonQuery();
-                if (i != 0)
+                using (var cn = Conexion.Instancia.Conectar())
                 {
-                    creado = true;
+                    using (var cmd = new SqlCommand("spCrearTipoEmpleado", cn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@tipoEmpleado", tip.Nombre);
+                        cn.Open();
+                        int i = cmd.ExecuteNonQuery();
+                        creado = i> 0;
+                    }
+
                 }
             }
             catch (Exception e)
@@ -40,12 +42,7 @@ namespace CapaAccesoDatos
                 throw new Exception(e.Message);
 
             }
-            finally
-            {
-                cmd.Connection.Close();
-            }
             return creado;
-
         }
         //Leer
         public List<entTipoEmpleado> ListarTipoEmpleado()

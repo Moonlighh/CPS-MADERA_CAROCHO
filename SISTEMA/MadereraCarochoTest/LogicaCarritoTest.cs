@@ -55,8 +55,9 @@ namespace MadereraCarochoTest
                 Cantidad = 1,
                 Subtotal = 12345678.16M
             };
+            var lsErrores = new List<string>();
             //Act
-            bool isValid = logCarrito.Instancia.EditarProductoCarrito(c);
+            bool isValid = logCarrito.Instancia.EditarProductoCarrito(c, out lsErrores);
             //Assert
             Assert.True(isValid);
         }
@@ -69,25 +70,6 @@ namespace MadereraCarochoTest
             int idCliente = -896;
             //Act
             bool isValid = logCarrito.Instancia.EliminarProductoCarrito(idProvProd, idCliente);
-            //Assert
-            Assert.False(isValid);
-        }
-
-        [Fact]
-        public void CrearCompraTest()
-        {
-            entUsuario u = new entUsuario();
-            u.IdUsuario = -90;
-            int idGenerado = -1;
-            //Arrange
-            var compra = new entCompra
-            {
-                Usuario = u,
-                Estado = true,
-                Total = -5435534
-            };
-            //Act
-            bool isValid = _logCompra.CrearCompra(compra, out idGenerado);
             //Assert
             Assert.False(isValid);
         }

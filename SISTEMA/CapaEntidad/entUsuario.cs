@@ -37,7 +37,7 @@ namespace CapaEntidad
         [EmailAddress(ErrorMessage = "El correo electrónico no es válido")]
         public string Correo { get; set; }
 
-        [RegularExpression("^[a-zA-ZÑñ]{6,20}$", ErrorMessage = "El nombre de usuario debe tener entre 6 y 20 caracteres y solo puede contener letras")]
+        [RegularExpression(@"^[a-zA-ZÑñ]{6,20}$", ErrorMessage = "El nombre de usuario debe tener entre 6 y 20 caracteres y solo puede contener letras")]
         public string UserName { get; set; }
 
         [RegularExpression(@"^.{6,}$",

@@ -21,6 +21,27 @@ namespace MadereraCarocho.Controllers
     {
         #region Producto
         [HttpPost]
+        public ActionResult CrearTipoMadera(string woodType)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(woodType))
+                {
+                    entTipoProducto tP = new entTipoProducto
+                    {
+                        Tipo = woodType
+                    };
+                    logTipoProducto.Instancia.CrearTipoProducto(tP);
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
+            }
+            return RedirectToAction("ListarProductos");
+        }
+        [HttpPost]
         public ActionResult CrearProducto(string cNombreP, string cLongitudP, string cDiametro, string cPreVentaP, FormCollection frm)
         {
             try

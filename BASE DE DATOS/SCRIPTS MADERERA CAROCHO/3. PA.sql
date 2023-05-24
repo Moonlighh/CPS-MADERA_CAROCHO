@@ -137,14 +137,14 @@ GO
 -- PA - TIPO_PRODUCTO
 -- *************************************
 
---CREATE OR ALTER PROCEDURE spCrearTipoProducto(
---	@nombre VARCHAR(30)
---)
---AS
---BEGIN
---	INSERT INTO TIPO_PRODUCTO VALUES(@nombre);
---END
---GO
+CREATE OR ALTER PROCEDURE spCrearTipoProducto(
+	@tipo VARCHAR(30)
+)
+AS
+BEGIN
+	INSERT INTO TIPO_PRODUCTO VALUES(@tipo);
+END
+GO
 
 CREATE OR ALTER PROCEDURE spListarTipoProducto
 AS
@@ -291,17 +291,26 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spCrearTipoEmpleado(
+	@tipoEmpleado varchar(30)
+)
+AS
+
+BEGIN
+	INSERT INTO TIPO_EMPLEADO VALUES (@tipoEmpleado)
+END
+GO
 --TIPO EMPLEADO
---CREATE OR ALTER PROCEDURE spActualizarTipoEmpleado(
---	@idTipo_Empleado INT,
---	@nombre VARCHAR(30)
---)
---AS
---BEGIN
---	UPDATE TIPO_EMPLEADO SET nombre = @nombre
---	WHERE idTipo_Empleado = @idTipo_Empleado
---END
---GO
+CREATE OR ALTER PROCEDURE spActualizarTipoEmpleado(
+	@idTipo_Empleado INT,
+	@nombre VARCHAR(30)
+)
+AS
+BEGIN
+	UPDATE TIPO_EMPLEADO SET nombre = @nombre
+	WHERE idTipo_Empleado = @idTipo_Empleado
+END
+GO
 
 -- PA - EMPLEADO
 -- *************************************
@@ -539,6 +548,17 @@ BEGIN
 	SELECT *FROM 
 	USUARIO c inner join Rol r ON r.idRol = c.idRol
 	WHERE (userName = @dato or correo = @dato) and pass = @contra
+END
+GO
+
+CREATE OR ALTER PROCEDURE spRestablecerPassword(
+	@idUsuario INT,
+	@pass VARCHAR(200),
+	@correo VARCHAR(40)
+)
+AS
+BEGIN
+	UPDATE USUARIO SET pass = @pass WHERE idUsuario = @idUsuario AND correo = @correo;
 END
 GO
 

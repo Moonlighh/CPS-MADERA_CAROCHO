@@ -10,7 +10,7 @@
 
         <div class="logo">
             <h1><a href="/Home/Admin">My<span>Biz</span></a></h1>
-             @*<a href="index.html"><img src="~/Content/assets/img/favicon.png" alt="" class="img-fluid"></a>*@
+            @*<a href="index.html"><img src="~/Content/assets/img/favicon.png" alt="" class="img-fluid"></a>*@
         </div>
 
         <nav id="navbar" class="navbar">
@@ -166,6 +166,32 @@
                 <div class="modal-footer">
                     <button onclick="return Registrar('Cnombre', 'Cdni', 'Ctelefono', 'empleado')" type="submit" class="btn btn-dark">Registrar</button>
                     <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!--Agregar Tipo-->
+<div class="modal" tabindex="-1" id="ModInsertarTipo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="/Empleado/CrearTipoEmpleado" method="POST" id="formTipoEmpleado" class="needs-validation" novalidate>
+                <div class="modal-header ">
+                    <h5 class="modal-title">Ingresar Tipo de Empleado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="employeeType" class="form-label">Tipo de Empleado <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="employeeType" id="employeeType" placeholder="Ingrese el tipo" required>
+                    <div class="invalid-feedback">
+                        Por favor completar todos los campos requeridos.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark btn-block">Agregar</button>
+                    <button type="button" class="btn btn-dark btn-block" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </form>
         </div>

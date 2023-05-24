@@ -13,7 +13,24 @@ namespace MadereraCarocho.Controllers
     [Authorize]// No puede si es que no esta autorizado
     public class EmpleadoController : Controller
     {
-
+        [HttpPost]
+        public ActionResult CrearTipoEmpleado(string employeeType)
+        {
+            try
+            {
+                entTipoEmpleado type = new entTipoEmpleado
+                {
+                    Nombre = employeeType,
+                };
+                logTipoEmpleado.Instancia.CrearTipoEmpleado(type);
+            }
+            catch (Exception e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
+            }
+            return RedirectToAction("Listar");
+        }
         [HttpPost]
         public ActionResult CrearEmpleado(string cNombreE, string cDniE, string cTelefonoE, string cDireccionE, double cSalarioE, string cDescripcionE, FormCollection frm)
         {

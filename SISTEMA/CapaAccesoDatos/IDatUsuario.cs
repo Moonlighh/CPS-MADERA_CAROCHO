@@ -19,10 +19,10 @@ namespace CapaAccesoDatos
         entUsuario IniciarSesion(string campo, string contra);
         List<entUsuario> BuscarUsuario(string campo);
         List<entUsuario> BuscarCliente(string busqueda);
-        entUsuario BuscarIdCliente(int busqueda);
         List<entUsuario> BuscarAdministrador(string dato);
         List<entUsuario> OrdenarAdministradores(int orden);
         List<entUsuario> OrdenarClientes(int orden);
         bool CrearSesionUsuario(entUsuario u);
+        bool RestablecerPassword(int idUsuario, string correo, string password);
     }
 }

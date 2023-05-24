@@ -94,7 +94,7 @@
                         <td>
                             <div class="btn-group" role="group" aria-label="Acciones">
                                 @Html.ActionLink("Editar", "EditarProveedor", new { idprov = item.IdProveedor }, new { @class = "btn btn-outline-secondary" })
-                                <a  class="btn btn-outline-danger" onclick="return Eliminar(this)" href="/Proveedor/DeshabilitarProveedor?idc=@item.IdProveedor" type="button">Eliminar</a>
+                                <a  class="btn btn-outline-danger" onclick="return Deshabilitar(this)" href="/Proveedor/DeshabilitarProveedor?idc=@item.IdProveedor" type="button">Deshabilitar</a>
                             </div>
                         </td>
                     </tr>

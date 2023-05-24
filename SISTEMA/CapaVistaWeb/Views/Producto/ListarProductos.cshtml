@@ -52,23 +52,24 @@
     <br><h2 style="text-align: center">REGISTRO DE MADERAS</h2>
     <!-- Agregar producto -->
 
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ModInsertarProducto"><i class="bi bi-plus-square"></i> Agregar Producto</button>
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#ModInsertarProducto"><i class="bi bi-plus-circle-dotted"></i> Nueva Madera</button>
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#ModInsertarTipo"><i class="bi bi-plus-square-dotted"></i> Nuevo Tipo</button>
     <hr>
     <!-- Ordenar -->
     <h5>Ordenar</h5>
-    <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-dark btn-lg" id="ASC" href="mostrar-productos?orden=asc" title="Orden ascendente"><i class="bi bi-sort-up"></i></a>
-    <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-secondary btn-lg" id="DESC" href="mostrar-productos?orden=desc"><i class="bi bi-sort-down"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-dark btn-lg mb-3" id="ASC" href="mostrar-productos?orden=asc" title="Orden ascendente"><i class="bi bi-sort-up"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" class="btn btn-secondary btn-lg mb-3" id="DESC" href="mostrar-productos?orden=desc"><i class="bi bi-sort-down"></i></a>
     <hr>
     <!-- Buscar -->
     <form class="d-flex mb-4" role="search" action="mostrar-productos" method="POST" id="Bproducto">
-        <input class="form-control me-2" type="search" placeholder="Buscar" name="dato" aria-label="Search">
+        <input class="form-control me-2" type="search" placeholder="Ingrese nombre de la madera" name="dato" aria-label="Search">
         <button onclick="return Buscar('Bproducto')" class="btn btn-outline-success" type="submit">Buscar</button>
     </form>
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead class="bg-dark text-light">
                 <tr>
-                    <th>ID PRODUCTO</th>
+                    <th>ID</th>
                     <th>NOMBRE</th>
                     <th>LONGITUD</th>
                     <th>DIÁMETRO</th>
@@ -148,8 +149,30 @@
     </div>
 </div>
 
-
-
+<!--Agregar Tipo-->
+<div class="modal" tabindex="-1" id="ModInsertarTipo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="/Producto/CrearTipoMadera" method="POST" id="formTipoMadera" class="needs-validation" novalidate>
+                <div class="modal-header ">
+                    <h5 class="modal-title">Ingresar Tipo de Madera</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="woodType" class="form-label">Tipo de Madera <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="woodType" id="woodType" placeholder="Ingrese el tipo" required>
+                    <div class="invalid-feedback">
+                        Por favor completar todos los campos requeridos.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark btn-block">Agregar</button>
+                    <button type="button" class="btn btn-dark btn-block" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 
 

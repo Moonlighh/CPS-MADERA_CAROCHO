@@ -61,7 +61,7 @@
     <form method="post" id="idLogin" action="/Home/VerificarAcceso" class="row g-3 needs-validation" novalidate>
         <div>
             <label for="validationCustom01" class="form-label">Username</label>
-            <input type="text" id="validationCustom02" name="user" placeholder="Ingrese usuario o correo" class="form-control" required>
+            <input type="text" id="validationCustom02" name="user" placeholder="Ingrese usuario o correo" class="form-control" required autocomplete="on">
             <div class="invalid-feedback">
                 Por favor ingrese su usuario o correo.
             </div>
@@ -69,7 +69,7 @@
 
         <div>
             <label for="validationCustom01" class="form-label">Password</label>
-            <input type="password" id="validationCustom03" name="pass" placeholder="Ingrese su contraseña" class="form-control" required>
+            <input type="password" id="validationCustom03" name="pass" placeholder="Ingrese su contraseña" class="form-control" required autocomplete="off">
             <div class="invalid-feedback">
                 Por favor ingrese su contraseña.
             </div>

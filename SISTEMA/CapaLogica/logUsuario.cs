@@ -13,12 +13,16 @@ using System.Windows.Forms;
 
 namespace CapaLogica
 {
-    public class logUsuario: ILogUsuario
+    public class logUsuario : ILogUsuario
     {
+        private readonly string patternCorreo = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+        private readonly string patternUsuario = @"^[a-zA-ZÑñ]{6,20}$";
+        private readonly string patternPassword = @"^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[\W_]).+$";
+        
         /*
          * Se está implementando la técnica de inyección de dependencias, que tiene
          * como objetivo reducir el acoplamiento entre las diferentes capas de la aplicación.    
-         */
+         */      
         private readonly IDatUsuario _datUsuario;
         public logUsuario(IDatUsuario datUsuario)
         {
@@ -38,7 +42,7 @@ namespace CapaLogica
                 bool isValid = ValidationHelper.TryValidateEntityMsj(user, out lsErrores);
                 if (!isValid)
                     return false;
-                
+
                 user.Pass = logRecursos.GetSHA256(user.Pass);
             }
             catch (Exception e)
@@ -52,10 +56,26 @@ namespace CapaLogica
         {
             return _datUsuario.ListarUsuarios();
         }
+        public List<entUsuario> ListarAdministradores(string dato, string orden)
+        {
+            if (!string.IsNullOrEmpty(dato))
+            {
+                return _datUsuario.BuscarAdministrador(dato);
+            }
+            switch (orden)
+            {
+                case "asc":
+                    return _datUsuario.OrdenarAdministradores(1);
+                case "desc":
+                    return _datUsuario.OrdenarAdministradores(0);
+                default:
+                    return _datUsuario.ListarAdministradores();
+            }
+        }
+
         // Método que devuelve una lista de entidades "Usuario" (clientes).
         // El parámetro "dato" se utiliza para buscar clientes por su nombre o correo electrónico.
-        // El parámetro "orden" se utiliza para especificar la dirección de ordenamiento: "asc" para ascendente y "desc" para descendente.
-        
+        // El parámetro "orden" se utiliza para especificar la dirección de ordenamiento: "asc" para ascendente y "desc" para descendente.      
         public List<entUsuario> ListarClientes(string dato, string orden)
         {
             // Si el parámetro "dato" no está vacío, buscar clientes por su nombre o correo electrónico.
@@ -76,46 +96,105 @@ namespace CapaLogica
             // Llamar al método "OrdenarClientes()" con un valor entero (1 para ascendente, 0 para descendente).
             return _datUsuario.OrdenarClientes(ordenAscendente ? 1 : 0);
         }
-
         public bool ActualizarCliente(entUsuario c)
         {
             return _datUsuario.ActualizarCliente(c);
         }
-        
         public bool DeshabilitarUsuario(int id)
         {
             return _datUsuario.DeshabilitarUsuario(id);
         }
-        
         public bool HabilitarUsuario(int id)
         {
             return _datUsuario.HabilitarUsuario(id);
         }
         #endregion
 
-        #region Otros
-        public List<entUsuario> BuscarUsuario(string dato)
+        #region Acceso Sistema
+        public bool CrearSesionUsuario(string usuario, string correo, string password, out List<string> errores)
         {
-            return _datUsuario.BuscarUsuario(dato);
+            errores = new List<string>();
+
+            Regex rUsuario = new Regex(patternUsuario);
+            Regex rCorreo = new Regex(patternCorreo);
+            Regex rPassword = new Regex(patternPassword);
+
+            if (!rUsuario.IsMatch(usuario))
+            {
+                errores.Add("El nombre de usuario no es válido.");
+            }
+
+            if (!rCorreo.IsMatch(correo))
+            {
+                errores.Add("El correo electrónico no es válido.");
+            }
+
+            if (!rPassword.IsMatch(password))
+            {
+                errores.Add("La contraseña debe contener al menos un número, una letra y un carácter especial.");
+            }
+
+            if (errores.Count > 0)
+            {
+                return false;
+            }
+
+            try
+            {
+                entRoll r = new entRoll
+                {
+                    IdRoll = 2,
+                };
+                entUsuario u = new entUsuario
+                {
+                    UserName = usuario,
+                    Correo = correo,
+                    Pass = password,
+                    Roll = r,
+                };
+                // Verificar que el correo sea real
+                bool existe = logRecursos.EnviarCorreo(u.Correo, "Crear Cuenta", "Bienvenido a Maderera Carocho, se esta procediendo a crear tu cuenta. Atentamente, Maderera Carocho");
+
+                if (existe)
+                {
+                    // Encriptar clave e intentar crear el usuario
+                    u.Pass = logRecursos.GetSHA256(u.Pass);
+                    return _datUsuario.CrearSesionUsuario(u);
+                }
+                else
+                {
+                    errores.Add("El correo ingresado no existe.");
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
         
-        public List<entUsuario> BuscarCliente(string dato)
-        {
-            return _datUsuario.BuscarCliente(dato);
-        }
-        
-        public List<entUsuario> BuscarAdministrador(string dato)
-        {
-            return _datUsuario.BuscarAdministrador(dato);
-        }
-        
-        public entUsuario BuscarIdCliente(int idUsuario)
-        {
-            return _datUsuario.BuscarIdCliente(idUsuario);
-        }
-        
+        private static byte intentos = 0; // Declarar una variable de instancia de tipo byte para contar los intentos
+        private static DateTime? ultimoIntento = DateTime.Now; // Variable nullable DateTime para almacenar el tiempo del último intento
         public entUsuario IniciarSesion(string dato, string contra)
         {
+            if (intentos == 3)
+            {
+                TimeSpan timeSpan = DateTime.Now - ultimoIntento.Value;
+                int minutos = (int)timeSpan.TotalMinutes;
+                int segundos = timeSpan.Seconds;
+                string tiempoTranscurrido = string.Format("{0} minutos y {1} segundos", minutos, segundos);
+                if (DateTime.Now - ultimoIntento.Value <= TimeSpan.FromMinutes(5))
+                {
+                    // Ha pasado menos de 5 minutos desde el último intento, se muestra un mensaje de error
+                    throw new Exception($"Ha excedido el número máximo de intentos. Vuelva a intentarlo después de 5 minutos. Tiempo transcurrido: {tiempoTranscurrido}");
+                }
+
+                // Ha pasado más de 5 minutos desde el último intento o es la primera vez, se reinician los intentos a cero
+                intentos = 0;
+                ultimoIntento = DateTime.Now;
+            }
+
+
             entUsuario u = null;
             try
             {
@@ -138,6 +217,14 @@ namespace CapaLogica
                             }
 
                         }
+                        else
+                        {
+                            intentos++;
+                            if (intentos == 3)
+                            {
+                                ultimoIntento = DateTime.Now;
+                            }
+                        }
                     }
                 }
             }
@@ -148,88 +235,147 @@ namespace CapaLogica
             }
             return u;
         }
-        public List<entUsuario> ListarAdministradores(string dato, string orden)
+        public bool RestablecerPassword(string password, string codigo)
         {
-            if (!string.IsNullOrEmpty(dato))
-            {
-                return _datUsuario.BuscarAdministrador(dato);
-            }
-            switch (orden)
-            {
-                case "asc":
-                    return _datUsuario.OrdenarAdministradores(1);
-                case "desc":
-                    return _datUsuario.OrdenarAdministradores(0);
-                default:
-                    return _datUsuario.ListarAdministradores();
-            }           
-        }
-        public bool CrearSesionUsuario(entUsuario u, out List<string> errores)
-        {
-            bool creado = false;
-            errores = new List<string>();
-
+            bool restablecer = false;
             try
             {
-                if (u == null)
+                codigo = logRecursos.GetSHA256(codigo);
+                if (codigo == codigoGenerado)
                 {
-                    errores.Add("El usuario es nulo");
-                    return false;
+                    entUsuario user = _datUsuario.ListarUsuarios().Where(u => u.Correo == correoDestino).SingleOrDefault();
+                    password = logRecursos.GetSHA256(password);
+                    restablecer = _datUsuario.RestablecerPassword(user.IdUsuario, password, correoDestino);
                 }
-                bool isValid = ValidationHelper.TryValidateEntityMsj(u.Correo, out errores) &&
-                               ValidationHelper.TryValidateEntityMsj(u.Pass, out errores) &&
-                               ValidationHelper.TryValidateEntityMsj(u.UserName, out errores);
-                if (isValid)
+                else
                 {
-                    u.Pass = logRecursos.GetSHA256(u.Pass);
-                    creado = _datUsuario.CrearSesionUsuario(u);
-                }
-            }
-            catch
-            {
-                throw new Exception("Se produjo un error al intentar crear su cuenta");
-            }
-
-            return creado;
-        }
-        
-        public string EnviarCodigoRestablecerPass(string correo)
-        {
-            string codigo = string.Empty;
-            try
-            {
-                string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-                Regex regex = new Regex(pattern);
-                if (regex.IsMatch(correo))
-                {
-                    var existe = _datUsuario.ListarUsuarios().Where(u => u.Correo == correo).SingleOrDefault();
-                    if (existe != null)
-                    {
-                        codigo = logRecursos.GenerarClave();
-                        string asunto = "Restablecer contraseña";
-                        string mensaje = "Hola,\r\n\r\nRecibimos una solicitud para restablecer la contraseña de su cuenta." +
-                            " Para completar el proceso de restablecimiento, por favor utilice el siguiente código de seguridad:" +
-                            "\r\n\r\n"+codigo+ "\r\n\r\n. Ingrese este código en el formulario de restablecimiento de " +
-                            "contraseña en nuestro sitio web. Si usted no ha solicitado el restablecimiento de contraseña, por favor " +
-                            "ignore este correo electrónico.\nAtentamente, [Suport Maderera Carocho]";
-                        
-                       bool enviarCorreo = logRecursos.EnviarCorreo(correo, asunto, mensaje);
-                       if (!enviarCorreo) {
-                            throw new Exception("No se pudo enviar el correo electronico a la siguiente dirección: " + correo);
-                       }
-                    }
+                    throw new Exception("El codigo ingresado no coincide con el autorizado");
                 }
             }
             catch (Exception e)
             {
+
                 throw new Exception(e.Message);
             }
-            return codigo;
+            return restablecer;
+        }
+        
+        private static string correoDestino = string.Empty;
+        private static string codigoGenerado = string.Empty;
+        public bool EnviarCodigoRestablecerPass(string correo)
+        {
+            bool enviado = false;
+            try
+            {
+                // Verificar que correo tenga el formato correcto
+                Regex regex = new Regex(patternCorreo);
+                if (regex.IsMatch(correo))
+                {
+                    // Verificar que exista el correo en la base de datos
+                    var existe = _datUsuario.ListarUsuarios().Where(u => u.Correo == correo).SingleOrDefault();
+
+                    if (existe != null)
+                    {
+                        // Enviar codigo generado al correo electronico
+                        codigoGenerado = logRecursos.GenerarClave();
+                        string asunto = "Restablecer contraseña";
+                        string mensaje = $@"
+                        <!DOCTYPE html>
+                        <html lang=""es"">
+                            <head>
+                              <meta charset=""UTF-8"">
+                              <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+                              <link rel=""stylesheet"" href=""https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"">
+                              <style>
+                                body {{
+                                  background-color: #f4f4f4;
+                                }}
+
+                                .container {{
+                                  max-width: 600px;
+                                  margin: 0 auto;
+                                  padding: 20px;
+                                  background-color: #ffffff;
+                                  border-radius: 5px;
+                                  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                                }}
+
+                                .container h3 {{
+                                  color: #333333;
+                                  font-size: 24px;
+                                  margin-bottom: 20px;
+                                }}
+
+                                .container p {{
+                                  color: #555555;
+                                  font-size: 16px;
+                                  line-height: 1.5;
+                                  margin-bottom: 10px;
+                                }}
+                              </style>
+                            </head>
+
+                            <body>
+                              <div class=""container"">
+                                <center><h2>Hola, {existe.UserName}</h2></center>
+                                <p>Recibimos una solicitud para restablecer la contraseña de su cuenta. Para completar el proceso de
+                                  restablecimiento, por favor utilice el siguiente código de seguridad:
+                                  <b>{codigoGenerado}</b>
+                                </p>
+                                <p>Ingrese este código en el formulario de restablecimiento de contraseña en nuestro sitio web. Si usted no ha
+                                  solicitado el restablecimiento de contraseña, por favor ignore este correo electrónico.</p>
+                                <p>Atentamente, [Soporte Maderera Carocho]</p>
+                              </div>
+                            </body>
+                        </html>";
+                        bool enviarCorreo = logRecursos.EnviarCorreo(correo, asunto, mensaje);
+                        if (!enviarCorreo)
+                        {
+                            throw new Exception("No se pudo enviar el correo electronico a la siguiente dirección: " + correo);
+                        }
+                        else
+                        {
+                            enviado = true;
+                        }
+
+                        // Guardar el correo usado y encriptar el codigo generado
+                        correoDestino = correo;
+                        codigoGenerado = logRecursos.GetSHA256(codigoGenerado);
+                    }
+                    // Dejar la cadena codigo vacia y producir la excepcion
+                    else
+                    {
+                        throw new Exception("El correo no esta registrado en el sistema");
+                    }
+                }
+                else
+                {
+                    throw new Exception("El correo ingresado no contiene el formato correcto");
+                }
+            }
+            catch (Exception e)
+            {
+                // Propagar la excepcion
+                throw new Exception(e.Message);
+            }
+            return enviado;
+        }
+        #endregion
+
+        #region Otros
+        public List<entUsuario> BuscarUsuario(string dato)
+        {
+            return _datUsuario.BuscarUsuario(dato);
         }
 
-        public bool RestablecerPassword(string correo, string password, string codigo)
+        public List<entUsuario> BuscarCliente(string dato)
         {
-            throw new NotImplementedException();
+            return _datUsuario.BuscarCliente(dato);
+        }
+
+        public List<entUsuario> BuscarAdministrador(string dato)
+        {
+            return _datUsuario.BuscarAdministrador(dato);
         }
         #endregion
     }

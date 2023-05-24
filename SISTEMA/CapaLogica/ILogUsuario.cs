@@ -16,9 +16,9 @@ namespace CapaLogica
         List<entUsuario> BuscarCliente(string dato);
         List<entUsuario> BuscarAdministrador(string dato);
         entUsuario IniciarSesion(string dato, string contra);
-        bool CrearSesionUsuario(entUsuario u, out List<string> errores);
-        string EnviarCodigoRestablecerPass(string correo);
-        bool RestablecerPassword(string correo, string password, string codigo);
+        bool CrearSesionUsuario(string usuario, string correo, string password, out List<string> errores);
+        bool EnviarCodigoRestablecerPass(string correo);
+        bool RestablecerPassword(string password, string codigo);
     }
 }
 

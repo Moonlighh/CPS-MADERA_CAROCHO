@@ -745,25 +745,25 @@
                 <div class="modal-body">
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="cusername" id="cusername" placeholder="Username" required>
+                        <input type="text" class="form-control" name="user" id="user" placeholder="Username" required>
                         <label for="floatingInput">Username</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" name="ccorreo" id="ccorreo" placeholder="Correo" required>
+                        <input type="text" class="form-control" name="correo" id="correo" placeholder="Correo" required>
                         <label for="floatingInput">Correo</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control" name="cpassword" id="cpassword" placeholder="Password" required>
+                        <input type="password" class="form-control" name="pass" id="pass" placeholder="Password" required>
                         <label for="floatingInput">Password</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control" name="cpassconfirm" id="cpassconfirm" placeholder="Password" required>
+                        <input type="password" class="form-control" name="confirmPass" id="confirmPass" placeholder="Password" required>
                         <label for="floatingInput">Confirmar Password</label>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button onclick="return Registrar('cusername', 'ccorreo', 'cpassword', 'usuario')" type="submit" class="btn btn-dark">Registrar</button>
+                    <button onclick="return Registrar('user', 'correo', 'pass', 'usuario')" type="submit" class="btn btn-dark">Registrar</button>
                     <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </form>
