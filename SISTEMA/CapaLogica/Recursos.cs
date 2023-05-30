@@ -11,7 +11,7 @@ using System.Security.Cryptography;
 
 namespace CapaLogica
 {
-    public class logRecursos
+    public class Recursos
     {
         // Generamos una clave automatica que enviaremos al usuario - no se vuelve a repetir
         public static string GenerarClave()

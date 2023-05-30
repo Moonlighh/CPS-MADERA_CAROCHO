@@ -571,10 +571,24 @@ namespace CapaAccesoDatos
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-
-                throw new Exception("Se produjo un error: " + e.Message);
+                if (ex.Message.ToUpper().Contains("UQ_USUARIO_USERNAME"))
+                {
+                    throw new Exception($"El nombre de usuario {u.UserName} ya esta asociado a una cuenta existente");
+                }
+                if (ex.Message.ToUpper().Contains("CHK_USUARIO_USERNAME"))
+                {
+                    throw new Exception($"El nombre de usuario {u.UserName} no cumple con el formato establecido");
+                }
+                if (ex.Message.ToUpper().Contains("CHK_USUARIO_CORREO"))
+                {
+                    throw new Exception($"El correo {u.Correo} no cumple con el formato establecido");
+                }
+                if (ex.Message.ToUpper().Contains("UQ_USUARIO_CORREO"))
+                {
+                    throw new Exception($"El correo {u.Correo} ya esta asociado a una cuenta existente");
+                }
             }
             return creado;
         }

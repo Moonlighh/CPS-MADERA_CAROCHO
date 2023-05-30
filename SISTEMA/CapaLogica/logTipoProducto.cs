@@ -25,11 +25,11 @@ namespace CapaLogica
             {
                 return false;
             }
-            bool isValid = Regex.IsMatch(tipoProducto.Tipo, @"^[A-Za-z0-9]{10,30}$");
+            bool isValid = Regex.IsMatch(tipoProducto.Tipo, @"^[A-Za-z0-9]{6,30}$");
 
             if (!isValid)
             {
-                throw new Exception("El tipo debe tener entre 10 y 30 caracteres (solo letras y números).");
+                throw new Exception("El tipo debe tener entre 6 y 30 caracteres (solo letras y números).");
             }
             return datTipoProducto.Instancia.CrearTipoProducto(tipoProducto);
         }

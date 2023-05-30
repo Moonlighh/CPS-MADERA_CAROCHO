@@ -147,7 +147,7 @@ namespace CapaAccesoDatos
                     }
                     catch (Exception e)
                     {
-                        throw new Exception ("No se pudo editar el producto del carrito: " + e.Message);
+                        throw new Exception ("No se pudo editar el producto del carrito");
                     }
                 }
             }

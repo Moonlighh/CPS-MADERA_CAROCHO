@@ -46,7 +46,8 @@ namespace MadereraCarocho.Controllers
                         UserName = cusername,
                         Correo = ccorreo,
                         Pass = cpassword,
-                        Roll = rol
+                        Roll = rol,
+                        Ubigeo = u
                     };
                     List<string> errores = new List<string>();
                     bool creado = _logUsuario.CrearCliente(c, out errores);
@@ -199,61 +200,5 @@ namespace MadereraCarocho.Controllers
             return RedirectToAction("Error", "Home");
         }
         #endregion
-
-        //[HttpPost]
-        //public ActionResult SingUp(string cNombre, string cdni, string ctelefono, string cdireccion, string cusername, string ccorreo, string cpassword, string cpassconfirm, FormCollection frmub, FormCollection frm)
-        //{
-        //    try
-        //    {
-        //        if (cpassword == cpassconfirm)
-        //        {
-        //            entRoll rol = new entRoll
-        //            {
-        //                IdRoll = 2
-        //            };
-        //            entUbigeo u = new entUbigeo
-        //            {
-        //                IdUbigeo = frmub["cUbi"].ToString()
-        //            };
-        //            entUsuario c = new entUsuario
-        //            {
-        //                RazonSocial = cNombre,
-        //                Dni = cdni,
-        //                Telefono = ctelefono,
-        //                Direccion = cdireccion,
-        //                UserName = cusername,
-        //                Correo = ccorreo,
-        //                Pass = cpassword,
-        //                Roll = rol,
-        //                Ubigeo = u
-        //            };
-        //            List<string> errores = new List<string>();
-        //            bool creado = _logUsuario.CrearCliente(c, out errores);
-        //            if (creado == true && errores.Count == 0)
-        //            {
-        //                return RedirectToAction("Index");
-        //            }
-        //            else
-        //            {
-        //                foreach (var error in errores)
-        //                {
-        //                    TempData["Error"] += error;
-        //                }
-        //                return RedirectToAction("Error");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            TempData["Error"] = "Las contraseñas no coinciden";
-        //            return RedirectToAction("Error", "Home");
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        TempData["Error"] = e.Message;
-        //        return RedirectToAction("Error", "Home");
-        //    }
-        //}
-
     }
 }

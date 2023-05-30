@@ -19,7 +19,7 @@ namespace CapaEntidad
         [RegularExpression(@"^[A-Za-z0-9\s\-\.\,\:\;\!\?]{5,30}$", ErrorMessage = "El asunto debe tener entre 5 y 30 caracteres y solo puede contener letras, números y algunos símbolos de puntuación como - . , : ; ! ?")]
         public string Asunto { get; set; }
 
-        [RegularExpression(@"^[a-zA-ZñÑ ]{15,}$", ErrorMessage = "El contenido del mensaje no puede tener simbolos y debe tener una logitud minima de 15 caracteres")]
+        [RegularExpression(@"^[a-zA-Z0-9.,!?¡¿\s]{15,200}$", ErrorMessage = "El contenido del mensaje no puede tener simbolos y debe tener una logitud minima de 15 caracteres")]
         [Required(ErrorMessage = "Mensaje es obligatorio")]
         public string Mensaje { get; set; }
 

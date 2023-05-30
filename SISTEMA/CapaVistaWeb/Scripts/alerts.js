@@ -210,6 +210,7 @@ function AgregarProductoCarrito(url) {
 
 // Crea la función que se llamará cuando se haga clic en el botón "Cerrar sesión"
 function cerrarSesion(url) {
+    event.preventDefault();
     Swal.fire({
         title: "¿Está seguro que desea cerrar sesión?",
         icon: "warning",

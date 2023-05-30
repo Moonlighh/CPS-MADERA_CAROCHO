@@ -21,6 +21,23 @@ namespace CapaLogica
         }
 
         #region CRUD
+        // Este metodo valida que solo se registren pedidos hacia un unico proveedor hasta que se finalice la compra
+        //private bool PedidoValido(int idUsuario, int idProveedorProducto )
+        //{
+        //    List<entCarrito> lsCarrito = Instancia.MostrarCarrito(idUsuario, null);
+        //    entProveedorProducto detalleProducto = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.IdProveedorProducto == idProveedorProducto).SingleOrDefault();
+
+        //    foreach (var item in lsCarrito)
+        //    {
+        //        if (item.ProveedorProducto.Proveedor.RazonSocial != detalleProducto.Proveedor.RazonSocial)
+        //        {
+        //            return false;
+        //        }
+                
+        //    }
+        //    return true;
+
+        //}
         public bool AgregarProductoCarrito(entUsuario user, int idProveedorProducto, int pvCantidad)
         {
             bool agregado = false;
@@ -92,7 +109,7 @@ namespace CapaLogica
             List<string> strings = new List<string>();
             if (car != null)
             {
-                bool isValid = ValidationHelper.TryValidateEntityMsj(car, out errores);
+                bool isValid = Validation.TryValidateEntityMsj(car, out errores);
                 if (!isValid)
                     return false;
             }

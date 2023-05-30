@@ -22,7 +22,7 @@ namespace CapaLogica
         {
             return datDetCompra.Instancia.CrearDetCompra(comp, idCompra);
         }
-        public List<entDetCompra> MostrarDetalleCompra(int idCompra, int idUsuario)
+        public List<entDetCompra> MostrarDetalleCompra(int idUsuario, int idCompra)
         {
             try
             {
@@ -30,11 +30,10 @@ namespace CapaLogica
                 {
                     return new List<entDetCompra>();
                 }
-                return datDetCompra.Instancia.MostrarDetalleCompra(idCompra, idUsuario);
+                return datDetCompra.Instancia.MostrarDetalleCompra(idUsuario, idCompra);
             }
             catch (Exception)
             {
-
                 throw;
             }
         }

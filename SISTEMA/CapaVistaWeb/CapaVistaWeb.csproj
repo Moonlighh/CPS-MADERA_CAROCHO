@@ -162,9 +162,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="Content\assets\css\error.css" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\CompraController.cs" />
-    <Compile Include="Controllers\EmpleadoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductoController.cs" />
     <Compile Include="Controllers\ProveedorController.cs" />
@@ -184,6 +185,7 @@
     <Content Include="Content\assets\img\apple-touch-icon.png" />
     <Content Include="Content\assets\img\counts-bg.jpg" />
     <Content Include="Content\assets\img\favicon.png" />
+    <Content Include="Content\assets\img\logGo.png" />
     <Content Include="Content\assets\img\portfolio\portfolio-1.jpg" />
     <Content Include="Content\assets\img\portfolio\portfolio-2.jpg" />
     <Content Include="Content\assets\img\portfolio\portfolio-3.jpg" />
@@ -352,6 +354,7 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Proveedor\ListarDetalle.cshtml" />
     <Content Include="Views\Home\RestablecerPassword.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

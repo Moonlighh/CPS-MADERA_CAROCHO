@@ -142,7 +142,7 @@ CREATE OR ALTER PROCEDURE spCrearTipoProducto(
 )
 AS
 BEGIN
-	INSERT INTO TIPO_PRODUCTO VALUES(@tipo);
+	INSERT INTO TIPO_PRODUCTO VALUES(UPPER(@tipo));
 END
 GO
 
@@ -808,7 +808,6 @@ BEGIN
 	WHERE dtC.idCompra = @idCompra AND c.idUsuario = @idUsuario;
 END
 GO
-
 
 
 

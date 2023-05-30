@@ -164,25 +164,20 @@ namespace MadereraCarocho.Controllers
             {
                 entUsuario admin = Session["Usuario"] as entUsuario;
                 bool agregado = logCarrito.Instancia.AgregarProductoCarrito(admin, idProveedorProducto, 1);
-                if (agregado)
+                if (!agregado)
                 {
-                    mensaje.Tipo = "exito";
-                    mensaje.Titulo = "Éxito";
-                    mensaje.Mensaje = "El producto fue agregado con éxito.";
+                    TempData["danger"] = "No se pudo agregar la madera al carrito";
                 }
                 else
                 {
-                    mensaje.Tipo = "error";
-                    mensaje.Titulo = "Error";
-                    mensaje.Mensaje = "No se pudo agregar el producto.";
+                    TempData["exito"] = "Madera agregada al carrito de compras";
+
                 }
             }
             catch (Exception e)
             {
-                mensaje.Tipo = "error";
-                mensaje.Titulo = "Error";
-                mensaje.Mensaje = e.Message;
-                return RedirectToAction("Error", "Home", mensaje);
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
             }
             return RedirectToAction("ListarProductosDisponibles");
         }

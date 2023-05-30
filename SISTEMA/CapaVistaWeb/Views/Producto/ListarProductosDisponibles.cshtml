@@ -56,13 +56,20 @@
         <input class="form-control me-2" type="search" placeholder="Buscar" name="dato" aria-label="Search">
         <button onclick="return Buscar('Bproducto')" class="btn btn-outline-success" type="submit">Buscar</button>
     </form>
-    @*@if (mensaje != null)
+    @if (TempData["danger"] != null)
     {
-        <div class="alert alert-@mensaje.Tipo" role="alert">
-            <h4 class="alert-heading">@mensaje.Titulo</h4>
-            <p>@mensaje.Mensaje</p>
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Error</h4>
+            <p>@TempData["danger"]</p>
         </div>
-    }*@
+    }
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Exito!</h4>
+            <p>@TempData["success"]</p>
+        </div>
+    }
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead class="bg-dark text-light">

@@ -1,0 +1,210 @@
+﻿@font-face {
+    font-family: 'Telegraph-Regular';
+    src: url(https://static.helpjuice.com/helpjuice_production/uploads/upload/image/13757/direct/1673970271763-Telegraf-Regular.otf);
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Telegraph-UltraBold';
+    src: url(https://static.helpjuice.com/helpjuice_production/uploads/upload/image/13757/direct/1673970297025-Telegraf-UltraBold.otf);
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SharpGrotesk-Bold';
+    src: url(https://static.helpjuice.com/helpjuice_production/uploads/upload/image/13757/direct/1673970376922-SharpGrotesk-Bold15.otf);
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SharpGrotesk-SemiBold15';
+    src: url(https://static.helpjuice.com/helpjuice_production/uploads/upload/image/13757/direct/1673970419170-SharpGrotesk-SemiBold15.otf);
+    font-style: normal;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #F8F8F8;
+}
+
+.navigation-wrapper {
+    max-inline-size: 1280px;
+    margin: auto;
+}
+
+.logo-container {
+    padding: 20px 80px;
+}
+
+    .logo-container a {
+        display: flex;
+        gap: 24px;
+        cursor: pointer;
+        color: black;
+        text-decoration: none;
+    }
+
+        .logo-container a img {
+            vertical-align: middle;
+            width: 130px;
+            vertical-align: central;
+        }
+
+.title {
+    display: flex;
+    align-items: center;
+    border-inline-start: 1px solid black;
+    padding-inline-start: 24px;
+    block-size: 77px;
+    font-family: "SharpGrotesk-SemiBold15";
+    font-size: 20px;
+}
+
+.container {
+    display: flex;
+    gap: 160px;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid red; */
+    block-size: 80%;
+}
+
+.message-container {
+    display: flex;
+    gap: 24px;
+    flex-direction: column;
+    justify-content: center;
+    /* border: 5px solid green; */
+    max-inline-size: 400px;
+}
+
+.message-title {
+    font-family: "SharpGrotesk-Bold";
+    font-size: 64px;
+    line-height: 64px;
+}
+
+.message-description {
+    font-family: "Telegraph-Regular";
+    font-size: 36px;
+    line-height: 38px;
+    inline-size: 470px;
+}
+
+.icon-404 {
+    inline-size: 250px;
+    block-size: 250px;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Telegraph-UltraBold";
+    font-size: 16px;
+    line-height: 24px;
+    color: white;
+    background-color: black;
+    inline-size: 184px;
+    block-size: 48px;
+    text-align: center;
+    margin-block-start: 16px;
+}
+
+@media only screen and (max-width: 1024px) {
+    .logo-container {
+        padding: 20px 24px;
+    }
+
+        .logo-container a {
+            gap: 8px;
+        }
+
+            .logo-container a img {
+                width: 78px;
+            }
+
+    .title {
+        block-size: 50px;
+        padding-inline-start: 8px;
+    }
+
+        .title h2 {
+            font-size: 16px;
+        }
+
+    .container {
+        flex-direction: column-reverse;
+        gap: 40px;
+        block-size: auto;
+        margin-block-start: 60px;
+    }
+
+    .message-container p {
+        display: block;
+        text-align: center;
+    }
+
+    .message-container a {
+        margin: auto;
+    }
+
+    .message-title {
+        font-size: 40px;
+    }
+
+    .message-description {
+        font-size: 20px;
+        line-height: 24px;
+        inline-size: 300px;
+        margin-block-end: 24px;
+    }
+
+    .icon-404 {
+        inline-size: 180px;
+        block-size: 180px;
+    }
+}
+
+body {
+    background-color: #f8f9fa;
+}
+
+.error-container {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 40px;
+    margin-top: 100px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.error-heading {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.error-icon {
+    font-size: 80px;
+    color: #dc3545;
+    margin-bottom: 20px;
+}
+
+.error-message {
+    font-size: 18px;
+}
+
+.error-animation {
+    animation: shake 0.5s infinite;
+}

@@ -83,7 +83,7 @@ namespace MadereraCarocho.Controllers
             try
             {
                 entUsuario u = Session["Usuario"] as entUsuario;
-                List<entDetCompra> lista = logDetCompra.Instancia.MostrarDetalleCompra(idCompra, u.IdUsuario);
+                List<entDetCompra> lista = logDetCompra.Instancia.MostrarDetalleCompra(u.IdUsuario, idCompra);
                 ViewBag.lista = lista;
                 return View(lista);
             }

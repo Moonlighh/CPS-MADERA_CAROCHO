@@ -30,7 +30,7 @@ namespace CapaLogica
                 int segundos = timeSpan.Seconds;
                 string tiempoTranscurrido = string.Format("{0} minutos y {1} segundos", minutos, segundos);
 
-                if (DateTime.Now - ultimoIntento.Value <= TimeSpan.FromMinutes(25))
+                if (DateTime.Now - ultimoIntento.Value < TimeSpan.FromMinutes(25))
                 {
                     // Ha pasado menos de 5 minutos desde el último intento, se muestra un mensaje de error
                     errores.Add($"Ha excedido el número máximo de mensajes. Vuelva a intentarlo después de 25 minutos. Tiempo transcurrido: {tiempoTranscurrido}");
@@ -43,11 +43,17 @@ namespace CapaLogica
             }
             if (cantMensajes < 5)
             {
-                if (!ValidationHelper.TryValidateEntityMsj(frm, out errores))
+                if (!Validation.TryValidateEntityMsj(frm, out errores))
                 {
                     return false;
                 }
-                bool isValid = logRecursos.EnviarCorreo(frm.Email, "", "");
+                string mensaje = Validation.ValidarCorreo(frm.Email);
+                if (mensaje != string.Empty)
+                {
+                    errores.Add(mensaje);
+                    return false;
+                }
+                bool isValid = Recursos.EnviarCorreo(frm.Email, "", "");
                 if (!isValid)
                 {
                     errores.Add($"{frm.Email} no es un correo valido");
@@ -57,6 +63,10 @@ namespace CapaLogica
                 if (creado)
                 {
                     cantMensajes++;
+                    if (cantMensajes == 5)
+                    {
+                        ultimoIntento = DateTime.Now;
+                    }
                     return true;
                 } 
             }

@@ -10,19 +10,17 @@ using System.ComponentModel.DataAnnotations;//Validaciones
 using System.Text.RegularExpressions;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace CapaLogica
 {
     public class logUsuario : ILogUsuario
     {
-        private readonly string patternCorreo = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-        private readonly string patternUsuario = @"^[a-zA-ZÑñ]{6,20}$";
-        private readonly string patternPassword = @"^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[\W_]).+$";
-        
+        private string errorMessage = string.Empty;
         /*
          * Se está implementando la técnica de inyección de dependencias, que tiene
          * como objetivo reducir el acoplamiento entre las diferentes capas de la aplicación.    
-         */      
+         */
         private readonly IDatUsuario _datUsuario;
         public logUsuario(IDatUsuario datUsuario)
         {
@@ -39,11 +37,11 @@ namespace CapaLogica
         {
             try
             {
-                bool isValid = ValidationHelper.TryValidateEntityMsj(user, out lsErrores);
+                bool isValid = Validation.TryValidateEntityMsj(user, out lsErrores);
                 if (!isValid)
                     return false;
 
-                user.Pass = logRecursos.GetSHA256(user.Pass);
+                user.Pass = Recursos.GetSHA256(user.Pass);
             }
             catch (Exception e)
             {
@@ -115,23 +113,19 @@ namespace CapaLogica
         {
             errores = new List<string>();
 
-            Regex rUsuario = new Regex(patternUsuario);
-            Regex rCorreo = new Regex(patternCorreo);
-            Regex rPassword = new Regex(patternPassword);
-
-            if (!rUsuario.IsMatch(usuario))
+            if (ValidateUsuario(usuario) != string.Empty)
             {
-                errores.Add("El nombre de usuario no es válido.");
+                errores.Add(errorMessage);
             }
 
-            if (!rCorreo.IsMatch(correo))
+            if (ValidateCorreo(correo) != string.Empty)
             {
-                errores.Add("El correo electrónico no es válido.");
+                errores.Add(errorMessage);
             }
 
-            if (!rPassword.IsMatch(password))
+            if (ValidatePassword(password) != string.Empty)
             {
-                errores.Add("La contraseña debe contener al menos un número, una letra y un carácter especial.");
+                errores.Add(errorMessage);
             }
 
             if (errores.Count > 0)
@@ -153,12 +147,12 @@ namespace CapaLogica
                     Roll = r,
                 };
                 // Verificar que el correo sea real
-                bool existe = logRecursos.EnviarCorreo(u.Correo, "Crear Cuenta", "Bienvenido a Maderera Carocho, se esta procediendo a crear tu cuenta. Atentamente, Maderera Carocho");
+                bool existe = Recursos.EnviarCorreo(u.Correo, "Crear Cuenta", "Bienvenido a Maderera Carocho, se esta procediendo a crear tu cuenta. Atentamente, Maderera Carocho");
 
                 if (existe)
                 {
                     // Encriptar clave e intentar crear el usuario
-                    u.Pass = logRecursos.GetSHA256(u.Pass);
+                    u.Pass = Recursos.GetSHA256(u.Pass);
                     return _datUsuario.CrearSesionUsuario(u);
                 }
                 else
@@ -167,7 +161,7 @@ namespace CapaLogica
                     return false;
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }
@@ -175,7 +169,7 @@ namespace CapaLogica
         
         private static byte intentos = 0; // Declarar una variable de instancia de tipo byte para contar los intentos
         private static DateTime? ultimoIntento = DateTime.Now; // Variable nullable DateTime para almacenar el tiempo del último intento
-        public entUsuario IniciarSesion(string dato, string contra)
+        public void IntentosPermitidos()
         {
             if (intentos == 3)
             {
@@ -193,8 +187,10 @@ namespace CapaLogica
                 intentos = 0;
                 ultimoIntento = DateTime.Now;
             }
-
-
+        }
+        public entUsuario IniciarSesion(string dato, string contra)
+        {
+            IntentosPermitidos();
             entUsuario u = null;
             try
             {
@@ -206,13 +202,14 @@ namespace CapaLogica
                     }
                     else
                     {
-                        contra = logRecursos.GetSHA256(contra);
+                        contra = Recursos.GetSHA256(contra);
                         u = _datUsuario.IniciarSesion(dato, contra);
-                        if (u != null)
+                        if (u != null)// El usuario existe
                         {
+                            intentos = 0; // Resetear los intentos
                             if (!u.Activo)
                             {
-                                return u = null;
+                                u = null;
                                 throw new Exception("Usted ya no puede ingresar al sistema");
                             }
 
@@ -223,6 +220,7 @@ namespace CapaLogica
                             if (intentos == 3)
                             {
                                 ultimoIntento = DateTime.Now;
+                                IntentosPermitidos();
                             }
                         }
                     }
@@ -240,12 +238,19 @@ namespace CapaLogica
             bool restablecer = false;
             try
             {
-                codigo = logRecursos.GetSHA256(codigo);
+                codigo = Recursos.GetSHA256(codigo);
                 if (codigo == codigoGenerado)
                 {
-                    entUsuario user = _datUsuario.ListarUsuarios().Where(u => u.Correo == correoDestino).SingleOrDefault();
-                    password = logRecursos.GetSHA256(password);
-                    restablecer = _datUsuario.RestablecerPassword(user.IdUsuario, password, correoDestino);
+                    if (ValidatePassword(password) != string.Empty) // Verificar que se cumpla el formato
+                    {
+                        entUsuario user = _datUsuario.ListarUsuarios().Where(u => u.Correo == correoDestino).SingleOrDefault();
+                        password = Recursos.GetSHA256(password);
+                        restablecer = _datUsuario.RestablecerPassword(user.IdUsuario, password, correoDestino);
+                    }
+                    else
+                    {
+                        throw new Exception(errorMessage); // Mostrar el error capturado
+                    }
                 }
                 else
                 {
@@ -268,8 +273,7 @@ namespace CapaLogica
             try
             {
                 // Verificar que correo tenga el formato correcto
-                Regex regex = new Regex(patternCorreo);
-                if (regex.IsMatch(correo))
+                if (ValidateCorreo(correo) == string.Empty)
                 {
                     // Verificar que exista el correo en la base de datos
                     var existe = _datUsuario.ListarUsuarios().Where(u => u.Correo == correo).SingleOrDefault();
@@ -277,7 +281,7 @@ namespace CapaLogica
                     if (existe != null)
                     {
                         // Enviar codigo generado al correo electronico
-                        codigoGenerado = logRecursos.GenerarClave();
+                        codigoGenerado = Recursos.GenerarClave();
                         string asunto = "Restablecer contraseña";
                         string mensaje = $@"
                         <!DOCTYPE html>
@@ -328,7 +332,7 @@ namespace CapaLogica
                               </div>
                             </body>
                         </html>";
-                        bool enviarCorreo = logRecursos.EnviarCorreo(correo, asunto, mensaje);
+                        bool enviarCorreo = Recursos.EnviarCorreo(correo, asunto, mensaje);
                         if (!enviarCorreo)
                         {
                             throw new Exception("No se pudo enviar el correo electronico a la siguiente dirección: " + correo);
@@ -340,7 +344,7 @@ namespace CapaLogica
 
                         // Guardar el correo usado y encriptar el codigo generado
                         correoDestino = correo;
-                        codigoGenerado = logRecursos.GetSHA256(codigoGenerado);
+                        codigoGenerado = Recursos.GetSHA256(codigoGenerado);
                     }
                     // Dejar la cadena codigo vacia y producir la excepcion
                     else
@@ -350,7 +354,7 @@ namespace CapaLogica
                 }
                 else
                 {
-                    throw new Exception("El correo ingresado no contiene el formato correcto");
+                    throw new Exception(errorMessage);
                 }
             }
             catch (Exception e)
@@ -376,6 +380,36 @@ namespace CapaLogica
         public List<entUsuario> BuscarAdministrador(string dato)
         {
             return _datUsuario.BuscarAdministrador(dato);
+        }
+        #endregion
+
+        #region Validaciones
+        public string ValidateUsuario(string usuario)
+        {
+            if (!Regex.IsMatch(usuario, @"^[a-zA-ZñÑ]{5,20}$"))
+            {
+                return errorMessage = "El nombre de usuario no es válido (Solo se aceptan de 5 a 20 letras).";
+            }
+            return string.Empty;
+        }
+
+        public string ValidateCorreo(string correo)
+        {
+            if (!Regex.IsMatch(correo, @"^[a-zA-Z0-9._%+-]+@gmail\.com$"))
+            {
+                return errorMessage = "El correo electrónico no es válido (Solo se aceptan correos de google).";
+            }
+            return string.Empty;
+
+        }
+
+        public string ValidatePassword(string password)
+        {
+            if (!Regex.IsMatch(password, @"^(?=.*\d)(?=.*[a-zA-Z])(?=.*[@#$%^&+=]).{8,}$"))
+            {
+                return errorMessage = "La contraseña no es válida (Debe contener al menos un número, una letra, un carácter especial y como mínimo 8 caracteres).";
+            }
+            return string.Empty;
         }
         #endregion
     }

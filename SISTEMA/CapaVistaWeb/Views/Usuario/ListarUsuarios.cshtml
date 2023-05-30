@@ -74,9 +74,8 @@
                     <th>CORREO</th>
                     <th>DISTRITO</th>
                     <th>CREACION</th>
-                    <th>ACTIVO</th>
                     <th>DESCRIPCION</th>
-                    <th>ACTIVO</th>
+                    <th>ESTADO</th>
                 </tr>
 
             </thead>
@@ -93,98 +92,89 @@
                         <td>@Html.DisplayFor(modelItem => item.Correo)</td>
                         <td>@Html.DisplayFor(modelItem => item.Ubigeo.Distrito)</td>
                         <td>@Html.DisplayFor(modelItem => item.FechaCreacion)</td>
-                        <td>@Html.DisplayFor(modelItem => item.Activo)</td>
                         <td>@Html.DisplayFor(modelItem => item.Roll.Descripcion)</td>
                         @if (!item.Activo)
                         {
-                            <td><a onclick="return Habilitar(this)" href="/Usuario/HabilitarUsuario?idU=@item.IdUsuario" class="btn btn-success" type="button"><i class="bi bi-toggle2-on"></i></a></td>
+                            <td><a onclick="return Habilitar(this)" href="/Usuario/HabilitarUsuario?idU=@item.IdUsuario" class="btn btn-success" type="button" title="habilitar"><i class="bi bi-toggle2-on"></i></a></td>
                         }
                         @if (item.Activo)
                         {
-                            <td><a onclick="return Deshabilitar(this)" href="/Usuario/DeshabilitarUsuario?idU=@item.IdUsuario" class="btn btn-danger" type="button"><i class="bi bi-toggle2-off"></i></a></td>
+                            <td><a onclick="return Deshabilitar(this)" href="/Usuario/DeshabilitarUsuario?idU=@item.IdUsuario" class="btn btn-danger" type="button" title="deshabilitar"><i class="bi bi-toggle2-off"></i></a></td>
                         }
                     </tr>
                 }
-<tbody>
+            <tbody>
         </table>
     </div>
 </div>
-   <div class="modal" tabindex="-1" id="ModInsertarCuenta" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-         <div class="modal-content">
+<!--AGREGAR USUARIO-->
+<div class="modal" tabindex="-1" id="ModInsertarCuenta" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
             <form action="/Usuario/CrearCuenta" method="POST" id="admin">
-               <div class="modal-header ">
-                  <h5 class="modal-title">Ingresar Datos</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-               </div>
-               <div class="modal-body">
+                <div class="modal-header ">
+                    <h5 class="modal-title">Ingresar Datos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
 
-                   <div class="form-floating mb-3">
-                       <div class="form-group">
-                           Ubigeo:
-                           <div class="col-md-10">
-                               @Html.DropDownList("cUbi", (SelectList)ViewBag.listaUbigeo)
-                           </div>
-                       </div>
-                   </div>
+                    <div class="form-floating mb-3">
+                        <div class="form-group">
+                            Ubigeo:
+                            <div class="col-md-10">
+                                @Html.DropDownList("cUbi", (SelectList)ViewBag.listaUbigeo)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="cNombre" id="cnombre" placeholder="Nombre" required>
+                        <label for="floatingInput">Nombre</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="cdni" id="cdni" placeholder="Dni" required>
+                        <label for="floatingInput">DNI</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="ctelefono" placeholder="Telefono" required>
+                        <label for="floatingInput">Telefono</label>
+                    </div>
 
-                   <div class="form-floating mb-3">
-                       <div class="form-group">
-                           Rol:
-                           <div class="col-md-10">
-                               @Html.DropDownList("roll", (SelectList)ViewBag.listaRoll)
-                           </div>
-                       </div>
-                   </div>
-                   <div class="form-floating mb-3">
-                       <input type="text" class="form-control" name="cNombre" id="cnombre" placeholder="Nombre" required>
-                       <label for="floatingInput">Nombre</label>
-                   </div>
-                   <div class="form-floating mb-3">
-                       <input type="text" class="form-control" name="cdni" id="cdni" placeholder="Dni" required>
-                       <label for="floatingInput">DNI</label>
-                   </div>
-                   <div class="form-floating mb-3">
-                       <input type="text" class="form-control" name="ctelefono" placeholder="Telefono" required>
-                       <label for="floatingInput">Telefono</label>
-                   </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="cdireccion" id="cdireccion" placeholder="direccion" required>
+                        <label for="floatingInput">direccion</label>
+                    </div>
 
-                   <div class="form-floating mb-3">
-                       <input type="text" class="form-control" name="cdireccion" id="cdireccion" placeholder="direccion" required>
-                       <label for="floatingInput">direccion</label>
-                   </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="cusername" id="cusername" placeholder="Usuario" required>
+                        <label for="floatingInput">Usuario</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="ccorreo" id="ccorreo" placeholder="Correo" required>
+                        <label for="floatingInput">Correo</label>
+                    </div>
 
-                   <div class="form-floating mb-3">
-                       <input type="text" class="form-control" name="cusername" id="cusername" placeholder="Usuario" required>
-                       <label for="floatingInput">Usuario</label>
-                   </div>
-                   <div class="form-floating mb-3">
-                       <input type="text" class="form-control" name="ccorreo" id="ccorreo" placeholder="Correo" required>
-                       <label for="floatingInput">Correo</label>
-                   </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" name="cpassword" id="cpassword" placeholder="Password" required>
+                        <label for="floatingInput">Password</label>
+                    </div>
 
-                   <div class="form-floating mb-3">
-                       <input type="password" class="form-control" name="cpassword" id="cpassword" placeholder="Password" required>
-                       <label for="floatingInput">Password</label>
-                   </div>
-
-                   <div class="form-floating mb-3">
-                       <input type="password" class="form-control" name="cpassconfirm" id="cpassconfirm" placeholder="Password" required>
-                       <label for="floatingInput">Confirmar Contraseña</label>
-                   </div>
-               </div>
-               <div class="modal-footer">
-                  <button onclick="return Registrar('cusername', 'ccorreo', 'cpassword', 'admin')" type="submit" class="btn btn-dark">Registrar</button>
-                  <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
-               </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control" name="cpassconfirm" id="cpassconfirm" placeholder="Password" required>
+                        <label for="floatingInput">Confirmar Contraseña</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="return Registrar('cusername', 'ccorreo', 'cpassword', 'admin')" type="submit" class="btn btn-dark">Registrar</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cerrar</button>
+                </div>
             </form>
-         </div>
-      </div>
-   </div>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
-   <br>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
