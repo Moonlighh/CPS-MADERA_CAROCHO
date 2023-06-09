@@ -12,16 +12,18 @@ namespace CapaAccesoDatos
 {
     public class datDetVenta
     {
-        private List<entDetVenta> detalle = new List<entDetVenta>();
+        List<entDetVenta> detVenta = new List<entDetVenta>();//Sirve para guardar temporalmente productos al carrito
+
         private static readonly datDetVenta _instancia = new datDetVenta();
         public static datDetVenta Instancia
         {
             get { return _instancia; }
         }
 
-        //Crear
-        public bool CrearDetVenta(entDetVenta  Det)
+        //Cada Venta tiene su Detalle
+        public bool CrearDetVenta(entDetVenta Det, int idVenta)
         {
+
             SqlCommand cmd = null;
             bool creado = false;
             try
@@ -29,12 +31,14 @@ namespace CapaAccesoDatos
                 SqlConnection cn = Conexion.Instancia.Conectar();
                 cmd = new SqlCommand("spCrearDetVenta", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@idVenta", Det.Venta.IdVenta);
-                cmd.Parameters.AddWithValue("@idProducto", Det.Producto.IdProducto);
+                cmd.Parameters.AddWithValue("@idVenta", idVenta);
+                cmd.Parameters.AddWithValue("@idProducto", Det.Producto.IdProducto);//revisar si se llena el obj completo
                 cmd.Parameters.AddWithValue("@cantidad", Det.Cantidad);
-                cmd.Parameters.AddWithValue("@subTotal", Det.SubTotal);
+                cmd.Parameters.AddWithValue("@subTotal", Det.Subtotal);
                 cn.Open();
-                int i = cmd.ExecuteNonQuery();
+
+                // Al ejecutar el procedimiento se inserta el detalle y se actualiza el stock del producto
+                int i = cmd.ExecuteNonQuery();// Debe dar 2 filas afectadas
                 if (i != 0)
                 {
                     creado = true;
@@ -51,83 +55,35 @@ namespace CapaAccesoDatos
             return creado;
         }
 
-        #region Carrito de compra
-        public bool Llenardetventa(entDetVenta det)
-        {
-            bool creado = false;
-            try
-            {
-                detalle.Add(det);
-                creado = true;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return creado;
-        }
-
-        public List<entDetVenta> Mostrardetventa()
-        {
-            var lista = new List<entDetVenta>();
-            for(int i=0; i < detalle.Count(); i++)
-            {
-                entDetVenta dv = new entDetVenta();
-                dv = detalle[i];
-
-                lista.Add(dv);
-            }
-            return lista;
-        }
-
-        public bool Eliminardetalle( int id)
-        {
-            bool eliminado = false;
-            try
-            {
-                for (int i = 0; i < detalle.Count(); i++)
-                {
-                    if (detalle[i].Producto.IdProducto.Equals(id))
-                    {
-                        detalle.RemoveAt(i);
-                    }
-                    
-                }
-            }
-            catch(Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return eliminado;
-
-        }
-        #endregion
-        public List<entReporteVenta> MostrarReporteVenta(int idVenta)
+        // Mostrar el detalle por cada usuario
+        public List<entDetVenta> MostrarDetalleVenta(int idUsuario, int idVenta)
         {
 
             SqlCommand cmd = null;
-            var lista = new List<entReporteVenta>();
+            var lista = new List<entDetVenta>();
             try
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spMostrarReporteVentas", cn);
+                cmd = new SqlCommand("spMostrarDetalleVenta", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
                 cmd.Parameters.AddWithValue("@idVenta", idVenta);
                 cn.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    entReporteVenta rpVenta = new entReporteVenta();
+                    entDetVenta rpVenta = new entDetVenta();
+                    entProducto producto = new entProducto();
+                    entVenta Venta = new entVenta();
+                    Venta.IdVenta = Convert.ToInt32(dr["idVenta"]);
+                    producto.Nombre = dr["nombre"].ToString().ToUpper();
+                    producto.Longitud = Convert.ToDouble(dr["longitud"]);
+                    producto.Diametro = Convert.ToDouble(dr["diametro"]);
+                    rpVenta.Cantidad = Convert.ToInt32(dr["cantidad"]);
+                    rpVenta.Subtotal = Convert.ToDecimal(dr["subtotal"]);
 
-                    rpVenta.Codigo = Convert.ToInt32(dr["CODIGO"]);
-                    rpVenta.Cliente = dr["CLIENTE"].ToString().ToUpper();
-                    rpVenta.Fecha = Convert.ToDateTime(dr["FECHA"]);
-                    rpVenta.Descripcion = dr["DESCRIPCIÓN"].ToString().ToUpper();
-                    rpVenta.Longitud = dr["LONGITUD"].ToString();
-                    rpVenta.Cantidad = dr["CANTIDAD"].ToString();
-                    rpVenta.PrecUnitario = dr["PRECIO_UNITARIO"].ToString();
-                    rpVenta.SubTotal = Convert.ToDouble(dr["SUBTOTAL"]);
-
+                    rpVenta.Producto = producto;
+                    rpVenta.Venta = Venta;
                     lista.Add(rpVenta);
                 }
             }
@@ -141,8 +97,5 @@ namespace CapaAccesoDatos
             }
             return lista;
         }
-        
-        //Actualizar
-        //Eliminar - Deshabilitar
     }
 }

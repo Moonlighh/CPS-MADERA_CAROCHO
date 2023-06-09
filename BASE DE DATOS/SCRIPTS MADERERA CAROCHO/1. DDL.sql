@@ -220,6 +220,3 @@ ALTER TABLE EMPLEADO ADD CONSTRAINT CHK_EMPLEADO_telefono CHECK(telefono LIKE '9
 ALTER TABLE CONTACT_FORM ADD CONSTRAINT CK_CONTACT_FORM_EMAIL CHECK (email LIKE '%@gmail.com');
 GO
 
-select *from USUARIO
-select *from CONTACT_FORM
-select *from compra c inner join DETALLE_COMPRA det on det.idCompra = c.idCompra

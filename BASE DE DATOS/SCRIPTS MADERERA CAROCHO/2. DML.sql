@@ -2053,7 +2053,3 @@ VALUES
     ('Ximena Sandoval', '58791234', '999067966', 'MZA. 1-A LOTE. 3', '120102','ximena@gmail.com','Ximena','68494616e5cf467ed9b5f6392be2c43d4bd9d76ae17cbaba1b8ef1f02d475f0f',2),
     ('Daniel Solorzano', '74399141','913423491','Mz20Lote34-Av.5556',  '010109','daniel@gmail.com','Daniel','68494616e5cf467ed9b5f6392be2c43d4bd9d76ae17cbaba1b8ef1f02d475f0f',2);--Client25*+
 GO
-
-select *from DETALLE_COMPRA dc inner join COMPRA c on dc.idCompra = 2
-select *from compra c inner join DETALLE_COMPRA det on c.idCompra = det.idDetCompra
-select *from DETALLE_COMPRA where idCompra = 6

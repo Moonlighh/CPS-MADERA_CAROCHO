@@ -66,6 +66,7 @@ namespace CapaAccesoDatos
             }
             return lista;
         }
+        
         public List<entProveedorProducto> ListarProductoAdmin()
         {
             SqlCommand cmd = null;
@@ -119,6 +120,56 @@ namespace CapaAccesoDatos
             }
             return lista;
         }
+
+        public List<entProveedorProducto> ListarProductoCliente()
+        {
+            SqlCommand cmd = null;
+            List<entProveedorProducto> lista = new List<entProveedorProducto>();
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spListarProductoCliente", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    
+                    entTipoProducto tipo = new entTipoProducto
+                    {
+                        Tipo = dr["tipo"].ToString()
+                    };
+                    entProducto producto = new entProducto
+                    {
+                        IdProducto = Convert.ToInt32(dr["idProducto"]),
+                        Nombre = dr["nombre"].ToString(),
+                        Longitud = Convert.ToDouble(dr["longitud"]),
+                        Diametro = Convert.ToDouble(dr["diametro"]),
+                        PrecioVenta = Convert.ToDouble(dr["precioVenta"]),
+                        Stock = Convert.ToInt32(dr["stock"]),
+                        Tipo = tipo
+                    };
+                    entProveedorProducto prov = new entProveedorProducto
+                    {
+                        
+                        Producto = producto
+                    };
+                    lista.Add(prov);
+                    
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception("No se pudo listar los productos" + e.Message);
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+            return lista;
+        }
+
         public List<entProveedorProducto> BuscarProductoAdmin(string busqueda)
         {
             List<entProveedorProducto> lista = new List<entProveedorProducto>();
@@ -154,6 +205,48 @@ namespace CapaAccesoDatos
                     };
 
                     lista.Add(prov);
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception("No se pudo listar los productos");
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+            return lista;
+        }
+
+        public List<entProveedorProducto> BuscarProductoCliente(string busqueda)
+        {
+            List<entProveedorProducto> lista = new List<entProveedorProducto>();
+            SqlCommand cmd = null;
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spBuscarProductoCliente", cn);
+                cmd.Parameters.AddWithValue("@Campo", busqueda);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    entTipoProducto tipo = new entTipoProducto
+                    {
+                        Tipo = dr["tipo"].ToString()
+                    };
+                    entProducto producto = new entProducto
+                    {
+                        IdProducto = Convert.ToInt32(dr["idProducto"]),
+                        Nombre = dr["nombre"].ToString(),
+                        Longitud = Convert.ToDouble(dr["longitud"]),
+                        Diametro = Convert.ToDouble(dr["diametro"]),
+                        PrecioVenta = Convert.ToDouble(dr["precioVenta"]),
+                        Stock = Convert.ToInt32(dr["stock"]),
+                        Tipo = tipo
+                    };
                 }
             }
             catch (Exception e)

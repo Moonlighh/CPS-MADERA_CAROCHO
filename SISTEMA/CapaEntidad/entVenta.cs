@@ -10,9 +10,22 @@ namespace CapaEntidad
     {
         private int idVenta;
         private DateTime fecha;
-        private double total;
+
+        private decimal total;
+
         private bool estado;
-        private entUsuario cliente;
+        private entUsuario usuario;
+
+        public entVenta() { }
+
+        public entVenta(int idVenta, DateTime fecha, decimal total, bool estado, entUsuario usuario)
+        {
+            this.idVenta = idVenta;
+            this.fecha = fecha;
+            this.total = total;
+            this.estado = estado;
+            this.usuario = usuario;
+        }
 
         #region Get and Set
         public int IdVenta
@@ -25,7 +38,7 @@ namespace CapaEntidad
             get { return fecha; }
             set { fecha = value; }
         }
-        public Double Total
+        public decimal Total
         {
             get { return total; }
             set { total = value; }
@@ -35,12 +48,11 @@ namespace CapaEntidad
             get { return estado; }
             set { estado = value; }
         }
-        public entUsuario Cliente
+        public entUsuario Usuario
         {
-            get { return cliente; }
-            set { cliente = value; }
+            get { return usuario; }
+            set { usuario = value; }
         }
         #endregion
-
     }
 }

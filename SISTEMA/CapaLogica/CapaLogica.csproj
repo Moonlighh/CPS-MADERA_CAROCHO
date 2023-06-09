@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="ILogCompra.cs" />
     <Compile Include="ILogUsuario.cs" />
+    <Compile Include="ILogVenta.cs" />
     <Compile Include="logCarrito.cs" />
     <Compile Include="logContactForm.cs" />
     <Compile Include="logUsuario.cs" />

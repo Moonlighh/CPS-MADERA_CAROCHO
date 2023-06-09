@@ -10,70 +10,130 @@ using System.Threading.Tasks;
 
 namespace CapaAccesoDatos
 {
-    public class datVenta
+    public class datVenta:IDatVenta
     {
-        private static readonly datVenta _instancia = new datVenta();
-        public static datVenta Instancia
-        {
-            get { return _instancia; }
-        }
         //Crear
-        public int CrearVenta(entVenta venta)
+        public bool CrearVenta(entVenta venta, out int idVenta)
         {
             SqlCommand cmd = null;
-            int idcompra = -1;
+            SqlTransaction tran = null;
+            idVenta = -1;
+            bool creado = false;
             try
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
-                cmd = new SqlCommand("spCrearVenta", cn);
-                cmd.CommandType = CommandType.StoredProcedure;
+                cn.Open();
+
+                // Iniciar la transacción
+                tran = cn.BeginTransaction();
+
+                cmd = new SqlCommand("spCrearVenta", cn, tran)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
                 cmd.Parameters.AddWithValue("@total", venta.Total);
-                cmd.Parameters.AddWithValue("@idUsuario", venta.Cliente.IdUsuario);
-                SqlParameter id = new SqlParameter("@idventa", 0);
+                cmd.Parameters.AddWithValue("@estado", venta.Estado);
+                cmd.Parameters.AddWithValue("@idUsuario", venta.Usuario.IdUsuario);
+                SqlParameter id = new SqlParameter("@id", 0);
                 id.Direction = ParameterDirection.Output;
                 cmd.Parameters.Add(id);
-                cn.Open();
+
                 int i = cmd.ExecuteNonQuery();
-                if (i==1)
+
+                if (i >= 1)
                 {
-                    idcompra = Convert.ToInt32(cmd.Parameters["@idventa"].Value);
+                    idVenta = Convert.ToInt32(cmd.Parameters["@id"].Value);
+                    creado = true;
                 }
+
+                if (idVenta == -1)
+                {
+                    throw new ApplicationException("ID VENTA INVALIDO");
+                }
+
+                // Si no hay errores, confirmar la transacción
+                tran.Commit();
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                // Si hay errores, deshacer la transacción
+                tran.Rollback();
+                creado = false;
+                throw new ApplicationException("Error al crear la venta - AD");
             }
             finally
             {
-                cmd.Connection.Close();
+                if (cmd != null)
+                {
+                    cmd.Connection.Close();
+                }
             }
-            return idcompra;
+
+            return creado;
+
         }
         //Leer
-        public List<entVenta> ListarVenta( int id)
+        public List<entVenta> ListarVenta(int idCliente)
         {
-            SqlCommand cmd = null;
             List<entVenta> lista = new List<entVenta>();
+            SqlCommand cmd = null;
             try
             {
                 SqlConnection cn = Conexion.Instancia.Conectar();
                 cmd = new SqlCommand("spListarVenta", cn);
-                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("idCliente", idCliente);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cn.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    entVenta ven = new entVenta();
-                    ven.IdVenta = Convert.ToInt32(dr["idVenta"]);
-                    ven.Fecha = Convert.ToDateTime(dr["fecha"]);
-                    ven.Total = Convert.ToDouble(dr["total"]);
-                    ven.Estado = Convert.ToBoolean(dr["estado"]);
-                    entUsuario cli = new entUsuario();
-                    cli.IdUsuario = Convert.ToInt16(dr["idUsuario"]);
-                    cli.RazonSocial = dr["razonSocial"].ToString();
-                    ven.Cliente = cli;
-                    lista.Add(ven);
+                    entUsuario user = new entUsuario()
+                    {
+                        IdUsuario = Convert.ToInt32(dr["idCliente"]),
+                    };
+                    entVenta objVenta = new entVenta();
+                    objVenta.IdVenta = Convert.ToInt32(dr["idVenta"]);
+                    objVenta.Fecha = Convert.ToDateTime(dr["fecha"]);
+                    objVenta.Total = Convert.ToDecimal(dr["total"]);
+                    objVenta.Estado = Convert.ToBoolean(dr["estado"]);
+                    objVenta.Usuario = user;
+
+                    lista.Add(objVenta);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException(e.Message);
+            }
+            finally
+            {
+                cmd.Connection.Close();
+            }
+            return lista;
+        }
+
+
+        #region OTROS
+        public List<entVenta> BuscarVenta(string busqueda)
+        {
+            List<entVenta> lista = new List<entVenta>();
+            SqlCommand cmd = null;
+            try
+            {
+                SqlConnection cn = Conexion.Instancia.Conectar();
+                cmd = new SqlCommand("spBuscarVenta", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Campo", busqueda);
+                cn.Open();
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    entVenta Prod = new entVenta();
+                    Prod.IdVenta = Convert.ToInt32(dr["idVenta"]);
+                    Prod.Fecha = Convert.ToDateTime(dr["fecha"]);
+                    Prod.Total = Convert.ToDecimal(dr["total"]);
+                    //Prod.IdProveedor = Convert.ToInt32(dr["idProveedor"]);
+                    lista.Add(Prod);
                 }
             }
             catch (Exception e)
@@ -81,11 +141,19 @@ namespace CapaAccesoDatos
 
                 throw new Exception(e.Message);
             }
-            finally { 
-                cmd.Connection.Close(); 
+            finally
+            {
+                cmd.Connection.Close();
             }
             return lista;
-        }                    
+        }
+        #endregion Otros
+
+
+
+
+
+
         //Leer ventas Pagadas
         public List<entVenta> ListarVentaPagada(DateTime fecha)
         {
@@ -104,7 +172,7 @@ namespace CapaAccesoDatos
                     entVenta Prod = new entVenta();
                     Prod.IdVenta = Convert.ToInt32(dr["idVenta"]);
                     Prod.Fecha = Convert.ToDateTime(dr["fecha"]);
-                    Prod.Total = Convert.ToDouble(dr["total"]);
+                    Prod.Total = Convert.ToDecimal(dr["total"]);
                     Prod.Estado = Convert.ToBoolean(dr["estado"]);
                     lista.Add(Prod);
                 }
@@ -138,7 +206,7 @@ namespace CapaAccesoDatos
                     entVenta Prod = new entVenta();
                     Prod.IdVenta = Convert.ToInt32(dr["idVenta"]);
                     Prod.Fecha = Convert.ToDateTime(dr["fecha"]);
-                    Prod.Total = Convert.ToDouble(dr["total"]);
+                    Prod.Total = Convert.ToDecimal(dr["total"]);
                     Prod.Estado = Convert.ToBoolean(dr["estado"]);
                     lista.Add(Prod);
                 }

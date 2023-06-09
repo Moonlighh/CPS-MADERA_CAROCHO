@@ -49,6 +49,32 @@ namespace CapaLogica
                 throw new Exception("Algo salio mal durante el proceso");
             }
         }
-
+        
+        public List<entProveedorProducto> ListarProductoCliente(string dato, string orden)
+        {
+            try
+            {
+                //switch (orden)
+                //{
+                //    // Si quieren implementar ordenar usar eso
+                //    case "asc": return datProveedorProducto.Instancia.Ordenar(1);
+                //    case "desc": return datProveedorProducto.Instancia.Ordenar(2);
+                //    default:
+                //        break;
+                //}
+                if (string.IsNullOrWhiteSpace(dato))
+                {
+                    return datProveedorProducto.Instancia.ListarProductoCliente();
+                }
+                else
+                {
+                    return datProveedorProducto.Instancia.BuscarProductoCliente(dato);
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception("Algo salio mal durante el proceso"+ e.Message);
+            }
+        }
     }
 }

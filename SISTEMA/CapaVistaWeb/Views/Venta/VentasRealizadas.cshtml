@@ -6,7 +6,7 @@
     <div class="container d-flex align-items-center justify-content-between">
 
         <div class="logo">
-            <h1><a href="/Home/Usuario">My<span>Biz</span></a></h1>
+            <h1><a href="/Home/Usuario">Maderera<span>Carocho</span></a></h1>
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="index.html"><img src="~/Content/assets/img/logo.png" alt="" class="img-fluid"></a>-->
         </div>
@@ -55,39 +55,25 @@
     <table class="table">
         <thead class="table-dark">
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.IdVenta)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Fecha)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Total)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Estado)
-                </th>
-                <th></th>
+                <th>ID</th>
+                <th>@Html.DisplayNameFor(model => model.Fecha)</th>
+                <th>@Html.DisplayNameFor(model => model.Total)</th>
+                <th>@Html.DisplayNameFor(model => model.Estado)</th>
+                <th>Detalle</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
+                    <td>@Html.DisplayFor(modelItem => item.IdVenta)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Fecha)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Total)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Estado)</td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.IdVenta)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Fecha)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Total)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Estado)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Detalle", "Details", new { /* id=item.PrimaryKey */ })
+                        <a class="btn btn-warning" href="@Url.Action("DetalleVenta", new { idVenta = item.IdVenta })" role="button">
+                            <i class="bi bi-pencil-square"></i> Detalle
+                        </a>
                     </td>
                 </tr>
             }

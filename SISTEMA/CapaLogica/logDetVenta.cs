@@ -16,29 +16,28 @@ namespace CapaLogica
             get { return _instancia; }
         }
 
-        public bool CrearDetVenta(entDetVenta det)
+        #region CR
+        public bool CrearDetVenta(entDetVenta comp, int idVenta)
         {
-            return datDetVenta.Instancia.CrearDetVenta(det);
+            return datDetVenta.Instancia.CrearDetVenta(comp, idVenta);
         }
-        public List<entReporteVenta> MostrarReporteVenta(int idVenta)
+        public List<entDetVenta> MostrarDetalleVenta(int idUsuario, int idVenta)
         {
-            return datDetVenta.Instancia.MostrarReporteVenta(idVenta);
-        }
-        //Carrito compras
-        public bool LlenarDetventa(entDetVenta det)
-        {
-            return datDetVenta.Instancia.Llenardetventa(det);
-        }
-        public List<entDetVenta> Mostrardetventa()
-        {
-            return datDetVenta.Instancia.Mostrardetventa();
-        }
-        public bool EliminarDetalle(int id)
-        {
-            return datDetVenta.Instancia.Eliminardetalle(id);
-        }
+            try
+            {
+                if (idVenta <= 0 || idUsuario <= 0)
+                {
+                    return new List<entDetVenta>();
+                }
+                return datDetVenta.Instancia.MostrarDetalleVenta(idUsuario, idVenta);
+            }
+            catch (Exception)
+            {
 
-
+                throw;
+            }
+        }
+        #endregion
 
     }
 }

@@ -8,21 +8,18 @@ namespace CapaEntidad
 {
     public class entDetVenta
     {
-        private int idDetventa;
-        private entVenta venta;
+        private int idDetVenta;
         private entProducto producto;
+        private entVenta venta;
         private int cantidad;
-	    private double subTotal;
+        private Double preUnitario;
+        private decimal subTotal = 0M;
 
         #region Get and Set
-        public int IdDetventa { 
-            get => idDetventa; 
-            set => idDetventa = value; 
-        }
-        public entVenta Venta
+        public int IdDetVenta
         {
-            get { return venta; }
-            set { venta = value; }
+            get { return idDetVenta; }
+            set { idDetVenta = value; }
         }
         public entProducto Producto
         {
@@ -34,13 +31,21 @@ namespace CapaEntidad
             get { return cantidad; }
             set { cantidad = value; }
         }
-      
-        public Double SubTotal
+        public Double PreUnitario
+        {
+            get { return preUnitario; }
+            set { preUnitario = value; }
+        }
+        public decimal Subtotal
         {
             get { return subTotal; }
             set { subTotal = value; }
-        }    
+        }
+        public entVenta Venta
+        {
+            get => venta;
+            set => venta = value;
+        }
         #endregion
-
     }
 }

@@ -181,6 +181,15 @@ BEGIN
 END
 GO
 
+CREATE OR ALTER PROCEDURE spListarProductoCliente
+AS
+BEGIN
+	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.tipo FROM PRODUCTO p
+	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto
+	ORDER BY p.stock asc;
+END
+GO
+
 CREATE OR ALTER PROCEDURE spListarProducto
 AS
 BEGIN
@@ -809,22 +818,6 @@ BEGIN
 END
 GO
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 --------------------------------------VENTA
 CREATE OR ALTER PROCEDURE spCrearVenta(
 	@idventa INT OUT,
@@ -846,12 +839,12 @@ GO
 
 CREATE OR ALTER PROCEDURE spListarVenta
 (
-	@id INT
+	@idCliente INT
 )
 AS
 BEGIN
-	 SELECT  v.idVenta,v.fecha,v.total,v.estado,c.idUsuario,c.razonSocial FROM Venta v inner join USUARIO c
-	 ON v.idUsuario=c.idUsuario WHERE v.idUsuario=@id;	
+	 SELECT  v.idVenta,v.fecha,v.total,v.estado,c.idUsuario FROM Venta v inner join USUARIO c
+	 ON v.idUsuario=c.idUsuario WHERE v.idUsuario=@idCliente;	
 END
 GO
 

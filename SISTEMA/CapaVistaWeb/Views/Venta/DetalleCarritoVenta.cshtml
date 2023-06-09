@@ -1,0 +1,145 @@
+﻿@model IEnumerable<CapaEntidad.entCarrito>
+
+<header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <div class="logo">
+            <h1><a href="/Home/Admin">Maderera<span>Carocho</span></a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html"><img src="~/Content/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link scrollto " href="/Home/Usuario#hero">Inicio</a></li>
+                <li><a class="nav-link scrollto" href="/Home/Usuario#about">Sobre</a></li>
+                <li><a class="nav-link scrollto" href="/Home/Usuario#services">Servicios</a></li>
+                <li><a class="nav-link scrollto " href="/Home/Usuario#portfolio">Portafolio</a></li>
+                <li><a class="nav-link scrollto" href="/Home/Usuario#team">Equipo</a></li>
+                <li><a class="nav-link scrollto" href="/Home/Usuario#contact">Contacto</a></li>
+                <li class="dropdown">
+                    <a href="#"><span>Opciones</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                        <li><a href="/Producto/ListarProductosDisponiblesVenta">Productos</a></li>
+                        <li><a href="/Venta/VentasRealizadas">Mis compras</a></li>
+                        <li><a href="" onclick="cerrarSesion('@Url.Action("CerrarSesion", "Home")')">Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+                <li><a class="nav-link scrollto" href="/Venta/DetalleCarritoVenta">COMPRAR<i class="bi bi-cart4"></i></a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+    </div>
+</header><!-- End Header -->
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class="container">
+    <br>
+    <br>
+    <hr>
+    <!-- Ordenar -->
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-primary btn-lg" id="ASC" href="DetalleCarrito?orden=asc" title="Orden Ascendente"><i class="bi bi-sort-up"></i></a>
+    <a onclick="return Ordenar(this)" aria-current="page" type="button" class="btn btn-secondary btn-lg" id="DESC" href="DetalleCarrito?orden=desc" title="Orden Descendente"><i class="bi bi-sort-down"></i></a>
+    <hr>  
+    <div class="row">
+        <div class="col-md-8">
+            <center><h1>MADERAS AGREGADOS AL CARRITO DE COMPRAS</h1></center>
+        </div>
+        <div class="col-md-4">
+            <div class="p-3 mb-2 bg-dark text-white rounded float-right">
+                <h4>Resumen de la compra</h4>
+                <p>Cliente: <strong>@ViewBag.Usuario</strong></p>
+                <p>Cantidad de Productos: <strong>@ViewBag.Cantidad</strong></p>
+                <p>Total: <strong>@ViewBag.Total</strong></p>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>NOMBRE</th>
+                    <th>LONGITUD</th>
+                    <th>DIAMETRO</th>
+                    <th>TIPO</th>
+                    <th>PRE.UNITARIO</th>
+                    <th>CANTIDAD</th>
+                    <th>SUBTOTAL</th>
+                    <th>PROVEEDOR</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IdCarrito)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Longitud)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Diametro)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Tipo.Tipo)
+                        </td>
+                        <td>
+                            S/. @Html.DisplayFor(modelItem => item.ProveedorProducto.PrecioCompra)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cantidad)
+                        </td>
+                        <td>
+                            S/. @Html.DisplayFor(modelItem => item.Subtotal)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProveedorProducto.Proveedor.RazonSocial)
+                        </td>
+                        <td>
+                            <button class="btn btn-warning" type="button">
+                                @Html.ActionLink("Edit", "EditarProductoCarrito", new { idCarrito = item.IdCarrito })
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <a onclick="return Eliminar(this)" href="/Compra/EliminarDetalleCarrito?idProveedorProducto=@item.ProveedorProducto.IdProveedorProducto" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+    <br>
+    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Modcomprar">Realizar compra <i class="bi bi-dropbox"></i></button>
+</div>
+
+<!--Agregar compra-->
+<div class="modal" tabindex="-1" id="Modcomprar" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form action="/Compra/ConfirmarCompra" method="POST">
+                <div class="modal-header ">
+                    <h4 class="modal-title">¿Desea Confirmar la compra?</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-warning">Aceptar</button>
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+

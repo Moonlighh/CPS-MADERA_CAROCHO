@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace CapaEntidad
 {
-   public class entReporteVenta
+    public class entReporteVenta
     {
         int codigo;
-        string cliente;
+        string proveedor;
         DateTime fecha;
         string descripcion;
         string longitud;
@@ -19,7 +19,7 @@ namespace CapaEntidad
 
         #region Get and Set
         public int Codigo { get => codigo; set => codigo = value; }
-        public string Cliente { get => cliente; set => cliente = value; }
+        public string Proveedor { get => proveedor; set => proveedor = value; }
         public DateTime Fecha { get => fecha; set => fecha = value; }
         public string Descripcion { get => descripcion; set => descripcion = value; }
         public string Longitud { get => longitud; set => longitud = value; }

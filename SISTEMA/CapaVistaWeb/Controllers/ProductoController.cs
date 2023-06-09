@@ -14,12 +14,11 @@ using System.Web.Services.Description;
 
 namespace MadereraCarocho.Controllers
 {
-
-    [Authorize]// No puede si es que no esta autorizado
-    [PermisosRol(entRol.Administrador)]
     public class ProductoController : Controller
     {
         #region Producto
+        [Authorize]// No puede si es que no esta autorizado
+        [PermisosRol(entRol.Administrador)]
         [HttpPost]
         public ActionResult CrearTipoMadera(string woodType)
         {
@@ -41,6 +40,9 @@ namespace MadereraCarocho.Controllers
             }
             return RedirectToAction("ListarProductos");
         }
+
+        [Authorize]// No puede si es que no esta autorizado
+        [PermisosRol(entRol.Administrador)]
         [HttpPost]
         public ActionResult CrearProducto(string cNombreP, string cLongitudP, string cDiametro, string cPreVentaP, FormCollection frm)
         {
@@ -72,6 +74,8 @@ namespace MadereraCarocho.Controllers
             return RedirectToAction("ListarProductos");
         }
 
+        [Authorize]// No puede si es que no esta autorizado
+        [PermisosRol(entRol.Administrador)]
         // Esta funcion se encarga de listar todos los productos en donde el stock se acerca a 0
         public ActionResult ListarProductos(string dato, string orden)
         {
@@ -92,6 +96,8 @@ namespace MadereraCarocho.Controllers
             }
         }
 
+        [Authorize]// No puede si es que no esta autorizado
+        [PermisosRol(entRol.Administrador)]
         public ActionResult EditarProducto(int idProd)
         {
             entProducto prod = new entProducto();
@@ -111,6 +117,8 @@ namespace MadereraCarocho.Controllers
             return View(prod);
         }
 
+        [Authorize]// No puede si es que no esta autorizado
+        [PermisosRol(entRol.Administrador)]
         [HttpPost]
         public ActionResult EditarProducto(entProducto p, FormCollection frm)
         {
@@ -136,6 +144,8 @@ namespace MadereraCarocho.Controllers
             return RedirectToAction("ListarProductos");
         }
 
+        [Authorize]// No puede si es que no esta autorizado
+        [PermisosRol(entRol.Administrador)]
         public ActionResult EliminarProducto(int idProd)
         {
             try
@@ -157,6 +167,8 @@ namespace MadereraCarocho.Controllers
         #endregion
 
         #region Carrito Compra
+        [Authorize]// No puede si es que no esta autorizado
+        [PermisosRol(entRol.Administrador)]
         public ActionResult AgregarCarrito(int idProveedorProducto)
         {
             MensajeViewModel mensaje = new MensajeViewModel();
@@ -182,6 +194,8 @@ namespace MadereraCarocho.Controllers
             return RedirectToAction("ListarProductosDisponibles");
         }
 
+        [Authorize]// No puede si es que no esta autorizado
+        [PermisosRol(entRol.Administrador)]
         // Esta funcion se encarga de listar todos los productos disponibles para ser agregados al carrito de compras
         public ActionResult ListarProductosDisponibles(string dato, string orden)
         {
@@ -189,6 +203,28 @@ namespace MadereraCarocho.Controllers
             try
             {
                 lista = logProveedorProducto.Instancia.ListarProductoAdmin(dato, orden);
+                List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
+                var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
+
+                ViewBag.lista = lista;
+                ViewBag.listaTipo = lsTipoProducto;
+            }
+            catch (Exception e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
+            }
+            return View(lista);
+        }
+        
+        [Authorize]// No puede si es que no esta autorizado
+        [PermisosRol(entRol.Cliente)]
+        public ActionResult ListarProductosDisponiblesVenta(string dato, string orden)
+        {
+            List<entProveedorProducto> lista = new List<entProveedorProducto>();
+            try
+            {
+                lista = logProveedorProducto.Instancia.ListarProductoCliente(dato, orden);
                 List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
                 var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
 

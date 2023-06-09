@@ -60,6 +60,7 @@
     <Compile Include="datVenta.cs" />
     <Compile Include="IDatCompra.cs" />
     <Compile Include="IDatUsuario.cs" />
+    <Compile Include="IDatVenta.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

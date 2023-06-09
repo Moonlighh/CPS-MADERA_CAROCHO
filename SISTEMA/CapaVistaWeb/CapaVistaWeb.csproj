@@ -355,6 +355,9 @@
     <Content Include="Views\Proveedor\ListarDetalle.cshtml" />
     <Content Include="Views\Home\RestablecerPassword.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Producto\ListarProductosDisponiblesVenta.cshtml" />
+    <Content Include="Views\Venta\VentasRealizadas.cshtml" />
+    <Content Include="Views\Venta\DetalleCarritoVenta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
