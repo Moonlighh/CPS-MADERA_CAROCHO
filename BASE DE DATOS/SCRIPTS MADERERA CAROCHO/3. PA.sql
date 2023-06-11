@@ -184,8 +184,10 @@ GO
 CREATE OR ALTER PROCEDURE spListarProductoCliente
 AS
 BEGIN
-	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.tipo FROM PRODUCTO p
+	SELECT pro.idProveedor_Producto, p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.tipo FROM PRODUCTO p
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto
+	inner join PROVEEDOR_PRODUCTO pro on p.idProducto = pro.idProducto
+	inner join PROVEEDOR prov on prov.idProveedor = pro.idProveedor
 	ORDER BY p.stock asc;
 END
 GO
@@ -285,12 +287,12 @@ CREATE OR ALTER PROCEDURE spListarProveedorProducto
 AS
 BEGIN
 	SELECT p.idProveedor_Producto, p.idProveedor AS id, pro.razonSocial AS proveedor, prod.nombre AS madera, prod.longitud, prod.diametro,
-	prod.stock, p.precioCompra AS precio, pro.idProveedor, prod.idProducto, pro.estProveedor FROM PROVEEDOR_PRODUCTO p
+	prod.stock, p.precioCompra AS precio, pro.idProveedor, prod.idProducto, pro.estProveedor, prod.precioVenta FROM PROVEEDOR_PRODUCTO p
 	inner join PROVEEDOR pro ON p.idProveedor = pro.idProveedor
 	inner join PRODUCTO prod ON p.idProducto = prod.idProducto
 END
 GO
-
+SELECT * FROM PRODUCTO
 -- PA - TIPO_EMPLEADO
 -- *************************************
 CREATE OR ALTER PROCEDURE spListarTipoEmpleado
@@ -668,7 +670,7 @@ CREATE OR ALTER PROCEDURE spMostrarCarrito(
 )
 AS
 BEGIN
-	SELECT P_P.idProveedor_Producto, P_P.precioCompra, p.idProducto, car.idCarrito, p.nombre, p.longitud, p.diametro, tip.tipo, car.cantidad, car.subtotal, prov.razonSocial FROM CARRITO car
+	SELECT P_P.idProveedor_Producto, P_P.precioCompra, p.idProducto, car.idCarrito, p.nombre, p.longitud, p.diametro, tip.tipo, car.cantidad, car.subtotal, prov.razonSocial, p.precioVenta FROM CARRITO car
 	inner join USUARIO u ON car.idCliente = u.idUsuario
 	inner join PROVEEDOR_PRODUCTO P_P ON P_P.idProveedor_Producto = car.idProveedor_Producto
 	inner join PRODUCTO P ON P.idProducto = P_P.idProducto
@@ -820,20 +822,21 @@ GO
 
 --------------------------------------VENTA
 CREATE OR ALTER PROCEDURE spCrearVenta(
-	@idventa INT OUT,
-	@total FLOAT,
+	@id INT OUT,
+	@total decimal(10,2),
+	@estado BIT,
 	@idUsuario INT
 )
 AS
 BEGIN TRY
 	BEGIN TRANSACTION
-	INSERT INTO VENTA (total,idUsuario) VALUES (@total,@idUsuario);
-	SET @idventa=@@identity;
+	INSERT INTO VENTA (total, estado, idUsuario) VALUES (@total,@estado, @idUsuario);
+	SET @id=@@identity;
 	COMMIT TRANSACTION
 END TRY
 BEGIN CATCH
 	ROLLBACK TRANSACTION
-	SET @idventa=-1;
+	SET @id=-1;
 END CATCH
 GO
 
@@ -910,8 +913,6 @@ GO
 
 
 
-
-
 --CREATE OR ALTER PROCEDURE spActualizarTipoProducto
 --	@idTipo_Producto INT,
 --	@nombre VARCHAR(30)
@@ -974,16 +975,17 @@ GO
 
 
 --DETALLE_VENTA
---CREATE OR ALTER PROCEDURE spCrearDetVenta(
---	@idVenta INT,
---	@idProducto INT,
---	@cantidad INT,
---	@subTotal FLOAT
---)
---AS
---BEGIN
---	INSERT INTO DETALLE_VENTA VALUES (@idVenta, @idProducto, @cantidad,@subTotal);
---	UPDATE Producto SET stock -= @cantidad 
---	WHERE idProducto = @idProducto;
---END
---GO
+CREATE OR ALTER PROCEDURE spCrearDetVenta(
+	@idVenta INT,
+	@idProducto INT,
+	@cantidad INT,
+	@subTotal FLOAT
+)
+AS
+BEGIN
+	INSERT INTO DETALLE_VENTA VALUES (@idVenta, @idProducto, @cantidad,@subTotal);
+	UPDATE Producto SET stock -= @cantidad 
+	WHERE idProducto = @idProducto;
+END
+GO
+select *from venta

@@ -224,7 +224,7 @@ namespace MadereraCarocho.Controllers
             List<entProveedorProducto> lista = new List<entProveedorProducto>();
             try
             {
-                lista = logProveedorProducto.Instancia.ListarProductoCliente(dato, orden);
+                lista = logProveedorProducto.Instancia.ListarProductoCliente(dato, orden).Where(p => p.Producto.Stock > 0).ToList();
                 List<entTipoProducto> listaTipoProducto = logTipoProducto.Instancia.ListarTipoProducto();
                 var lsTipoProducto = new SelectList(listaTipoProducto, "idTipo_producto", "tipo");
 
@@ -237,6 +237,31 @@ namespace MadereraCarocho.Controllers
                 return RedirectToAction("Error", "Home");
             }
             return View(lista);
+        }
+        [Authorize]// No puede si es que no esta autorizado
+        [PermisosRol(entRol.Cliente)]
+        public ActionResult AgregarCarritoCliente(int idProveedorProducto)
+        {
+            try
+            {
+                entUsuario cliente = Session["Usuario"] as entUsuario;
+                bool agregado = logCarrito.Instancia.AgregarProductoCarritoCliente(cliente, idProveedorProducto, 1);
+                if (!agregado)
+                {
+                    TempData["danger"] = "No se pudo agregar la madera al carrito";
+                }
+                else
+                {
+                    TempData["exito"] = "Madera agregada al carrito de compras";
+
+                }
+            }
+            catch (Exception e)
+            {
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
+            }
+            return RedirectToAction("ListarProductosDisponiblesVenta");
         }
         #endregion
     }

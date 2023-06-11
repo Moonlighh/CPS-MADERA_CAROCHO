@@ -59,7 +59,7 @@ namespace MadereraCarocho.Controllers
                 TempData["Error"] = e.Message;
                 return RedirectToAction("Error", "Home");
             }
-            return RedirectToAction("DetalleCarrito");
+            return RedirectToAction("DetalleCarritoVenta");
         }
 
         // Listar todas las Ventas realizadas
@@ -157,7 +157,7 @@ namespace MadereraCarocho.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditarProductoCarrito(entCarrito c)
+        public ActionResult EditarProductoCarritoVenta(entCarrito c)
         {
             try
             {
@@ -207,6 +207,26 @@ namespace MadereraCarocho.Controllers
 
                 // Redirige a la acción DetalleCarrito para mostrar los productos actualizados en el carrito de Ventas del usuario.
                 return RedirectToAction("DetalleCarrito");
+            }
+            catch (Exception e)
+            {
+                // Si hay algún error, redirige a la acción Error del controlador Home con el mensaje de error.
+                TempData["Error"] = e.Message;
+                return RedirectToAction("Error", "Home");
+            }
+        }
+        public ActionResult EliminarDetalleCarritoVenta(int idProveedorProducto)
+        {
+            try
+            {
+                // Obtiene el usuario actual de la sesión.
+                var user = Session["Usuario"] as entUsuario;
+
+                // Llama al método EliminarProductoCarrito del objeto logCarrito para eliminar un producto del carrito de Ventas del usuario.
+                logCarrito.Instancia.EliminarProductoCarrito(idProveedorProducto, user.IdUsuario);
+
+                // Redirige a la acción DetalleCarrito para mostrar los productos actualizados en el carrito de Ventas del usuario.
+                return RedirectToAction("DetalleCarritoVenta");
             }
             catch (Exception e)
             {

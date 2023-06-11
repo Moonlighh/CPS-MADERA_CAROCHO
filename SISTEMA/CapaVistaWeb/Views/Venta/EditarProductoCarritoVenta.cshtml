@@ -1,0 +1,112 @@
+﻿@model CapaEntidad.entCarrito
+
+<!-- ======= Header admin======= -->
+<header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+
+        <div class="logo">
+            <h1><a href="/Home/Admin">My<span>Biz</span></a></h1>
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <!-- <a href="index.html"><img src="~/Content/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+        </div>
+
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link scrollto " href="/Home/Usuario#hero">Inicio</a></li>
+                <li><a class="nav-link scrollto" href="/Home/Usuario#about">Sobre</a></li>
+                <li><a class="nav-link scrollto" href="/Home/Usuario#services">Servicios</a></li>
+                <li><a class="nav-link scrollto " href="/Home/Usuario#portfolio">Portafolio</a></li>
+                <li><a class="nav-link scrollto" href="/Home/Usuario#team">Equipo</a></li>
+                <li><a class="nav-link scrollto" href="/Home/Usuario#contact">Contacto</a></li>
+                <li class="dropdown">
+                    <a href="#"><span>Opciones</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                        <li><a href="/Producto/ListarProductosDisponiblesVenta">Productos</a></li>
+                        <li><a href="/Venta/VentasRealizadas">Mis compras</a></li>
+                        <li><a href="" onclick="cerrarSesion('@Url.Action("CerrarSesion", "Home")')">Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+                <li><a class="nav-link scrollto" href="/Venta/DetalleCarritoVenta">COMPRAR<i class="bi bi-cart4"></i></a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+    </div>
+</header><!-- End Header -->
+<!-- ======= Contenido ======= -->
+<br>
+<br>
+<br>
+<br>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @*<form action="/Compra/EditarProductoCarrito" method="POST">*@
+    <div class="container">
+        <hr>
+
+        <div class="mb-3 row" hidden>
+            <label for="staticEmail" class="col-sm-2 col-form-label">ID</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IdCarrito, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IdCarrito, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">MADERA</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ProveedorProducto.Producto.Nombre, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.ProveedorProducto.Producto.Nombre, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">LONGITUD</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ProveedorProducto.Producto.Longitud, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.ProveedorProducto.Producto.Longitud, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">DIAMETRO</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ProveedorProducto.Producto.Diametro, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.ProveedorProducto.Producto.Diametro, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3 row" disable>
+            <label for="staticEmail" class="col-sm-2 col-form-label">TIPO</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ProveedorProducto.Producto.Tipo.Tipo, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.ProveedorProducto.Producto.Tipo.Tipo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">CANTIDAD</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Cantidad, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Cantidad, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <br>
+        <button type="button" class="btn btn-warning">
+            @Html.ActionLink("Regresar", "DetalleCarrito")
+        </button>
+
+
+        <button type="submit" class="btn btn-info">
+            Confirmar
+        </button>
+    </div>
+    @*</form>*@
+    <br>
+    <br>
+    <br>
+    <br>
+}
+

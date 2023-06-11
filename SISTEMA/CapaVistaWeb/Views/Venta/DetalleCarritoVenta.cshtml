@@ -94,7 +94,7 @@
                             @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.Tipo.Tipo)
                         </td>
                         <td>
-                            S/. @Html.DisplayFor(modelItem => item.ProveedorProducto.PrecioCompra)
+                            S/. @Html.DisplayFor(modelItem => item.ProveedorProducto.Producto.PrecioVenta)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Cantidad)
@@ -107,10 +107,10 @@
                         </td>
                         <td>
                             <button class="btn btn-warning" type="button">
-                                @Html.ActionLink("Edit", "EditarProductoCarrito", new { idCarrito = item.IdCarrito })
+                                @Html.ActionLink("Edit", "EditarProductoCarritoVenta", new { idCarrito = item.IdCarrito })
                                 <i class="bi bi-pencil-square"></i>
                             </button>
-                            <a onclick="return Eliminar(this)" href="/Compra/EliminarDetalleCarrito?idProveedorProducto=@item.ProveedorProducto.IdProveedorProducto" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
+                            <a onclick="return Eliminar(this)" href="/Venta/EliminarDetalleCarritoVenta?idProveedorProducto=@item.ProveedorProducto.IdProveedorProducto" class="btn btn-danger" type="button"><i class="bi bi-trash"></i></a>
                         </td>
                     </tr>
                 }
@@ -126,7 +126,7 @@
 <div class="modal" tabindex="-1" id="Modcomprar" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form action="/Compra/ConfirmarCompra" method="POST">
+            <form action="/Venta/ConfirmarVenta" method="POST">
                 <div class="modal-header ">
                     <h4 class="modal-title">¿Desea Confirmar la compra?</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

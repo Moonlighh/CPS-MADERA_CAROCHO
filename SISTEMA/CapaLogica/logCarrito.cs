@@ -33,7 +33,7 @@ namespace CapaLogica
         //        {
         //            return false;
         //        }
-                
+
         //    }
         //    return true;
 
@@ -56,7 +56,7 @@ namespace CapaLogica
 
                     // Obtener los detalles del producto del proveedor
                     entProveedorProducto detalleProducto = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.IdProveedorProducto == idProveedorProducto).SingleOrDefault();
-                    
+
                     // Si el producto existe y el proveedor está activo, crear un objeto entCarrito y agregarlo al carrito
                     entCarrito carrito = new entCarrito();
                     if (detalleProducto != null && detalleProducto.Proveedor.EstProveedor)
@@ -74,10 +74,11 @@ namespace CapaLogica
                     else
                     {
                         // Si el producto no existe o el proveedor está inactivo, lanzar una excepción
-                        throw new Exception ("No se puede hacer una compra hacia un proveedor que fue dado de baja o que ya no existe");
+                        throw new Exception("No se puede hacer una compra hacia un proveedor que fue dado de baja o que ya no existe");
                     }
                 }
-                else {
+                else
+                {
                     // Si el id del proveedor no es válido, el usuario es null, el usuario no es administrador o la cantidad es menor o igual a 0, lanzar una excepción
                     throw new Exception("No cumple con los requisitos para agregar el producto");
                 }
@@ -86,11 +87,60 @@ namespace CapaLogica
             {
                 // Lanzar una excepción si hay un error en el proceso
                 throw new Exception("Se producto un error: " + e.Message);
-            }           
+            }
         }
+
+        public bool AgregarProductoCarritoCliente(entUsuario user, int idProveedorProducto, int pvCantidad)
+        {
+            bool agregado = false;
+            try
+            {
+                // Validar que el usuario no sea null, que el id del proveedor sea válido y la cantidad sea mayor a 0
+                if (user != null && idProveedorProducto >= 1 && pvCantidad >= 1)
+                {
+                    // Buscar si el producto ya existe en el carrito
+                    entCarrito car = Instancia.MostrarCarrito(user.IdUsuario, null).Where(c => c.ProveedorProducto.IdProveedorProducto == idProveedorProducto).SingleOrDefault();
+                    if (car != null)
+                    {
+                        // Si el producto ya existe en el carrito, lanzar una excepción
+                        throw new Exception("El producto que intentas agregar ya se encuentra en el carrito de compras");
+                    }
+
+                    // Obtener los detalles del producto del proveedor
+                    entProveedorProducto detalleProducto = logProveedorProducto.Instancia.ListarProveedorProducto().Where(d => d.IdProveedorProducto == idProveedorProducto).SingleOrDefault();
+
+                    // Si el producto existe y el proveedor está activo, crear un objeto entCarrito y agregarlo al carrito
+                    entCarrito carrito = new entCarrito();
+                    if (detalleProducto != null)
+                    {
+                        // Si el producto existe y el proveedor está activo, modificar los datos del objeto carrito y agregarlo al carrito
+                        carrito.Cliente = user;
+                        carrito.ProveedorProducto = detalleProducto;
+                        carrito.Cantidad = pvCantidad;
+                        carrito.Subtotal = (decimal)(pvCantidad * detalleProducto.Producto.PrecioVenta);
+                        agregado = datCarrito.Instancia.AgregarProductoCarrito(carrito);
+
+                        // Devolver el resultado de la operación (true si se agregó el producto al carrito, false en caso contrario)
+                        return agregado;
+                    }
+                    throw new Exception("El producto seleccionado no se encuentra disponible");
+                }
+                else
+                {
+                    // Si el id del proveedor no es válido, el usuario es null, el usuario no es administrador o la cantidad es menor o igual a 0, lanzar una excepción
+                    throw new Exception("No cumple con los requisitos para agregar el producto");
+                }
+            }
+            catch (Exception e)
+            {
+                // Lanzar una excepción si hay un error en el proceso
+                throw new Exception("Se producto un error: " + e.Message);
+            }
+        }
+
         public List<entCarrito> MostrarCarrito(int idUsuario, string orden)
         {
-            if (idUsuario <=0)
+            if (idUsuario <= 0)
                 return null;
             else
             {
@@ -99,7 +149,7 @@ namespace CapaLogica
                     case "asc": return datCarrito.Instancia.Ordenar(idUsuario, 1);
                     case "desc": return datCarrito.Instancia.Ordenar(idUsuario, 0);
                     default:
-                        ;break;
+                        ; break;
                 }
                 return datCarrito.Instancia.MostrarCarrito(idUsuario);
             }
@@ -123,7 +173,7 @@ namespace CapaLogica
             return datCarrito.Instancia.EliminarProductoCarrito(idProvProd, idCliente);
         }
         #endregion Carrito de Compras
-        
+
         public List<entCarrito> OrdenarCarrito(int orden, int idUsuario)
         {
             return datCarrito.Instancia.Ordenar(orden, idUsuario);

@@ -89,7 +89,7 @@ namespace CapaAccesoDatos
                 {
                     entUsuario user = new entUsuario()
                     {
-                        IdUsuario = Convert.ToInt32(dr["idCliente"]),
+                        IdUsuario = Convert.ToInt32(dr["idUsuario"]),
                     };
                     entVenta objVenta = new entVenta();
                     objVenta.IdVenta = Convert.ToInt32(dr["idVenta"]);

@@ -44,7 +44,8 @@ namespace CapaAccesoDatos
                         Nombre = dr["madera"].ToString(),
                         Longitud = Convert.ToInt32(dr["longitud"]),
                         Diametro = Convert.ToInt32(dr["diametro"]),
-                        Stock = Convert.ToInt32(dr["stock"])
+                        Stock = Convert.ToInt32(dr["stock"]),
+                        PrecioVenta = Convert.ToDouble(dr["precioVenta"])
                     };
                     entProveedorProducto obj = new entProveedorProducto
                     {
@@ -151,7 +152,7 @@ namespace CapaAccesoDatos
                     };
                     entProveedorProducto prov = new entProveedorProducto
                     {
-                        
+                        IdProveedorProducto = Convert.ToInt32(dr["idProveedor_Producto"]),
                         Producto = producto
                     };
                     lista.Add(prov);

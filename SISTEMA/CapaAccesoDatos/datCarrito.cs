@@ -91,6 +91,7 @@ namespace CapaAccesoDatos
                         Nombre = dr["nombre"].ToString().ToUpper(),
                         Longitud = Convert.ToDouble(dr["longitud"]),
                         Diametro = Convert.ToDouble(dr["diametro"]),
+                        PrecioVenta = Convert.ToDouble(dr["precioVenta"]),
                         Tipo = tipoProducto
                     };
                     entProveedorProducto pro = new entProveedorProducto

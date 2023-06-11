@@ -340,8 +340,6 @@
     <Content Include="Views\Home\SinPermisos.cshtml" />
     <Content Include="Views\Proveedor\EditarProveedor.cshtml" />
     <Content Include="Views\Usuario\ListarAdministradores.cshtml" />
-    <Content Include="Views\Venta\Detalle.cshtml" />
-    <Content Include="Views\Venta\Listar.cshtml" />
     <Content Include="Views\Compra\ComprasRealizadas.cshtml" />
     <Content Include="Views\Compra\DetalleCarrito.cshtml" />
     <Content Include="Views\Empleado\EditarEmpleado.cshtml" />
@@ -358,6 +356,8 @@
     <Content Include="Views\Producto\ListarProductosDisponiblesVenta.cshtml" />
     <Content Include="Views\Venta\VentasRealizadas.cshtml" />
     <Content Include="Views\Venta\DetalleCarritoVenta.cshtml" />
+    <Content Include="Views\Venta\DetalleVenta.cshtml" />
+    <Content Include="Views\Venta\EditarProductoCarritoVenta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
