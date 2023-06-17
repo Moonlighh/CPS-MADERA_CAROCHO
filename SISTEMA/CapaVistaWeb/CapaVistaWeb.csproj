@@ -184,6 +184,7 @@
     <Content Include="Content\assets\img\about-list-img.jpg" />
     <Content Include="Content\assets\img\apple-touch-icon.png" />
     <Content Include="Content\assets\img\counts-bg.jpg" />
+    <Content Include="Content\assets\img\error404.jpg" />
     <Content Include="Content\assets\img\favicon.png" />
     <Content Include="Content\assets\img\logGo.png" />
     <Content Include="Content\assets\img\portfolio\portfolio-1.jpg" />
@@ -267,9 +268,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Imagenes\logo.png" />
-    <Content Include="Imagenes\tienda.png" />
-    <Content Include="Imagenes\tiendalogo.png" />
     <Content Include="Content\assets\vendor\bootstrap-icons\bootstrap-icons.json" />
     <Content Include="Content\assets\vendor\bootstrap-icons\fonts\bootstrap-icons.woff" />
     <Content Include="Content\assets\vendor\bootstrap-icons\fonts\bootstrap-icons.woff2" />
@@ -337,7 +335,7 @@
     <Content Include="Views\Producto\ListarProductos.cshtml" />
     <Content Include="Views\Proveedor\Listar.cshtml" />
     <Content Include="Views\Empleado\Listar.cshtml" />
-    <Content Include="Views\Home\SinPermisos.cshtml" />
+    <Content Include="Views\Home\Error404.cshtml" />
     <Content Include="Views\Proveedor\EditarProveedor.cshtml" />
     <Content Include="Views\Usuario\ListarAdministradores.cshtml" />
     <Content Include="Views\Compra\ComprasRealizadas.cshtml" />
