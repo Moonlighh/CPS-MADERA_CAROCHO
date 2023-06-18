@@ -397,7 +397,7 @@ namespace CapaLogica
         {
             if (!Regex.IsMatch(correo, @"^[a-zA-Z0-9._%+-]+@gmail\.com$"))
             {
-                return errorMessage = "El correo electrónico no es válido (Solo se aceptan correos de google).";
+                return errorMessage = "El correo electrónico no es válido (Solo se aceptan correos gmail).";
             }
             return string.Empty;
 

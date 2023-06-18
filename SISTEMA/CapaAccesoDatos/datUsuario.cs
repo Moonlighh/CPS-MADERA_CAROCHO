@@ -94,7 +94,7 @@ namespace CapaAccesoDatos
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                throw new Exception("Se produjo un error inesperado");
 
             }
             finally

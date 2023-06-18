@@ -1,41 +1,159 @@
-﻿<html>
-<head>
+﻿@{
+    var urlReferrer = Request.UrlReferrer;
+}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f1f1f1;
+    }
 
-    <link rel="shortcut icon"
-          href="https://res.cloudinary.com/upcbinary/image/upload/v1674168250/ExploraUPN/icons/favicon_nuikwz.ico"
-          type="image/vnd.microsoft.icon">
-    <link rel="stylesheet" href="~/Content/assets/css/error.css" />
-</head>
+    .error-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
-<body>
-    <header>
-        <br />
-        <br />
-        <div id="navigation-wrapper" class="navigation-wrapper">
-            <div class="navigation">
-                <div class="logo-container">
-                    <a href="/">
-                        <img src="~/Content/assets/img/logGo.png"
-                             alt="Logo Maderera Carocho" width="130" />
-                        <div class="title">
-                            <h2>MADERERA CAROCHO</h2>
+    .error-content {
+        text-align: center;
+    }
+
+    .error-image {
+        max-width: 400px;
+        margin-bottom: 20px;
+    }
+
+    .error-title {
+        font-size: 60px;
+        color: #333;
+        margin-top: 0;
+    }
+
+    .error-message {
+        font-size: 24px;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    .error-link {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #333;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 18px;
+    }
+</style>
+
+<div class="error-container">
+    <div class="error-content">
+        <img class="error-image" src="/Content/assets/img/error404.jpg" alt="Error 404">
+        <h1 class="error-title">404</h1>
+        <h2 class="error-message">¡Página no encontrada!</h2>
+        <p class="error-message">Lo sentimos, pero la página que estás buscando no existe.</p>
+        <h1>@urlReferrer</h1>
+        @if (urlReferrer != null)
+        {
+            <button class="btn btn-group-lg" onclick="location.href='@urlReferrer'">
+                <i class="bi bi-arrow-left"></i> Regresar
+            </button>
+        }
+    </div>
+</div>
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="mt-5">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-info">
+                        <h3>Maderera Carocho</h3>
+                        <p>
+                            MZA. 1-A LOTE. 3 <br>
+                            Huanchaquito Alto<br><br>
+                            <strong>Telefono:</strong> +51 941042325 - +51 956535390<br>
+                            <strong>Correo:</strong> infomadereracarocho@gmail.com<br>
+                        </p>
+                        <div class="social-links mt-3">
+                            <a href="https://twitter.com/" class="twitter"><i class="bx bxl-twitter"></i></a>
+                            <a href="https://www.facebook.com/" class="facebook"><i class="bx bxl-facebook"></i></a>
+                            <a href="https://www.instagram.com/" class="instagram"><i class="bx bxl-instagram"></i></a>
+                            <a href="https://pe.linkedin.com/" class="linkedin"><i class="bx bxl-linkedin"></i></a>
                         </div>
-                    </a>
+                    </div>
                 </div>
+
+                <div class="col-lg-3 col-md-6 footer-links">
+                    <h4>Menu de opciones</h4>
+                    <ul>
+                        <li><i class="bx bx-chevron-right"></i> <a href="/Home/Admin">Inicio</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="/Home/admin#about">Sobre</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="/Home/admin#services">Servicios</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="/Home/admin#portfolio">Portafolio</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="/Home/admin#team">Equipo</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="/Home/admin#contact">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-6 footer-newsletter">
+                    <h4>¡Contáctanos!</h4>
+                    <p>Deja tu correo electrónico y un asesor se pondrá en contacto contigo en un plazo máximo de 24 horas.</p>
+                    <form action="" method="post">
+                        <input type="email" name="email" placeholder="Tu correo electrónico" required>
+                        <input type="submit" value="Aceptar">
+                    </form>
+                </div>
+
             </div>
         </div>
-    </header>
-    <div class="container">
-        <div class="message-container">
-            <p class="message-title">LO SENTIMOS...</p>
-            <p class="message-description">No pudimos encontrar lo que estás buscando.</p>
-            <a href="/" class="button">REGRESAR</a>
+        <div class="container">
+            <div class="copyright">
+                &copy; Copyright <strong><span>MadereraCarocho</span></strong>. Todos los derechos reservados
+            </div>
         </div>
-        <img class="icon-404"
-             src="https://res.cloudinary.com/upcbinary/image/upload/v1675972562/ExploraUPN/icons/Icon404_q10ayb.svg"
-             alt="Imagen 404" />
     </div>
-</body>
-</html>
+</footer><!-- End Footer -->
+@*<html>
+    <head>
+
+        <link rel="shortcut icon"
+              href="https://res.cloudinary.com/upcbinary/image/upload/v1674168250/ExploraUPN/icons/favicon_nuikwz.ico"
+              type="image/vnd.microsoft.icon">
+        <link rel="stylesheet" href="~/Content/assets/css/error.css" />
+    </head>
+
+    <body>
+        <header>
+            <br />
+            <br />
+            <div id="navigation-wrapper" class="navigation-wrapper">
+                <div class="navigation">
+                    <div class="logo-container">
+                        <a href="/">
+                            <img src="~/Content/assets/img/logGo.png"
+                                 alt="Logo Maderera Carocho" width="130" />
+                            <div class="title">
+                                <h2>MADERERA CAROCHO</h2>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container">
+            <div class="message-container">
+                <p class="message-title">LO SENTIMOS...</p>
+                <p class="message-description">No pudimos encontrar lo que estás buscando.</p>
+                <a href="/" class="button">REGRESAR</a>
+            </div>
+            <img class="icon-404"
+                 src="https://res.cloudinary.com/upcbinary/image/upload/v1675972562/ExploraUPN/icons/Icon404_q10ayb.svg"
+                 alt="Imagen 404" />
+        </div>
+    </body>
+    </html>*@
 
 

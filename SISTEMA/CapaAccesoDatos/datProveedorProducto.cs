@@ -189,6 +189,10 @@ namespace CapaAccesoDatos
                     {
                         Tipo = dr["tipo"].ToString()
                     };
+                    entProveedor provedor = new entProveedor
+                    {
+                        RazonSocial = dr["razonSocial"].ToString(),
+                    };
                     entProducto producto = new entProducto
                     {
                         IdProducto = Convert.ToInt32(dr["idProducto"]),
@@ -202,7 +206,8 @@ namespace CapaAccesoDatos
                     entProveedorProducto prov = new entProveedorProducto
                     {
                         PrecioCompra = Convert.ToDouble(dr["precioCompra"]),
-                        Producto = producto
+                        Producto = producto,
+                        Proveedor = provedor
                     };
 
                     lista.Add(prov);

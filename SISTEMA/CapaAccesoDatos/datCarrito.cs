@@ -48,8 +48,8 @@ namespace CapaAccesoDatos
             }
             catch (Exception e) // si se produce una excepción, se muestra un mensaje de error
             {
-                //return creado = false;
-                //throw new Exception(e.Message);
+                return creado = false;
+                throw new Exception(e.Message);
             }
 
             return creado; // se retorna el valor de la variable creado

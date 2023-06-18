@@ -86,7 +86,7 @@ namespace CapaLogica
             catch (Exception e)
             {
                 // Lanzar una excepción si hay un error en el proceso
-                throw new Exception("Se producto un error: " + e.Message);
+                throw new Exception("Se produjó un error: " + e.Message);
             }
         }
 

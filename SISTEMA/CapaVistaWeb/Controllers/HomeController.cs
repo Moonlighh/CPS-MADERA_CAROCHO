@@ -245,7 +245,7 @@ namespace MadereraCarocho.Controllers
             catch (Exception e)
             {
                 TempData["TipoAlerta"] = "danger";
-                TempData["Error"] = e.Message;
+                TempData["ContenidoAlerta"] = e.Message;
             }
             return View();
         }

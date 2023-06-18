@@ -179,7 +179,7 @@ namespace MadereraCarocho.Controllers
                 // Redirigimos a la página de error si la edición falló
                 if (!edita)
                 {
-                    TempData["Error"] = "No se pudo editar el producto asegurese de proporcionar datos coherentes: " + errores;
+                    TempData["Error"] = "No se pudo editar el producto asegurese de proporcionar datos coherentes: ";
                     return RedirectToAction("Error", "Home");
                 }
             }
