@@ -229,9 +229,10 @@ CREATE OR ALTER PROCEDURE spBuscarProductoAdmin(
 )
 AS
 BEGIN
-	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, pro.precioCompra, p.precioVenta, p.stock, t.tipo FROM PRODUCTO p
+	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, pro.precioCompra, p.precioVenta, p.stock, t.tipo, prov.razonSocial FROM PRODUCTO p
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto
 	inner join PROVEEDOR_PRODUCTO pro on pro.idProducto = p.idProducto
+	inner join PROVEEDOR prov on prov.idProveedor = pro.idProveedor
 	WHERE p.nombre like '%'+@campo+'%';
 END
 GO
@@ -292,7 +293,7 @@ BEGIN
 	inner join PRODUCTO prod ON p.idProducto = prod.idProducto
 END
 GO
-SELECT * FROM PRODUCTO
+
 -- PA - TIPO_EMPLEADO
 -- *************************************
 CREATE OR ALTER PROCEDURE spListarTipoEmpleado

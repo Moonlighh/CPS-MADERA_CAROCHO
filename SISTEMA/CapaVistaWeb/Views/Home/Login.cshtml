@@ -56,6 +56,8 @@
         }
 </style>
 
+
+@Html.AntiForgeryToken()
 <div class="login-container">
     <h1>Iniciar Sesión</h1>
     <form method="post" id="idLogin" action="/Home/VerificarAcceso" class="row g-3 needs-validation" novalidate>
@@ -85,10 +87,11 @@
                 @TempData["Mensaje"]
             </div>
         }
-    </form>        
+    </form>
     <br />
     <br />
 </div>
+
 
 <!-- ======= Footer ======= -->
 <footer id="footer" class="mt-5">
