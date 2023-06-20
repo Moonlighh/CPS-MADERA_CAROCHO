@@ -66,7 +66,6 @@ namespace MadereraCarocho.Controllers
         #endregion Vistas
 
         #region Acceso, Crear cuenta
-        [ValidateAntiForgeryToken]
         public ActionResult VerificarAcceso(string user, string pass)
         {
             try
