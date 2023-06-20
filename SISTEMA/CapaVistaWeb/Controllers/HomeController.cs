@@ -66,6 +66,7 @@ namespace MadereraCarocho.Controllers
         #endregion Vistas
 
         #region Acceso, Crear cuenta
+        [ValidateAntiForgeryToken]
         public ActionResult VerificarAcceso(string user, string pass)
         {
             try
@@ -138,6 +139,7 @@ namespace MadereraCarocho.Controllers
 
         #region Otros
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ContactForm(string nombre, string email, string asunto, string mensaje)
         {
             List<string> errores = new List<string>();

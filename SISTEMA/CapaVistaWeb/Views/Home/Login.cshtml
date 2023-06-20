@@ -60,6 +60,7 @@
 <div class="login-container">
     <h1>Iniciar Sesión</h1>
     <form method="post" id="idLogin" action="/Home/VerificarAcceso" class="row g-3 needs-validation" novalidate>
+        @Html.AntiForgeryToken()
         <div>
             <label for="validationCustom01" class="form-label">Username</label>
             <input type="text" id="validationCustom02" name="user" placeholder="Ingrese usuario o correo" class="form-control" required autocomplete="on">
