@@ -60,6 +60,7 @@
 <div class="login-container">
     <h1>Iniciar Sesión</h1>
     <form method="post" id="idLogin" action="/Home/VerificarAcceso" class="row g-3 needs-validation" novalidate>
+        @Html.AntiForgeryToken()
         <div>
             <label for="validationCustom01" class="form-label">Username</label>
             <input type="text" id="validationCustom02" name="user" placeholder="Ingrese usuario o correo" class="form-control" required autocomplete="on">
@@ -132,6 +133,7 @@
                     <h4>¡Contáctanos!</h4>
                     <p>Deja tu correo electrónico y un asesor se pondrá en contacto contigo en un plazo máximo de 24 horas.</p>
                     <form action="" method="post">
+                        @Html.AntiForgeryToken()
                         <input type="email" name="email" placeholder="Tu correo electrónico" required>
                         <input type="submit" value="Aceptar">
                     </form>

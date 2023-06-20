@@ -66,6 +66,7 @@ namespace MadereraCarocho.Controllers
         #endregion Vistas
 
         #region Acceso, Crear cuenta
+        [ValidateAntiForgeryToken]
         public ActionResult VerificarAcceso(string user, string pass)
         {
             try
@@ -98,7 +99,9 @@ namespace MadereraCarocho.Controllers
             }
             return RedirectToAction("Login");
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CrearSesionUsuario(string user, string correo, string pass, string confirmPass)
         {
             try
@@ -138,6 +141,7 @@ namespace MadereraCarocho.Controllers
 
         #region Otros
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ContactForm(string nombre, string email, string asunto, string mensaje)
         {
             List<string> errores = new List<string>();
@@ -192,7 +196,8 @@ namespace MadereraCarocho.Controllers
 
         public static bool enviado = false;
         private static string correoValidado = string.Empty;       
-        [HttpPost]     
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult RestablecerPassword(string correo, string newPassword, string codigo)
         {
             string msjCorreoEnviado = $"Se ha enviado un correo electrónico a {correo} con instrucciones para restablecer su contraseña. Por favor, revise su bandeja de entrada y siga los pasos indicados en el correo electrónico para completar el proceso de restablecimiento de contraseña. Si no encuentra el correo electrónico, revise su carpeta de correo no deseado o spam.";

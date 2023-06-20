@@ -591,6 +591,7 @@
             </div>
             <div class="bg-light p-4 mt-4">
                 <form action="/Home/ContactForm" method="post" role="form">
+                    @Html.AntiForgeryToken()
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <input type="text" name="nombre" class="form-control" id="name" placeholder="Tu Nombre" required>
@@ -669,6 +670,7 @@
                         <h4>¡Contáctanos!</h4>
                         <p>Deja tu correo electrónico y un asesor se pondrá en contacto contigo en un plazo máximo de 24 horas.</p>
                         <form action="" method="post">
+                            @Html.AntiForgeryToken()
                             <input type="email" name="email" placeholder="Tu correo electrónico" required>
                             <input type="submit" value="Aceptar">
                         </form>
