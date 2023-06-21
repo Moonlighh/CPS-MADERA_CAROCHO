@@ -13,6 +13,7 @@ using System.Web;
 
 namespace MadereraCarocho.Controllers
 {
+    [XContentTypeOptionsFilter]
     public class HomeController : Controller
     {
         private readonly ILogUsuario _logUsuario = new logUsuario(new datUsuario());

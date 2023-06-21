@@ -178,6 +178,7 @@
     <Compile Include="Permisos\PermisosRolAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recursos\Service.cs" />
+    <Compile Include="Recursos\XContentTypeOptionsFilter.cs" />
     <Compile Include="ViewModels\MensajeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
