@@ -105,7 +105,7 @@ CREATE TABLE USUARIO(
 	idUbigeo VARCHAR(6),
 	fecCreacion DATETIME DEFAULT GETDATE(),
 	correo VARCHAR(40) not null,
-	userName VARCHAR (20) not null,
+	userName VARCHAR (200) not null,
 	pass VARCHAR(200) not null, -- usar hashed password para mayor seguridad
 	--Es importante tener en cuenta que la implementación correcta de contraseñas 
 	--hash requiere precauciones adicionales, como la sal (un valor aleatorio 
@@ -203,7 +203,7 @@ WHERE dni IS NOT NULL;
 ALTER TABLE USUARIO ADD	CONSTRAINT CHK_USUARIO_telefono CHECK(telefono LIKE '9[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]' or telefono = '' or telefono LIKE '0[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
 ALTER TABLE USUARIO ADD	CONSTRAINT CHK_USUARIO_dni CHECK(dni LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]');
 ALTER TABLE USUARIO ADD CONSTRAINT uq_USUARIO_userName UNIQUE(userName)
-ALTER TABLE USUARIO ADD CONSTRAINT chk_USUARIO_userName CHECK (userName NOT LIKE '%[^a-zA-Z]%');
+--ALTER TABLE USUARIO ADD CONSTRAINT chk_USUARIO_userName CHECK (userName NOT LIKE '%[^a-zA-Z]%');
 ALTER TABLE USUARIO ADD CONSTRAINT uq_USUARIO_correo UNIQUE(correo);
 ALTER TABLE USUARIO ADD CONSTRAINT chk_USUARIO_correo CHECK (correo LIKE '%@gmail.com');
 --PROVEEDOR

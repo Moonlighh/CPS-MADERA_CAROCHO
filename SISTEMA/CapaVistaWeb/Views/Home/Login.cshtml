@@ -92,6 +92,22 @@
     <br />
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+<script>
+    function encryptCredentials() {
+        var user = document.getElementById('validationCustom02').value;
+        var pass = document.getElementById('validationCustom03').value;
+
+        var encryptedUser = CryptoJS.SHA256(user).toString();
+        var encryptedPass = CryptoJS.SHA256(pass).toString();
+
+        document.getElementById('validationCustom02').value = encryptedUser;
+        document.getElementById('validationCustom03').value = encryptedPass;
+    }
+
+    document.getElementById('idLogin').addEventListener('submit', encryptCredentials);
+</script>
+
 
 <!-- ======= Footer ======= -->
 <footer id="footer" class="mt-5">

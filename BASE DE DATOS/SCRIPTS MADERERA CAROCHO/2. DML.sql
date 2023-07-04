@@ -1950,7 +1950,7 @@ INSERT INTO PROVEEDOR_PRODUCTO VALUES
 	(2,23,11),
 	(2,31,5),
 	(2,56,1.3),
-
+ 
 	(3,3,26),
 	(3,9,20),
 	(3,16,11),
@@ -2048,7 +2048,7 @@ GO
 --INSERT CLIENTE
 INSERT INTO USUARIO(razonSocial,dni,telefono,direccion,idUbigeo,correo,userName,pass,idRol) 
 VALUES 
-    ('Cesar Ruben', '74359211', '945613221','Mz20Lote34-Av. Ricardo Palma', '010109','reyesanticona25@gmail.com','Cesar','8117b16dde2dfb6ec08db55fb337b2c3dc3f9e01a21096a8fa5da9d84eeb6941',1),--Admin25*+
+    ('Cesar Ruben', '74359211', '945613221','Mz20Lote34-Av. Ricardo Palma', '010109','reyesanticona25@gmail.com','41b5d26595bbd3e74b4c92f9fec365c085db8cbd9600b863bdebdb2812cae078','cd2f7b5a673ad0a06fba228eabc7f77975e21b0d942939f32c0ef115741ccead',1),--Admin25*+
     ('Alan Daniel', '70790019', '933423291', 'santiago mariños 1618', '010109','alan@gmail.com','Alan','8117b16dde2dfb6ec08db55fb337b2c3dc3f9e01a21096a8fa5da9d84eeb6941',1),
     ('Ximena Sandoval', '58791234', '999067966', 'MZA. 1-A LOTE. 3', '120102','ximena@gmail.com','Ximena','68494616e5cf467ed9b5f6392be2c43d4bd9d76ae17cbaba1b8ef1f02d475f0f',2),
     ('Daniel Solorzano', '74399141','913423491','Mz20Lote34-Av.5556',  '010109','daniel@gmail.com','Daniel','68494616e5cf467ed9b5f6392be2c43d4bd9d76ae17cbaba1b8ef1f02d475f0f',2);--Client25*+

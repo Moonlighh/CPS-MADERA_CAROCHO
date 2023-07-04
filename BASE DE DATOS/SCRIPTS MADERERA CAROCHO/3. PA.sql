@@ -177,7 +177,7 @@ BEGIN
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto
 	inner join PROVEEDOR_PRODUCTO pro on p.idProducto = pro.idProducto
 	inner join PROVEEDOR prov on prov.idProveedor = pro.idProveedor
-	ORDER BY p.stock asc;
+	ORDER BY p.nombre asc;
 END
 GO
 
@@ -188,7 +188,7 @@ BEGIN
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto
 	inner join PROVEEDOR_PRODUCTO pro on p.idProducto = pro.idProducto
 	inner join PROVEEDOR prov on prov.idProveedor = pro.idProveedor
-	ORDER BY p.stock asc;
+	ORDER BY p.nombre asc;
 END
 GO
 
@@ -197,6 +197,7 @@ AS
 BEGIN
 	SELECT p.idProducto, p.nombre, p.longitud, p.diametro, p.precioVenta, p.stock, t.tipo FROM PRODUCTO p
 	inner join TIPO_PRODUCTO t ON p.idTipo_Producto = t.idTipo_Producto
+	ORDER BY nombre
 END
 GO
 
@@ -554,12 +555,13 @@ END
 GO
 
 -- USUARIO - OTROS
-CREATE OR ALTER PROCEDURE spIniciarSesion(@dato VARCHAR(40), @contra VARCHAR(200))
+CREATE OR ALTER PROCEDURE spIniciarSesion(@dato VARCHAR(200), @contra VARCHAR(200))
 AS
 BEGIN
 	SELECT *FROM 
 	USUARIO c inner join Rol r ON r.idRol = c.idRol
-	WHERE (userName = @dato or correo = @dato) and pass = @contra
+	WHERE userName = @dato and pass = @contra
+	--select *from usuario where username = '41b5d26595bbd3e74b4c92f9fec365c085db8cbd9600b863bdebdb2812cae078' and pass = 'cd2f7b5a673ad0a06fba228eabc7f77975e21b0d942939f32c0ef115741ccead'
 END
 GO
 
